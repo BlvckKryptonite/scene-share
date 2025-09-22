@@ -55,7 +55,7 @@ ROOT_URLCONF = 'sceneshare.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates"], # I am telling Django to look here first
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
