@@ -2,6 +2,12 @@
 
 {% block content %}
 <h2>Update Your Profile</h2>
+  <!-- Display saved bio -->
+  {% if user.profile.bio %}
+    <p><strong>Bio:</strong> {{ user.profile.bio }}</p>
+  {% else %}
+    <p><em>No bio yet. Add one below!</em></p>
+  {% endif %}
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
