@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from .forms import CustomUserCreationForm
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from .forms import ProfileUpdateForm
 
 # Create your views here.
 
@@ -16,3 +18,18 @@ def register(request):
     else:
         form = CustomUserCreationForm()
     return render(request, 'accounts/register.html', {'form': form})
+
+
+# Profile page view 
+@login_required
+def profile(request):
+    if request.method == 'POST':
+        form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = ProfileUpdateForm(instance=request.user.profile)
+    
+    return render(request, 'accounts/profile.html', {'form': form})
+
