@@ -20,6 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    path('', include('movies.urls')), # Home page points to movies app
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
 ]
