@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-f2^$8nl0=$+6v$*oz_cjtj6w8b57gu(=fs2x2osj*mn0j#4i@s
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['sceneshare.herokuapp.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['sceneshare-0073094647bb.herokuapp.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -125,6 +125,9 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+
+# Enable Whitenoise compressed static file storage
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
