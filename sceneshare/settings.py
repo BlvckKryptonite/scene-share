@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -131,3 +132,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = '/'   # Redirect after successful login
 LOGOUT_REDIRECT_URL = '/accounts/login/'  # Redirect after logout
+
+# Uploaded files url & folder in which they'll be stored
+#                   --- IMPORTANT --- 
+# WILL NEED CLOUD STORAGE TO HANDLE UPLOADS FOR PRODUCTION
+# - CLOUDINARY OR AWS S3
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
