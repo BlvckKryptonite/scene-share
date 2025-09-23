@@ -7,9 +7,15 @@
 <body>
     <header>
         <h1>SceneShare</h1>
+        <!-- Navigation check for logged in users -->
         <nav>
-            <a href="{% url 'register' %}">Register</a> |
-            <a href="{% url 'login' %}">Login</a>
+            {% if user.is_authenticated %}
+                Hello, {{ user.username }} |
+                <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'register' %}">Register</a> |
+                <a href="{% url 'login' %}">Login</a>
+            {% endif %}
         </nav>
     </header>
     <main>
@@ -18,3 +24,4 @@
     </main>
 </body>
 </html>
+
