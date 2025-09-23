@@ -121,11 +121,6 @@ STATIC_URL = 'static/'
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# So that static files can also be found in apps/templates
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
-
 # Enable Whitenoise compressed static file storage
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
