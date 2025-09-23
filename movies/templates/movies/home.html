@@ -3,4 +3,21 @@
 {% block content %}
   <h2>Welcome to SceneShare 🎬</h2>
   <p><strong>Just my placeholder homepage. I will need to add navigation later 👀</strong></p>
+  <h2>All Movies</h2>
+<ul>
+    {% for movie in movies %}
+        <li>
+          <strong>
+          {{ movie.title }} ({{ movie.release_year }})
+          </strong><br>
+          {% if movie.poster %}
+              <img src="{{ movie.poster.url }}" alt="{{ movie.title }} poster" style="max-width:150px;">
+          {% else %}
+              <p>No poster available.</p>
+          {% endif %}
+        </li>
+    {% empty %}
+        <li>No movies available.</li>
+    {% endfor %}
+</ul>
 {% endblock %}
