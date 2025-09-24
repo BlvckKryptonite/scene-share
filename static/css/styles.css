@@ -1,0 +1,12 @@
+/* ====== Global Styles ====== */
+body {
+  background-color: #f8f9fa; 
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  padding-top: 60px; 
+}
+
+.navbar {
+  background-color: #343a40 !important; 
+}
