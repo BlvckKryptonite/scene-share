@@ -49,10 +49,22 @@
         {% if user.is_authenticated %}
         <form method="POST">
       {% csrf_token %}
-      {{ form.as_p }}
+      <!-- Makes it explicit which form belongs to which movie -->
+      {{ forms_dict[movie.id].as_p }}
       <input type="hidden" name="movie_id" value="{{ movie.id }}">
       <button type="submit">Post Review</button>
   </form>
+
+        <!-- Review form for this movie -->
+{% if user.is_authenticated %}
+<form method="POST">
+    {% csrf_token %}
+    {{ forms_dict[movie.id].as_p }}
+    <input type="hidden" name="movie_id" value="{{ movie.id }}">
+    <button type="submit">Post Review</button>
+</form>
+{% endif %}
+       
 
         {% endif %}
       </div>

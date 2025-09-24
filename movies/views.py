@@ -1,10 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Movie, Review
 from .forms import ReviewForm
 
 # Create your views here.
 def home(request):
     movies = Movie.objects.all()
+
+    # Initialize a dict of forms for all movies
+    forms_dict = {movie.id: ReviewForm() for movie in movies}
 
     if request.method == 'POST':
         form = ReviewForm(request.POST)
@@ -15,12 +18,13 @@ def home(request):
             review.movie = Movie.objects.get(pk=movie_id)
             review.save()
             return redirect('home')
-    else:
-        form = ReviewForm()
+        else:
+            # If the form is invalid, replace the form for this movie only
+            forms_dict[int(movie_id)] = form
 
     context = {
         'movies': movies,
-        'form': form,
+        'forms_dict': forms_dict,  # Always pass the dict to template
     }
 
     return render(request, 'movies/home.html', context)
