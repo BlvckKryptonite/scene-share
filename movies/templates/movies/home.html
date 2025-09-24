@@ -45,23 +45,14 @@
           {% endfor %}
         </ul>
 
-        <!-- Review form for this movie -->
-        {% if user.is_authenticated %}
-        <form method="POST">
-      {% csrf_token %}
-      <!-- Makes it explicit which form belongs to which movie -->
-      {{ forms_dict[movie.id].as_p }}
-      <input type="hidden" name="movie_id" value="{{ movie.id }}">
-      <button type="submit">Post Review</button>
-  </form>
-
-        <!-- Review form for this movie -->
+       <!-- Review form for this movie -->
 {% if user.is_authenticated %}
 <form method="POST">
     {% csrf_token %}
-    {{ forms_dict[movie.id].as_p }}
-    <input type="hidden" name="movie_id" value="{{ movie.id }}">
-    <button type="submit">Post Review</button>
+    <!-- Use the custom template filter to get the correct form for this movie -->
+    {{ forms_dict|get_item:movie.id.as_p }}
+    <input type="hidden" name="movie_id" value="{{ movie.id }}" />
+    <button type="submit" class="btn btn-primary btn-sm mt-2">Post Review</button>
 </form>
 {% endif %}
        
