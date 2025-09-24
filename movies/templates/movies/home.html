@@ -25,6 +25,28 @@
             <div class="mt-auto">
               <button class="btn btn-primary btn-sm" disabled>View</button>
             </div>
+
+               <!-- Show reviews for this movie -->
+              <ul>
+                  {% for review in movie.review_set.all %}
+                      <li>{{ review.user.username }}: {{ review.rating }}⭐ - {{ review.comment }}</li>
+                  {% empty %}
+                      <li>No reviews yet.</li>
+                  {% endfor %}
+              </ul>
+
+          <!-- Review form for this movie -->
+              {% if user.is_authenticated %}
+              <form method="POST">
+              {% csrf_token %}
+              {{ form.comment.label_tag }} {{ form.comment }}
+              {{ form.rating.label_tag }} {{ form.rating }}
+            <input type="hidden" name="movie_id" value="{{ movie.id }}">
+            <button type="submit">Post Review</button>
+        </form>
+
+        {% endif %}
+
           </div>
         </div>
       </div>
