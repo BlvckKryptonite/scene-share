@@ -1,4 +1,7 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %}
+{% load extras %}
+{% block content %}
+
 <div class="d-flex justify-content-between align-items-center mb-3">
   <h2 class="mb-0">All Movies</h2>
   <!-- placeholder for future search/button -->
@@ -45,21 +48,20 @@
           {% endfor %}
         </ul>
 
-       <!-- Review form for this movie -->
-{% if user.is_authenticated %}
-<form method="POST">
-    {% csrf_token %}
-    <!-- Use the custom template filter to get the correct form for this movie -->
-    {{ forms_dict|get_item:movie.id.as_p }}
-    <input type="hidden" name="movie_id" value="{{ movie.id }}" />
-    <button type="submit" class="btn btn-primary btn-sm mt-2">Post Review</button>
-</form>
-{% endif %}
-       
-
-        {% endif %}
+      <!-- Review form -->
+      {% if user.is_authenticated %}
+      <form method="POST">
+        {% csrf_token %}
+        {% with form=forms_dict|get_item:movie.id %}
+          {{ form.as_p }}
+        {% endwith %}
+        <input type="hidden" name="movie_id" value="{{ movie.id }}">
+        <button type="submit" class="btn btn-primary btn-sm mt-2">Post Review</button>
+      </form>
+      {% endif %}
       </div>
     </div>
+    
   </div>
   {% empty %}
   <div class="col-12">
