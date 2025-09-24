@@ -123,6 +123,11 @@ STATIC_URL = 'static/'
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+# Tells Django where to look for additional static files
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
+
 # Enable Whitenoise compressed static file storage
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 

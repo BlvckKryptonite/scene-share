@@ -10,3 +10,43 @@ body {
 .navbar {
   background-color: #343a40 !important; 
 }
+
+.navbar {
+  background-color: #343a40 !important; 
+}
+
+.navbar .nav-link {
+  color: #f8f9fa !important;
+  transition: color 0.2s;
+}
+
+.navbar .nav-link:hover {
+  color: #ffc107 !important; 
+}
+
+h1, h2, h3 {
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #f00b0b;
+}
+
+
+.card {
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: scale(1.03);
+}
+
+
+footer {
+  background: #343a40;
+  color: #f8f9fa;
+  text-align: center;
+  padding: 20px;
+  margin-top: 40px;
+  border-radius: 8px 8px 0 0;
+}
