@@ -11,7 +11,8 @@ def home(request):
         if form.is_valid():
             review = form.save(commit=False)
             review.user = request.user
-            review.movie_id = request.POST.get('movie_id')  # hidden input in form
+            movie_id = request.POST.get('movie_id') # hidden input in form
+            review.movie = Movie.objects.get(pk=movie_id)
             review.save()
             return redirect('home')
     else:
@@ -22,4 +23,4 @@ def home(request):
         'form': form,
     }
 
-    return render(request, 'movies/home.html', {'movies': movies})
+    return render(request, 'movies/home.html', context)
