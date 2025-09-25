@@ -50,18 +50,22 @@ footer {
 .star-rating {
   display: flex;
   flex-direction: row-reverse;
-  justify-content: flex-start;
+  justify-content: flex-end;
 }
+
 .star-rating input {
-  display: none;
+  display: none; /* hide the radio inputs */
 }
+
 .star-rating label {
   font-size: 1.2rem;
+  color: #ccc;
   cursor: pointer;
-  color: lightgray;
+  transition: color 0.2s;
 }
+
 .star-rating input:checked ~ label,
 .star-rating label:hover,
 .star-rating label:hover ~ label {
-  color: gold;
+  color: #ffc107; /* golden stars on hover or checked */
 }
