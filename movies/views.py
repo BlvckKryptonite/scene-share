@@ -11,12 +11,17 @@ def home(request):
 
     if request.method == 'POST':
         form = ReviewForm(request.POST)
+        
         if form.is_valid():
-            review = form.save(commit=False)
-            review.user = request.user
-            movie_id = request.POST.get('movie_id') # hidden input in form
-            review.movie = Movie.objects.get(pk=movie_id)
-            review.save()
+            movie_id = request.POST.get('movie_id')
+            movie = Movie.objects.get(pk=movie_id)
+            
+            # Users can update existing reviews
+            review, created = Review.objects.update_or_create(
+                user=request.user,
+                movie=movie,
+                defaults={'text': form.cleaned_data['text']}
+            )
             return redirect('home')
         else:
             # Replace the form for the movie that failed validation
