@@ -45,3 +45,23 @@ footer {
   margin-top: 40px;
   border-radius: 8px 8px 0 0;
 }
+
+/* RVIEW STARS styling */
+.star-rating {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+}
+.star-rating input {
+  display: none;
+}
+.star-rating label {
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: lightgray;
+}
+.star-rating input:checked ~ label,
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+  color: gold;
+}
