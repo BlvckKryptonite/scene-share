@@ -37,9 +37,23 @@
         <!-- Review form -->
         {% if user.is_authenticated %}
         <form method="POST">
-          {% csrf_token %} {% with form=forms_dict|get_item:movie.id %}
-            {{ form.as_p }}
-          {% endwith %}
+          {% csrf_token %}
+          
+          <!-- Display raido elements as stars for better UI -->
+          {% with form=forms_dict|get_item:movie.id %}
+            <div class="mb-2">
+              <label><strong>Rating:</strong></label><br>
+                {% for radio in form.rating %}
+                  <label style="margin-right:8px;">
+                      {{ radio.tag }} {{ radio.choice_label|safe }}
+                  </label>
+              {% endfor %}
+            </div>
+
+            <div class="mb-2">
+              {{ form.comment }}
+            </div>
+        {% endwith %}
           <input type="hidden" name="movie_id" value="{{ movie.id }}" />
           <button type="submit" class="btn btn-primary btn-sm mt-2">
             Post Review
