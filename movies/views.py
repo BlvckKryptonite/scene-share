@@ -36,3 +36,30 @@ def home(request):
     }
 
     return render(request, 'movies/home.html', context)
+
+# EDIT reviews
+def edit_review(request, review_id):
+    review = get_object_or_404(Review, pk=review_id)
+
+    # Only the review owner can edit
+    if review.user != request.user:
+        return redirect('home')
+
+    if request.method == "POST":
+        form = ReviewForm(request.POST, instance=review)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = ReviewForm(instance=review)
+
+    return render(request, 'movies/edit_review.html', {'form': form, 'review': review})
+
+# DELETE reviews
+def delete_review(request, review_id):
+    review = get_object_or_404(Review, pk=review_id)
+
+    if review.user == request.user:
+        review.delete()
+
+    return redirect('home')

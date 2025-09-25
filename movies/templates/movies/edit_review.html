@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Edit Review for {{ review.movie.title }}</h3>
+
+<form method="POST">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" class="btn btn-primary">Save</button>
+</form>
+
+<a href="{% url 'home' %}">Back to movies</a>
+{% endblock %}
