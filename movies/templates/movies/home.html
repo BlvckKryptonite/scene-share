@@ -1,6 +1,4 @@
-{% extends "base.html" %}
-{% load extras %}
-{% block content %}
+{% extends "base.html" %} {% load extras %} {% block content %}
 
 <div class="d-flex justify-content-between align-items-center mb-3">
   <h2 class="mb-0">All Movies</h2>
@@ -36,32 +34,34 @@
           <button class="btn btn-primary btn-sm" disabled>View</button>
         </div>
 
-      <!-- Review form -->
-      {% if user.is_authenticated %}
-      <form method="POST">
-        {% csrf_token %}
-        {% with form=forms_dict|get_item:movie.id %}
-          {{ form.as_p }}
-        {% endwith %}
-        <input type="hidden" name="movie_id" value="{{ movie.id }}">
-        <button type="submit" class="btn btn-primary btn-sm mt-2">Post Review</button>
-      </form>
-      {% endif %}
+        <!-- Review form -->
+        {% if user.is_authenticated %}
+        <form method="POST">
+          {% csrf_token %} {% with form=forms_dict|get_item:movie.id %}
+            {{ form.as_p }}
+          {% endwith %}
+          <input type="hidden" name="movie_id" value="{{ movie.id }}" />
+          <button type="submit" class="btn btn-primary btn-sm mt-2">
+            Post Review
+          </button>
+        </form>
+        {% endif %}
 
-      <!-- Show reviews for this movie -->
-<ul class="list-group mt-3">
-  {% for review in movie.review_set.all %}
-    <li class="list-group-item">
-      <strong>{{ review.user.username }}</strong>: {{ review.text }}
-    </li>
-  {% empty %}
-    <li class="list-group-item text-muted">No reviews yet.</li>
-  {% endfor %}
-</ul>
-  
+        <!-- Show reviews for this movie -->
+        <ul class="list-group mt-3">
+          {% for review in movie.reviews.all %}
+          <li class="list-group-item">
+            <strong>{{ review.user.username }}</strong>: {{ review.comment }}
+            <br />
+            {% for i in "12345" %} {% if forloop.counter <= review.rating %} ⭐
+            {% else %} ☆ {% endif %} {% endfor %}
+          </li>
+          {% empty %}
+          <li class="list-group-item text-muted">No reviews yet.</li>
+          {% endfor %}
+        </ul>
       </div>
     </div>
-    
   </div>
   {% empty %}
   <div class="col-12">

@@ -20,7 +20,10 @@ def home(request):
             review, created = Review.objects.update_or_create(
                 user=request.user,
                 movie=movie,
-                defaults={'text': form.cleaned_data['text']}
+                defaults={
+                    'rating': form.cleaned_data['rating'],
+                    'comment': form.cleaned_data['comment']
+    }
             )
             return redirect('home')
         else:
