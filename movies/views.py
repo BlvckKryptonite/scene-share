@@ -16,7 +16,7 @@ def home(request):
             movie_id = request.POST.get('movie_id')
             movie = Movie.objects.get(pk=movie_id)
             
-            # Users can update existing reviews
+            # Users can create or update reviews
             review, created = Review.objects.update_or_create(
                 user=request.user,
                 movie=movie,

@@ -36,18 +36,6 @@
           <button class="btn btn-primary btn-sm" disabled>View</button>
         </div>
 
-        <!-- Show reviews for this movie -->
-        <ul>
-          {% for review in movie.review_set.all %}
-          <li>
-            {{ review.user.username }}: {{ review.rating }}⭐ - {{
-            review.comment }}
-          </li>
-          {% empty %}
-          <li>No reviews yet.</li>
-          {% endfor %}
-        </ul>
-
       <!-- Review form -->
       {% if user.is_authenticated %}
       <form method="POST">
