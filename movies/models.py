@@ -27,13 +27,3 @@ class Review(models.Model):
 
     def __str__(self):
         return f"{self.movie.title} - {self.user.username} ({self.rating})"
-
-
-"""
-class Review(models.Model):
-    RATING_CHOICES = [(i, '⭐' * i) for i in range(1, 6)]
-
-    rating = models.IntegerField(choices=RATING_CHOICES)
-    comment = models.TextField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="reviews")"""
