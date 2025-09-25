@@ -59,6 +59,18 @@
         <button type="submit" class="btn btn-primary btn-sm mt-2">Post Review</button>
       </form>
       {% endif %}
+
+      <!-- Show reviews for this movie -->
+<ul class="list-group mt-3">
+  {% for review in movie.review_set.all %}
+    <li class="list-group-item">
+      <strong>{{ review.user.username }}</strong>: {{ review.text }}
+    </li>
+  {% empty %}
+    <li class="list-group-item text-muted">No reviews yet.</li>
+  {% endfor %}
+</ul>
+  
       </div>
     </div>
     
