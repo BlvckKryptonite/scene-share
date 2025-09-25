@@ -19,8 +19,9 @@ def home(request):
             review.save()
             return redirect('home')
         else:
-            # If the form is invalid, replace the form for this movie only
-            forms_dict[int(movie_id)] = form
+            # Replace the form for the movie that failed validation
+            movie_id = int(request.POST.get('movie_id'))
+            forms_dict[movie_id] = form
 
     context = {
         'movies': movies,
