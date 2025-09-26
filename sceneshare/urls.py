@@ -26,5 +26,10 @@ urlpatterns = [
 ]
 
 # Will allow my development server to serve avatars for testing
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# if settings.DEBUG:
+#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Serve media files even when DEBUG=False 
+## NOT IDEAL FOR PRODUCTION
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.core.exceptions import PermissionDenied
 from django.db.models import Avg
 from .models import Movie, Review
 from .forms import ReviewForm
@@ -39,13 +40,11 @@ def home(request):
 
 # EDIT reviews
 def edit_review(request, review_id):
-    review = get_object_or_404(Review, pk=review_id)
-
-    # Only the review owner can edit
+    review = get_object_or_404(Review, id=review_id)
     if review.user != request.user:
-        return redirect('home')
+        raise PermissionDenied
 
-    if request.method == "POST":
+    if request.method == 'POST':
         form = ReviewForm(request.POST, instance=review)
         if form.is_valid():
             form.save()
@@ -53,13 +52,12 @@ def edit_review(request, review_id):
     else:
         form = ReviewForm(instance=review)
 
-    return render(request, 'movies/edit_review.html', {'form': form, 'review': review})
+    return render(request, 'movies/edit_review.html', {'form': form})
 
 # DELETE reviews
 def delete_review(request, review_id):
-    review = get_object_or_404(Review, pk=review_id)
-
-    if review.user == request.user:
-        review.delete()
-
+    review = get_object_or_404(Review, id=review_id)
+    if review.user != request.user:
+        raise PermissionDenied
+    review.delete()
     return redirect('home')

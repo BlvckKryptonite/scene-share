@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% load extras %}
 {% block content %}
-
 <div class="d-flex justify-content-between align-items-center mb-3">
   <h2 class="mb-0">All Movies</h2>
 </div>
@@ -23,7 +22,6 @@
         {% if movie.release_year %}
           <p class="card-text text-muted mb-2">({{ movie.release_year }})</p>
         {% endif %}
-
         {% if movie.avg_rating %}
           <span class="badge bg-warning text-dark mb-2">
             Avg Rating: {{ movie.avg_rating|floatformat:1 }} ⭐
@@ -77,19 +75,19 @@
                       {% if forloop.counter <= review.rating %} ⭐ {% else %} ☆ {% endif %}
                     {% endfor %}
                   </div>
-
-                  {% if user.is_authenticated and review.user == request.user %}
-                  <div>
-                    <a href="{% url 'edit_review' review.id %}" class="text-primary me-2" title="Edit Review">
-                      <i class="fa-solid fa-pen-to-square"></i>
-                    </a>
-                    <a href="{% url 'delete_review' review.id %}" class="text-danger" title="Delete Review"
-                       onclick="return confirm('Are you sure you want to delete this review? This action cannot be undone.');">
-                      <i class="fa-solid fa-trash"></i>
-                    </a>
-                  </div>
+                  {% if user.is_authenticated and review.user == user %}
+                    <div>
+                      <a href="{% url 'edit_review' review.id %}" class="text-primary me-2" title="Edit Review">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                      </a>
+                      <a href="{% url 'delete_review' review.id %}"
+                         class="text-danger"
+                         title="Delete Review"
+                         onclick="return confirm('Are you sure you want to delete this review? This action cannot be undone.');">
+                        <i class="fa-solid fa-trash"></i>
+                      </a>
+                    </div>
                   {% endif %}
-
                 </li>
               {% empty %}
                 <li class="list-group-item text-muted">No reviews yet.</li>
@@ -108,17 +106,17 @@
   {% endfor %}
 </div>
 
-<!-- JavaScript for toggling button text on collapse -->
+<!-- JavaScript for toggling button text -->
 <script>
-  document.querySelectorAll('.review-toggle-button').forEach(button => {
-    const collapseTarget = document.querySelector(button.getAttribute('data-bs-target'));
-    collapseTarget.addEventListener('shown.bs.collapse', () => {
-      button.textContent = 'Hide Reviews';
-    });
-    collapseTarget.addEventListener('hidden.bs.collapse', () => {
-      button.textContent = 'Show Reviews';
-    });
+document.querySelectorAll('.review-toggle-button').forEach(button => {
+  const collapseEl = document.querySelector(button.getAttribute('data-bs-target'));
+  
+  collapseEl.addEventListener('show.bs.collapse', () => {
+    button.textContent = 'Hide Reviews';
   });
+  collapseEl.addEventListener('hide.bs.collapse', () => {
+    button.textContent = 'Show Reviews';
+  });
+});
 </script>
-
 {% endblock %}
