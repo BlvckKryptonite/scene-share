@@ -3,6 +3,7 @@ from django.core.exceptions import PermissionDenied
 from django.db.models import Avg
 from .models import Movie, Review
 from .forms import ReviewForm
+import requests
 
 def home(request):
     # Annotate movies with their average rating
@@ -61,3 +62,23 @@ def delete_review(request, review_id):
         raise PermissionDenied
     review.delete()
     return redirect('home')
+
+
+# Movie search view
+def movie_search(request):
+    query = request.GET.get("q")
+    results = []
+
+    if query:
+        url = f"https://api.themoviedb.org/3/search/movie"
+        params = {
+            "api_key": settings.TMDB_API_KEY,
+            "query": query,
+            "language": "en-US",
+        }
+        response = requests.get(url, params=params)
+        if response.status_code == 200:
+            data = response.json()
+            results = data.get("results", [])
+
+    return render(request, "movies/search.html", {"results": results})
