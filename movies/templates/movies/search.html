@@ -1,4 +1,13 @@
-<form method="GET" action="{% url 'movie_search' %}">
-  <input type="text" name="q" placeholder="Search for a movie..." required>
-  <button type="submit">Search</button>
-</form>
+{% if results %}
+  <ul>
+    {% for movie in results %}
+      <li>
+        <strong>{{ movie.title }}</strong> ({{ movie.release_date }})
+        <p>{{ movie.overview|truncatechars:150 }}</p>
+        <img src="https://image.tmdb.org/t/p/w200{{ movie.poster_path }}" alt="{{ movie.title }}">
+      </li>
+    {% endfor %}
+  </ul>
+{% elif request.GET.q %}
+  <p>No results found.</p>
+{% endif %}
