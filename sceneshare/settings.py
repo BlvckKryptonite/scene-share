@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
 from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -149,4 +150,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 # API KEY
+BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(os.path.join(BASE_DIR, '.env'))
 TMDB_API_KEY = os.getenv("TMDB_API_KEY")

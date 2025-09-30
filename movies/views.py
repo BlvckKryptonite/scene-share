@@ -66,32 +66,41 @@ def delete_review(request, review_id):
 
 
 # Movie search view
+# movies/views.py
+from django.shortcuts import render
+from django.conf import settings
+import requests
+
 def movie_search(request):
     query = request.GET.get("q")
     results = []
     error_message = None
-    request_url = None
-    status_code = None
+
+    # Check if API key is set
+    api_key = getattr(settings, "TMDB_API_KEY", None)
+    if not api_key:
+        error_message = "Movie search is currently unavailable (API key missing)."
+        return render(request, "movies/search.html", {"results": results, "query": query, "error_message": error_message})
 
     if query:
         url = "https://api.themoviedb.org/3/search/movie"
         params = {
-            "api_key": settings.TMDB_API_KEY,
+            "api_key": api_key,
             "query": query,
             "language": "en-US",
-            "include_adult": True,  # optional, helps find older or adult movies
+            "include_adult": True,
         }
 
         try:
             response = requests.get(url, params=params)
-            request_url = response.url  # full URL for debugging
-            status_code = response.status_code
 
             if response.status_code == 200:
                 data = response.json()
                 results = data.get("results", [])
                 if not results:
-                    error_message = f"No movies found for '{query}'"
+                    error_message = f"No movies found for '{query}'."
+            elif response.status_code == 401:
+                error_message = "Movie search is currently unavailable (invalid API key)."
             else:
                 error_message = f"TMDb API returned status code {response.status_code}"
 
@@ -105,7 +114,5 @@ def movie_search(request):
             "results": results,
             "query": query,
             "error_message": error_message,
-            "request_url": request_url,
-            "status_code": status_code,
         },
     )
