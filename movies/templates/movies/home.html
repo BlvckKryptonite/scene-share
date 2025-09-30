@@ -5,6 +5,11 @@
   <h2 class="mb-0">All Movies</h2>
 </div>
 
+<form method="GET" action="{% url 'movie_search' %}" class="search-form">
+  <input type="text" name="q" placeholder="Search for a movie..." required>
+  <button type="submit">🔍 Search</button>
+</form>
+
 <div class="row g-3">
   {% for movie in movies %}
   <div class="col-6 col-md-4 col-lg-3">
