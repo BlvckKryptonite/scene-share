@@ -13,17 +13,18 @@
 {% endif %}
 
 {% if results %}
-    <ul class="flex flex-wrap gap-4">
-        {% for movie in results %}
-            <li class="w-48 border rounded p-2">
-                <strong>{{ movie.title }}</strong>
-                {% if movie.release_date %}({{ movie.release_date }}){% endif %}
-                <p>{{ movie.overview|default:"No description available."|truncatechars:100 }}</p>
-                {% if movie.poster_path %}
-                    <img class="w-full rounded" src="https://image.tmdb.org/t/p/w200{{ movie.poster_path }}" alt="{{ movie.title }}">
-                {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
+  <ul>
+    {% for movie in results %}
+      <li>
+        <strong>{{ movie.title }}</strong> ({{ movie.release_date }})
+        <p>{{ movie.overview|truncatechars:150 }}</p>
+        <img src="https://image.tmdb.org/t/p/w200{{ movie.poster_path }}" alt="{{ movie.title }}">
+        <br>
+        <a href="{% url 'movie_detail' movie.id %}">Read More & Reviews</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% elif request.GET.q %}
+  <p>No results found.</p>
 {% endif %}
 {% endblock %}
