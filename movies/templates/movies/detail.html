@@ -1,0 +1,20 @@
+<h1>{{ movie.title }}</h1>
+<img src="https://image.tmdb.org/t/p/w300{{ movie.poster_path }}" alt="{{ movie.title }}">
+<p>{{ movie.overview }}</p>
+
+<h2>Reviews</h2>
+{% for review in reviews %}
+  <div>
+    <strong>{{ review.user.username }}</strong> - {{ review.rating }}⭐
+    <p>{{ review.comment }}</p>
+  </div>
+{% empty %}
+  <p>No reviews yet.</p>
+{% endfor %}
+
+<h2>Leave a Review</h2>
+<form method="POST" action="{% url 'add_review' movie.id %}">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Submit</button>
+</form>
