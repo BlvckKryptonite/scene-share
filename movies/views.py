@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg
-from .models import Movie, Review
+from .models import Movie, Review, Watchlist
 from .forms import ReviewForm
 from django.conf import settings
 import requests
@@ -159,3 +159,26 @@ def add_review(request, movie_id):
     else:
         form = ReviewForm()
     return render(request, "movies/detail.html", {"movie": movie, "form": form})
+
+# Add to watchlist view
+@login_required
+def add_to_watchlist(request, tmdb_id):
+    movie = get_object_or_404(Movie, tmdb_id=tmdb_id)
+    Watchlist.objects.get_or_create(user=request.user, movie=movie)
+    return redirect('home')
+
+# Remove from watchlist view
+@login_required
+def remove_from_watchlist(request, tmdb_id):
+    movie = get_object_or_404(Movie, tmdb_id=tmdb_id)
+    Watchlist.objects.filter(user=request.user, movie=movie).delete()
+    return redirect('home')  # or 'watchlist_page if I add one'
+
+# Toggle watched
+@login_required
+def toggle_watched(request, tmdb_id):
+    movie = get_object_or_404(Movie, tmdb_id=tmdb_id)
+    entry = get_object_or_404(Watchlist, user=request.user, movie=movie)
+    entry.watched = not entry.watched
+    entry.save()
+    return redirect('home')  # or 'watchlist_page'

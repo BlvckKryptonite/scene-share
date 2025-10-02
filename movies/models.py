@@ -32,3 +32,16 @@ class Review(models.Model):
 
     def __str__(self):
         return f"{self.movie.title} - {self.user.username} ({self.rating})"
+    
+
+# The watchlist model
+class Watchlist(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="watchlist")
+    movie = models.ForeignKey("Movie", on_delete=models.CASCADE, related_name="watchlist_entries")
+    watched = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ("user", "movie") #Prevents duplicate entries
+
+    def __str__(self):
+        return f"{self.user.username} - {self.movie.title} ({'Watched' if self.watched else 'Unwatched'})"
