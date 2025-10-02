@@ -7,7 +7,7 @@ class Movie(models.Model):
     description = models.TextField(blank=True)
     release_year = models.PositiveIntegerField(null=True, blank=True)
     poster = models.ImageField(upload_to='posters/', blank=True, null=True)
-    tmdb_id = models.IntegerField(unique=True)
+    tmdb_id = models.IntegerField(unique=True, null=True, blank=True)
     title = models.CharField(max_length=255)
     release_date = models.CharField(max_length=20, blank=True, null=True)
     overview = models.TextField(blank=True, null=True)
