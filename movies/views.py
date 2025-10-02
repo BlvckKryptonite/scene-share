@@ -51,18 +51,26 @@ def edit_review(request, review_id):
         form = ReviewForm(request.POST, instance=review)
         if form.is_valid():
             form.save()
+            # Redirect to movie detail if review belongs to an API-fetched movie
+            if review.movie.tmdb_id:
+                return redirect('movie_detail', tmdb_id=review.movie.tmdb_id)
             return redirect('home')
     else:
         form = ReviewForm(instance=review)
 
-    return render(request, 'movies/edit_review.html', {'form': form})
+    return render(request, 'movies/edit_review.html', {'form': form, 'review': review})
 
 # DELETE reviews
 def delete_review(request, review_id):
     review = get_object_or_404(Review, id=review_id)
     if review.user != request.user:
         raise PermissionDenied
+
+    movie = review.movie
     review.delete()
+    # Redirect to movie detail if review belongs to an API-fetched movie
+    if movie.tmdb_id:
+        return redirect('movie_detail', tmdb_id=movie.tmdb_id)
     return redirect('home')
 
 
