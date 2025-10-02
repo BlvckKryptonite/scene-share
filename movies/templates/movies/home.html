@@ -1,4 +1,6 @@
-{% extends "base.html" %} {% load extras %} {% block content %}
+{% extends "base.html" %}
+{% load extras %}
+{% block content %}
 <div class="d-flex justify-content-between align-items-center mb-3">
   <h2 class="mb-0">Featured Movies</h2>
 </div>
@@ -12,164 +14,129 @@
   {% for movie in movies %}
   <div class="col-6 col-md-4 col-lg-3">
     <div class="card h-100 shadow-sm">
+
       <!-- Poster display -->
       {% if movie.poster %}
-      <img
-        src="{{ movie.poster.url }}"
-        class="card-img-top"
-        alt="{{ movie.title }} poster"
-      />
+        <img src="{{ movie.poster.url }}" class="card-img-top" alt="{{ movie.title }} poster"/>
       {% elif movie.poster_path %}
-      <img
-        src="https://image.tmdb.org/t/p/w200{{ movie.poster_path }}"
-        class="card-img-top"
-        alt="{{ movie.title }} poster"
-      />
+        <img src="https://image.tmdb.org/t/p/w200{{ movie.poster_path }}" class="card-img-top" alt="{{ movie.title }} poster"/>
       {% else %}
-      <div
-        class="bg-secondary text-white d-flex align-items-center justify-content-center"
-        style="height: 260px"
-      >
-        No Poster
-      </div>
+        <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 260px">
+          No Poster
+        </div>
       {% endif %}
 
       <!-- Watchlist -->
-      {% if user.is_authenticated %} {% if movie.id in watchlist_movie_ids %}
-      <a
-        href="{% url 'remove_from_watchlist' movie.tmdb_id %}"
-        class="btn btn-sm btn-danger"
-        >Remove from Watchlist</a
-      >
-      <a
-        href="{% url 'toggle_watched' movie.tmdb_id %}"
-        class="btn btn-sm btn-secondary"
-      >
-        {% if movie.watchlist_entries.get(user=request.user).watched %} Mark as
-        Unwatched {% else %} Mark as Watched {% endif %}
-      </a>
-      {% else %}
-      <a
-        href="{% url 'add_to_watchlist' movie.tmdb_id %}"
-        class="btn btn-sm btn-primary"
-        >Add to Watchlist</a
-      >
-      {% endif %} {% endif %}
+      {% if user.is_authenticated %}
+        {% if movie.id in watchlist_movie_ids %}
+          {% if movie.tmdb_id %}
+            <a href="{% url 'remove_from_watchlist_tmdb' movie.tmdb_id %}" class="btn btn-sm btn-danger">Remove from Watchlist</a>
+            <a href="{% url 'toggle_watched_tmdb' movie.tmdb_id %}" class="btn btn-sm btn-secondary">
+          {% else %}
+            <a href="{% url 'remove_from_watchlist_local' movie.id %}" class="btn btn-sm btn-danger">Remove from Watchlist</a>
+            <a href="{% url 'toggle_watched_local' movie.id %}" class="btn btn-sm btn-secondary">
+          {% endif %}
+            {% if watch_status and watch_status.watched %}
+              Mark as Unwatched
+            {% else %}
+              Mark as Watched
+            {% endif %}
+            </a>
+        {% else %}
+          {% if movie.tmdb_id %}
+            <a href="{% url 'add_to_watchlist_tmdb' movie.tmdb_id %}" class="btn btn-sm btn-primary">Add to Watchlist</a>
+          {% else %}
+            <a href="{% url 'add_to_watchlist_local' movie.id %}" class="btn btn-sm btn-primary">Add to Watchlist</a>
+          {% endif %}
+        {% endif %}
+      {% endif %}
 
       <div class="card-body d-flex flex-column">
         <h5 class="card-title mb-1">{{ movie.title }}</h5>
 
         <!-- Release year display -->
         {% if movie.release_year %}
-        <p class="card-text text-muted mb-2">({{ movie.release_year }})</p>
+          <p class="card-text text-muted mb-2">({{ movie.release_year }})</p>
         {% elif movie.release_date %}
-        <p class="card-text text-muted mb-2">
-          ({{ movie.release_date|slice:":4" }})
-        </p>
-        {% endif %} {% if movie.avg_rating %}
-        <span class="badge bg-warning text-dark mb-2">
-          Avg Rating: {{ movie.avg_rating|floatformat:1 }} ⭐
-        </span>
+          <p class="card-text text-muted mb-2">({{ movie.release_date|slice:":4" }})</p>
+        {% endif %}
+
+        {% if movie.avg_rating %}
+          <span class="badge bg-warning text-dark mb-2">
+            Avg Rating: {{ movie.avg_rating|floatformat:1 }} ⭐
+          </span>
         {% endif %}
 
         <!-- Review form -->
         {% if user.is_authenticated %}
-        <form method="POST" class="mb-3">
-          {% csrf_token %} {% with form=forms_dict|get_item:movie.id %}
-          <div class="mb-2">
-            <label><strong>Rating:</strong></label>
-            <div class="star-rating">
-              {% for i in "12345" %} {% with forloop.counter as star_value %}
-              <input type="radio" name="rating" id="star{{ movie.id }}-{{
-              star_value }}" value="{{ star_value }}" {% if
-              form.rating.value|stringformat:"s" == star_value|stringformat:"s"
-              %}checked{% endif %}/>
-              <label for="star{{ movie.id }}-{{ star_value }}">&#9733;</label>
-              {% endwith %} {% endfor %}
-            </div>
-          </div>
-          <div class="mb-2">{{ form.comment }}</div>
-          {% endwith %}
-          <input type="hidden" name="movie_id" value="{{ movie.id }}" />
-          <button type="submit" class="btn btn-primary btn-sm">
-            Post Review
-          </button>
-        </form>
+          <form method="POST" class="mb-3">
+            {% csrf_token %}
+            {% with form=forms_dict|get_item:movie.id %}
+              <div class="mb-2">
+                <label><strong>Rating:</strong></label>
+                <div class="star-rating">
+                  {% for i in "12345" %}
+                    {% with forloop.counter as star_value %}
+                      <input type="radio" name="rating" id="star{{ movie.id }}-{{ star_value }}" value="{{ star_value }}" {% if form.rating.value|stringformat:"s" == star_value|stringformat:"s" %}checked{% endif %}/>
+                      <label for="star{{ movie.id }}-{{ star_value }}">&#9733;</label>
+                    {% endwith %}
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="mb-2">{{ form.comment }}</div>
+            {% endwith %}
+            <input type="hidden" name="movie_id" value="{{ movie.id }}" />
+            <button type="submit" class="btn btn-primary btn-sm">Post Review</button>
+          </form>
         {% endif %}
 
         <!-- Reviews container -->
         <div class="mt-auto">
-          <button
-            class="btn btn-outline-secondary btn-sm w-100 review-toggle-button"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#reviews-{{ movie.id }}"
-            aria-expanded="false"
-            aria-controls="reviews-{{ movie.id }}"
-          >
+          <button class="btn btn-outline-secondary btn-sm w-100 review-toggle-button" type="button" data-bs-toggle="collapse" data-bs-target="#reviews-{{ movie.id }}" aria-expanded="false" aria-controls="reviews-{{ movie.id }}">
             Show Reviews
           </button>
           <div class="collapse mt-2" id="reviews-{{ movie.id }}">
             <ul class="list-group">
               {% for review in movie.reviews.all %}
-              <li
-                class="list-group-item d-flex justify-content-between align-items-start"
-              >
-                <div>
-                  <strong>{{ review.user.username }}</strong>: {{ review.comment
-                  }}<br />
-                  {% for i in "12345" %} {% if forloop.counter <= review.rating
-                  %} ⭐ {% else %} ☆ {% endif %} {% endfor %}
-                </div>
-                {% if user.is_authenticated and review.user == user %}
-                <div>
-                  <a
-                    href="{% url 'edit_review' review.id %}"
-                    class="text-primary me-2"
-                    title="Edit Review"
-                  >
-                    <i class="fa-solid fa-pen-to-square"></i>
-                  </a>
-                  <a
-                    href="{% url 'delete_review' review.id %}"
-                    class="text-danger"
-                    title="Delete Review"
-                    onclick="return confirm('Are you sure you want to delete this review? This action cannot be undone.');"
-                  >
-                    <i class="fa-solid fa-trash"></i>
-                  </a>
-                </div>
-                {% endif %}
-              </li>
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                  <div>
+                    <strong>{{ review.user.username }}</strong>: {{ review.comment }}<br>
+                    {% for i in "12345" %}{% if forloop.counter <= review.rating %} ⭐ {% else %} ☆ {% endif %}{% endfor %}
+                  </div>
+                  {% if user.is_authenticated and review.user == user %}
+                    <div>
+                      <a href="{% url 'edit_review' review.id %}" class="text-primary me-2" title="Edit Review">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                      </a>
+                      <a href="{% url 'delete_review' review.id %}" class="text-danger" title="Delete Review" onclick="return confirm('Are you sure you want to delete this review? This action cannot be undone.');">
+                        <i class="fa-solid fa-trash"></i>
+                      </a>
+                    </div>
+                  {% endif %}
+                </li>
               {% empty %}
-              <li class="list-group-item text-muted">No reviews yet.</li>
+                <li class="list-group-item text-muted">No reviews yet.</li>
               {% endfor %}
             </ul>
           </div>
         </div>
+
       </div>
     </div>
   </div>
   {% empty %}
-  <div class="col-12">
-    <div class="alert alert-info">No movies available yet.</div>
-  </div>
+    <div class="col-12">
+      <div class="alert alert-info">No movies available yet.</div>
+    </div>
   {% endfor %}
 </div>
 
 <!-- JavaScript for toggling button text -->
 <script>
   document.querySelectorAll(".review-toggle-button").forEach((button) => {
-    const collapseEl = document.querySelector(
-      button.getAttribute("data-bs-target")
-    );
-
-    collapseEl.addEventListener("show.bs.collapse", () => {
-      button.textContent = "Hide Reviews";
-    });
-    collapseEl.addEventListener("hide.bs.collapse", () => {
-      button.textContent = "Show Reviews";
-    });
+    const collapseEl = document.querySelector(button.getAttribute("data-bs-target"));
+    collapseEl.addEventListener("show.bs.collapse", () => { button.textContent = "Hide Reviews"; });
+    collapseEl.addEventListener("hide.bs.collapse", () => { button.textContent = "Show Reviews"; });
   });
 </script>
 {% endblock %}
