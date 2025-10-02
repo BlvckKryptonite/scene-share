@@ -14,6 +14,13 @@ def home(request):
     # Initialize a dict of forms for all movies
     forms_dict = {movie.id: ReviewForm() for movie in movies}
 
+    # Collect the user’s watchlisted movies
+    watchlist_movie_ids = set()
+    if request.user.is_authenticated:
+        watchlist_movie_ids = set(
+            request.user.watchlist.values_list("movie_id", flat=True)
+        )
+
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         movie_id = request.POST.get('movie_id')
@@ -31,12 +38,12 @@ def home(request):
             )
             return redirect('home')
         else:
-            # Replace the form in forms_dict with the invalid one
             forms_dict[int(movie_id)] = form
 
     context = {
         'movies': movies,
-        'forms_dict': forms_dict
+        'forms_dict': forms_dict,
+        'watchlist_movie_ids': watchlist_movie_ids,  # For template use
     }
 
     return render(request, 'movies/home.html', context)
