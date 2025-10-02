@@ -26,6 +26,22 @@
         </div>
       {% endif %}
 
+      <!-- Watchlist -->
+       {% if user.is_authenticated %}
+  {% if movie in user.watchlist.all|map:"movie" %}
+    <a href="{% url 'remove_from_watchlist' movie.tmdb_id %}" class="btn btn-sm btn-danger">Remove from Watchlist</a>
+    <a href="{% url 'toggle_watched' movie.tmdb_id %}" class="btn btn-sm btn-secondary">
+      {% if movie.watchlist_entries.get(user=request.user).watched %}
+        Mark as Unwatched
+      {% else %}
+        Mark as Watched
+      {% endif %}
+    </a>
+  {% else %}
+    <a href="{% url 'add_to_watchlist' movie.tmdb_id %}" class="btn btn-sm btn-primary">Add to Watchlist</a>
+  {% endif %}
+{% endif %}
+
       <div class="card-body d-flex flex-column">
         <h5 class="card-title mb-1">{{ movie.title }}</h5>
 
