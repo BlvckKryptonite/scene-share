@@ -66,11 +66,6 @@ def delete_review(request, review_id):
 
 
 # Movie search view
-# movies/views.py
-from django.shortcuts import render
-from django.conf import settings
-import requests
-
 def movie_search(request):
     query = request.GET.get("q")
     results = []
@@ -116,3 +111,25 @@ def movie_search(request):
             "error_message": error_message,
         },
     )
+
+
+# Movie details view
+def movie_detail(request, tmdb_id):
+    # Check if movie exists locally
+    movie, created = Movie.objects.get_or_create(tmdb_id=tmdb_id)
+
+    # If newly created, fetch details from TMDb
+    if created:
+        url = f"https://api.themoviedb.org/3/movie/{tmdb_id}"
+        params = {"api_key": settings.TMDB_API_KEY, "language": "en-US"}
+        response = requests.get(url, params=params)
+        if response.status_code == 200:
+            data = response.json()
+            movie.title = data.get("title")
+            movie.release_date = data.get("release_date")
+            movie.overview = data.get("overview")
+            movie.poster_path = data.get("poster_path")
+            movie.save()
+
+    reviews = Review.objects.filter(movie=movie)
+    return render(request, "movies/detail.html", {"movie": movie, "reviews": reviews})
