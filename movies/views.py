@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.exceptions import PermissionDenied
+from django.contrib.auth.decorators import login_required
 from django.db.models import Avg
 from .models import Movie, Review
 from .forms import ReviewForm
@@ -133,3 +134,20 @@ def movie_detail(request, tmdb_id):
 
     reviews = Review.objects.filter(movie=movie)
     return render(request, "movies/detail.html", {"movie": movie, "reviews": reviews})
+
+
+# API movies review submission form
+@login_required
+def add_review(request, movie_id):
+    movie = get_object_or_404(Movie, id=movie_id)
+    if request.method == "POST":
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.movie = movie
+            review.user = request.user
+            review.save()
+            return redirect("movie_detail", tmdb_id=movie.tmdb_id)
+    else:
+        form = ReviewForm()
+    return render(request, "movies/detail.html", {"movie": movie, "form": form})
