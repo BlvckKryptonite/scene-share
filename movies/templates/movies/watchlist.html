@@ -3,22 +3,43 @@
 <h2 class="mb-4">My Watchlist</h2>
 
 {% if entries %}
-  <div class="row">
+  <div class="row g-3">
     {% for entry in entries %}
-      <div class="col-md-4 mb-3">
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <h5 class="card-title">{{ entry.movie.title }}</h5>
-            <p class="card-text">Watched: {{ entry.watched|yesno:"✅,❌" }}</p>
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="card h-100 shadow-sm">
+          <!-- Poster display -->
+          {% if entry.movie.poster %}
+            <img src="{{ entry.movie.poster.url }}" class="card-img-top" alt="{{ entry.movie.title }} poster" />
+          {% elif entry.movie.poster_path %}
+            <img src="https://image.tmdb.org/t/p/w200{{ entry.movie.poster_path }}" class="card-img-top" alt="{{ entry.movie.title }} poster" />
+          {% else %}
+            <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 260px">
+              No Poster
+            </div>
+          {% endif %}
 
-            {% if entry.movie.tmdb_id %}
-              <a href="{% url 'toggle_watched_tmdb' entry.movie.tmdb_id %}" class="btn btn-sm btn-warning">Toggle Watched</a>
-              <a href="{% url 'remove_from_watchlist_tmdb' entry.movie.tmdb_id %}" class="btn btn-sm btn-danger">Remove</a>
-            {% else %}
-              <a href="{% url 'toggle_watched_local' entry.movie.id %}" class="btn btn-sm btn-warning">Toggle Watched</a>
-              <a href="{% url 'remove_from_watchlist_local' entry.movie.id %}" class="btn btn-sm btn-danger">Remove</a>
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title mb-1">{{ entry.movie.title }}</h5>
+
+            <!-- Release year -->
+            {% if entry.movie.release_year %}
+              <p class="card-text text-muted mb-2">({{ entry.movie.release_year }})</p>
+            {% elif entry.movie.release_date %}
+              <p class="card-text text-muted mb-2">({{ entry.movie.release_date|slice:":4" }})</p>
             {% endif %}
 
+            <p class="card-text mb-2">Watched: {{ entry.watched|yesno:"✅,❌" }}</p>
+
+            <div class="mt-auto">
+              <!-- Toggle Watched -->
+              {% if entry.movie.tmdb_id %}
+                <a href="{% url 'toggle_watched_tmdb' entry.movie.tmdb_id %}" class="btn btn-sm btn-warning mb-1">Toggle Watched</a>
+                <a href="{% url 'remove_from_watchlist_tmdb' entry.movie.tmdb_id %}" class="btn btn-sm btn-danger">Remove</a>
+              {% else %}
+                <a href="{% url 'toggle_watched_local' entry.movie.id %}" class="btn btn-sm btn-warning mb-1">Toggle Watched</a>
+                <a href="{% url 'remove_from_watchlist_local' entry.movie.id %}" class="btn btn-sm btn-danger">Remove</a>
+              {% endif %}
+            </div>
           </div>
         </div>
       </div>
