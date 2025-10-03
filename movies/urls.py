@@ -19,5 +19,5 @@ urlpatterns = [
     path('watchlist/toggle/tmdb/<int:tmdb_id>/', views.toggle_watched, name='toggle_watched_tmdb'),
     path('watchlist/toggle/local/<int:movie_id>/', views.toggle_watched, name='toggle_watched_local'),
 
-    path("watchlist/", views.my_watchlist, name="my_watchlist"),
+    path("watchlist/", views.watchlist, name="watchlist"),
 ]

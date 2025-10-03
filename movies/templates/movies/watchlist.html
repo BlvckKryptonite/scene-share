@@ -1,57 +1,30 @@
 {% extends "base.html" %}
-
 {% block content %}
-<div class="container my-4">
-  <h2 class="mb-4">My Watchlist</h2>
+<h2 class="mb-4">My Watchlist</h2>
 
-  {% if watchlist %}
-    <div class="row g-3">
-      {% for entry in watchlist %}
-      <div class="col-6 col-md-4 col-lg-3">
-        <div class="card h-100 shadow-sm">
+{% if entries %}
+  <div class="row">
+    {% for entry in entries %}
+      <div class="col-md-4 mb-3">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">{{ entry.movie.title }}</h5>
+            <p class="card-text">Watched: {{ entry.watched|yesno:"✅,❌" }}</p>
 
-          {% if entry.movie.poster %}
-          <img src="{{ entry.movie.poster.url }}" class="card-img-top" alt="{{ entry.movie.title }} poster" />
-          {% elif entry.movie.poster_path %}
-          <img src="https://image.tmdb.org/t/p/w200{{ entry.movie.poster_path }}" class="card-img-top" alt="{{ entry.movie.title }} poster" />
-          {% else %}
-          <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 260px">
-            No Poster
-          </div>
-          {% endif %}
-
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title mb-1">{{ entry.movie.title }}</h5>
-
-            <!-- Watched status badge -->
-            {% if entry.watched %}
-              <span class="badge bg-success mb-2">Watched ✅</span>
+            {% if entry.movie.tmdb_id %}
+              <a href="{% url 'toggle_watched_tmdb' entry.movie.tmdb_id %}" class="btn btn-sm btn-warning">Toggle Watched</a>
+              <a href="{% url 'remove_from_watchlist_tmdb' entry.movie.tmdb_id %}" class="btn btn-sm btn-danger">Remove</a>
             {% else %}
-              <span class="badge bg-warning text-dark mb-2">Not Watched</span>
+              <a href="{% url 'toggle_watched_local' entry.movie.id %}" class="btn btn-sm btn-warning">Toggle Watched</a>
+              <a href="{% url 'remove_from_watchlist_local' entry.movie.id %}" class="btn btn-sm btn-danger">Remove</a>
             {% endif %}
 
-            <!-- Toggle watched/unwatched -->
-            <a href="{% url 'toggle_watched' entry.movie.tmdb_id %}" class="btn btn-sm btn-secondary mb-2">
-              {% if entry.watched %}
-                Mark as Unwatched
-              {% else %}
-                Mark as Watched
-              {% endif %}
-            </a>
-
-            <!-- Remove from watchlist -->
-            <a href="{% url 'remove_from_watchlist' entry.movie.tmdb_id %}" class="btn btn-sm btn-danger">
-              Remove from Watchlist
-            </a>
           </div>
         </div>
       </div>
-      {% endfor %}
-    </div>
-  {% else %}
-    <div class="alert alert-info">
-      You have no movies in your watchlist yet.
-    </div>
-  {% endif %}
-</div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="alert alert-info">Your watchlist is empty.</div>
+{% endif %}
 {% endblock %}
