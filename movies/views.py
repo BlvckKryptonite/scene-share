@@ -198,7 +198,9 @@ def toggle_watched(request, tmdb_id=None, movie_id=None):
     watch_entry = get_object_or_404(Watchlist, user=request.user, movie=movie)
     watch_entry.watched = not watch_entry.watched
     watch_entry.save()
-    return redirect('home')
+
+    # Redirect back to where user came from, fallback to home
+    return redirect(request.META.get('HTTP_REFERER', 'home'))
 
 # The WATCHLIST view
 @login_required
@@ -210,3 +212,8 @@ def watchlist(request):
         'entries': entries
     }
     return render(request, 'movies/watchlist.html', context)
+
+# MY Watchlist view so users can access see it
+@login_required
+def my_watchlist(request):
+    return render(request, "watchlist.html")

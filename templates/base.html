@@ -8,16 +8,16 @@
     <title>SceneShare</title>
 
     <!-- Bootstrap CSS (CDN) -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-   <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
     <link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  crossorigin="anonymous"
-/>
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      crossorigin="anonymous"
+    />
 
-  <!-- OPTIONAL: will create more custom CSS  later-->
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <!-- OPTIONAL: will create more custom CSS later-->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
   <!-- NAVBAR -->
@@ -31,12 +31,19 @@
       <div class="collapse navbar-collapse" id="mainNav">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+        </ul>
 
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
           {% if user.is_authenticated %}
             <li class="nav-item me-2">
               <a class="nav-link" href="{% url 'profile' %}">Hi, {{ user.username }}</a>
             </li>
+
+            <!--  Watchlist link -->
+            <li class="nav-item me-2">
+              <a class="nav-link" href="{% url 'my_watchlist' %}">My Watchlist</a>
+            </li>
+
             {% if user.is_staff %}
               <li class="nav-item me-2">
                 <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
@@ -45,6 +52,7 @@
             <li class="nav-item">
               <form method="POST" action="{% url 'logout' %}" class="d-inline">
                 {% csrf_token %}
+
                 <!-- styled like a link -->
                 <button class="btn btn-link nav-link p-0" type="submit">Logout</button>
               </form>
