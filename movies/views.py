@@ -199,3 +199,14 @@ def toggle_watched(request, tmdb_id=None, movie_id=None):
     watch_entry.watched = not watch_entry.watched
     watch_entry.save()
     return redirect('home')
+
+# The WATCHLIST view
+@login_required
+def watchlist(request):
+    # Get all Watchlist entries for the current user
+    entries = request.user.watchlist.select_related('movie').all()
+
+    context = {
+        'entries': entries
+    }
+    return render(request, 'movies/watchlist.html', context)
