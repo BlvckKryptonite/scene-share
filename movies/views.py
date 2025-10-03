@@ -216,4 +216,4 @@ def watchlist(request):
 # MY Watchlist view so users can access see it
 @login_required
 def my_watchlist(request):
-    return render(request, "watchlist.html")
+    return render(request, "movies/watchlist.html")
