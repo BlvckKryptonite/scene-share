@@ -132,7 +132,7 @@ def movie_search(request):
 
 # Movie details view
 def movie_detail(request, tmdb_id):
-    # Check if movie exists locally
+    # Try to get the movie locally
     movie, created = Movie.objects.get_or_create(tmdb_id=tmdb_id)
 
     # If newly created, fetch details from TMDb
@@ -147,9 +147,26 @@ def movie_detail(request, tmdb_id):
             movie.overview = data.get("overview")
             movie.poster_path = data.get("poster_path")
             movie.save()
+        else:
+            # Fallback if TMDb fails
+            movie.title = "Unknown Title"
+            movie.overview = "No details available."
+            movie.save()
 
-    reviews = Review.objects.filter(movie=movie)
-    return render(request, "movies/detail.html", {"movie": movie, "reviews": reviews})
+    # Fetch reviews
+    reviews = Review.objects.filter(movie=movie).order_by("-id")
+
+    # Determine if user already has this movie in watchlist
+    watchlist_movies = []
+    if request.user.is_authenticated:
+        watchlist_movies = request.user.watchlist.values_list('movie__tmdb_id', flat=True)
+
+    context = {
+        "movie": movie,
+        "reviews": reviews,
+        "watchlist_movies": watchlist_movies,
+    }
+    return render(request, "movies/detail.html", context)
 
 
 # API movies review submission form

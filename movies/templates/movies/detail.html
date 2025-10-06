@@ -1,41 +1,65 @@
-<h1>{{ movie.title }}</h1>
-<img src="https://image.tmdb.org/t/p/w300{{ movie.poster_path }}" alt="{{ movie.title }}">
-<p>{{ movie.overview }}</p>
-
-<h2>Reviews</h2>
-{% for review in reviews %}
-  <div>
-    <strong>{{ review.user.username }}</strong> - {{ review.rating }}⭐
-    <p>{{ review.comment }}</p>
-
-    {% if review.user == request.user %}
-      <a href="{% url 'edit_review' review.id %}">Edit</a> |
-      <a href="{% url 'delete_review' review.id %}">Delete</a>
-    {% endif %}
-  </div>
-{% empty %}
-  <p>No reviews yet.</p>
-{% endfor %}
-
-  <!-- Watchlist -->
-       {% if user.is_authenticated %}
-  {% if movie in user.watchlist.all|map:"movie" %}
-    <a href="{% url 'remove_from_watchlist' movie.tmdb_id %}" class="btn btn-sm btn-danger">Remove from Watchlist</a>
-    <a href="{% url 'toggle_watched' movie.tmdb_id %}" class="btn btn-sm btn-secondary">
-      {% if movie.watchlist_entries.get(user=request.user).watched %}
-        Mark as Unwatched
-      {% else %}
-        Mark as Watched
-      {% endif %}
-    </a>
-  {% else %}
-    <a href="{% url 'add_to_watchlist' movie.tmdb_id %}" class="btn btn-sm btn-primary">Add to Watchlist</a>
+{% extends "base.html" %}
+{% block content %}
+<section class="movie-detail-section" style="padding:2rem 1rem; min-height: calc(100vh - 80px); display:flex; flex-direction:column; align-items:center;">
+  
+  <!-- Movie Title -->
+  <h1 class="movie-title" style="text-align:center; margin-bottom:1rem; color:var(--text-color);">{{ movie.title }}</h1>
+  
+  <!-- Poster -->
+  {% if movie.poster_path %}
+    <img src="https://image.tmdb.org/t/p/w300{{ movie.poster_path }}" alt="{{ movie.title }}" style="border-radius:8px; margin-bottom:1.5rem; max-width:300px; width:100%; object-fit:cover;">
   {% endif %}
-{% endif %}
+  
+  <!-- Overview -->
+  <p class="movie-overview" style="max-width:700px; text-align:center; color:var(--text-color); margin-bottom:2rem;">{{ movie.overview }}</p>
+  
+  <!-- Watchlist / Watched Buttons -->
+  {% if user.is_authenticated %}
+    <div class="watchlist-buttons" style="display:flex; justify-content:center; gap:1rem; margin-bottom:2rem; flex-wrap:wrap;">
+      {% if movie.tmdb_id in watchlist_movies %}
+        <a href="{% url 'remove_from_watchlist_tmdb' movie.tmdb_id %}" class="btn btn-sm btn-danger">Remove from Watchlist</a>
+        <a href="{% url 'toggle_watched_tmdb' movie.tmdb_id %}" class="btn btn-sm btn-secondary">
+          {% comment %} Determine watched status in view {% endcomment %}
+          Mark as Watched / Unwatched
+        </a>
+      {% else %}
+        <a href="{% url 'add_to_watchlist_tmdb' movie.tmdb_id %}" class="btn btn-sm btn-primary">Add to Watchlist</a>
+      {% endif %}
+    </div>
+  {% endif %}
+  
+  <!-- Reviews Section -->
+  <h2 style="margin-bottom:1rem; color:var(--text-color);">Reviews</h2>
+  <ul class="reviews-list" style="list-style:none; padding:0; max-width:700px; width:100%;">
+    {% for review in reviews %}
+      <li style="background:#222; border-radius:6px; padding:0.8rem; margin-bottom:0.6rem; display:flex; justify-content:space-between; align-items:flex-start; color:#fff; font-size:0.95rem; box-shadow:0 2px 6px rgba(0,0,0,0.3);">
+        <div>
+          <strong>{{ review.user.username }}</strong>: {{ review.comment }}<br>
+          {% for i in "12345" %}
+            {% if forloop.counter <= review.rating %} ⭐ {% else %} ☆ {% endif %}
+          {% endfor %}
+        </div>
+        {% if user.is_authenticated and review.user == user %}
+          <div class="review-actions" style="display:flex; gap:0.6rem;">
+            <a href="{% url 'edit_review' review.id %}" title="Edit"><i class="fa-solid fa-pen-to-square"></i></a>
+            <a href="{% url 'delete_review' review.id %}" title="Delete" onclick="return confirm('Are you sure?')"><i class="fa-solid fa-trash"></i></a>
+          </div>
+        {% endif %}
+      </li>
+    {% empty %}
+      <li class="no-reviews" style="color:var(--muted-text); font-style:italic;">No reviews yet.</li>
+    {% endfor %}
+  </ul>
+  
+  <!-- Add Review Form -->
+  {% if user.is_authenticated %}
+    <h2 style="margin-top:2rem; color:var(--text-color);">Leave a Review</h2>
+    <form method="POST" action="{% url 'add_review' movie.id %}" style="display:flex; flex-direction:column; gap:1rem; max-width:500px; width:100%; margin-top:1rem;">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn-primary" style="align-self:center; padding:0.7rem 1.2rem; border-radius:var(--radius); font-weight:600; cursor:pointer;">Submit</button>
+    </form>
+  {% endif %}
 
-<h2>Leave a Review</h2>
-<form method="POST" action="{% url 'add_review' movie.id %}">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Submit</button>
-</form>
+</section>
+{% endblock %}

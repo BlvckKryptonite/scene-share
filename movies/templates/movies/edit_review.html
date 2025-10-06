@@ -1,16 +1,63 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="edit-review-section">
-  <div class="edit-review-card">
-    <h2 class="edit-review-title">✏️ Edit Review for <span>{{ review.movie.title }}</span></h2>
+<section class="edit-review-section" style="display:flex; justify-content:center; padding:3rem 1rem; min-height: calc(100vh - 80px);">
+  <div class="edit-review-card" style="
+        background: var(--card-bg);
+        padding: 3rem;
+        border-radius: var(--radius);
+        max-width: 600px;
+        width: 100%;
+        box-shadow: 0 6px 14px rgba(0,0,0,0.45);
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        gap:1.5rem;
+      ">
 
-    <form method="POST" class="edit-review-form">
+    <!-- Movie Poster -->
+    {% if review.movie.poster %}
+      <img src="{{ review.movie.poster.url }}" alt="{{ review.movie.title }}" style="width:200px; border-radius:6px;">
+    {% elif review.movie.poster_path %}
+      <img src="https://image.tmdb.org/t/p/w200{{ review.movie.poster_path }}" alt="{{ review.movie.title }}" style="width:200px; border-radius:6px;">
+    {% endif %}
+
+    <!-- Heading -->
+    <h2 class="edit-review-title" style="
+        font-size:1.5rem;
+        color: var(--text-color);
+        text-align:center;
+      ">
+      ✏️ Edit Review for <span style="color: var(--brand-yellow)">{{ review.movie.title }}</span>
+    </h2>
+
+    <!-- Edit Form -->
+    <form method="POST" class="edit-review-form" style="display:flex; flex-direction:column; gap:1.5rem; width:100%;">
       {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit" class="btn-primary">💾 Save Changes</button>
+
+      <!-- Star Rating (row-reverse like homepage) -->
+      <div class="rating-group" style="display:flex; align-items:center; gap:0.5rem;">
+        <label style="font-weight:600;">Rating:</label>
+        <div class="star-rating" style="flex-direction: row-reverse;">
+          {% for star_value in "54321" %}
+            <input type="radio" name="rating" id="star{{ review.id }}-{{ star_value }}" value="{{ star_value }}" {% if review.rating|stringformat:"s" == star_value|stringformat:"s" %}checked{% endif %}>
+            <label for="star{{ review.id }}-{{ star_value }}">&#9733;</label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Multi-line Comment Input -->
+      <textarea name="comment" placeholder="Edit your review..." class="review-input" required rows="3">{{ review.comment }}</textarea>
+
+      <!-- Centered Submit Button -->
+      <button type="submit" class="btn btn-primary" style="align-self:center;">💾 Save Changes</button>
     </form>
 
-    <a href="{% url 'home' %}" class="back-link">← Back to Movies</a>
+    <a href="{% url 'home' %}" class="back-link" style="
+        display:inline-block;
+        margin-top:1rem;
+        color: var(--brand-yellow);
+        text-decoration:underline;
+      ">← Back to Movies</a>
   </div>
 </section>
 {% endblock %}

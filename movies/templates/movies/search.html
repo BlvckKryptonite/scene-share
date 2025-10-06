@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="search-section">
-  <h2 class="page-title">🔍 Movie Search</h2>
+<section class="search-section" style="padding:2rem 1rem; min-height: calc(100vh - 80px);">
+  <h2 class="page-title" style="text-align:center; margin-bottom:2rem; color:var(--text-color);">🔍 Movie Search</h2>
 
-  <form method="GET" action="{% url 'movie_search' %}" class="search-form">
+  <!-- Search Form -->
+  <form method="GET" action="{% url 'movie_search' %}" class="search-form" style="display:flex; justify-content:center; gap:0.5rem; flex-wrap:wrap; margin-bottom:2rem;">
     <input
       type="text"
       name="q"
@@ -11,43 +12,80 @@
       value="{{ query|default:'' }}"
       required
       class="search-input"
+      style="
+        flex:1;
+        max-width:400px;
+        padding:0.7rem 1rem;
+        border-radius: var(--radius);
+        border:1px solid #444;
+        background:#2a2a2a;
+        color:#fff;
+      "
     />
-    <button type="submit" class="search-btn">Search</button>
+    <button type="submit" class="search-btn" style="
+        background: var(--warning);
+        border:none;
+        padding:0.7rem 1.2rem;
+        border-radius: var(--radius);
+        font-weight:600;
+        cursor:pointer;
+        transition:var(--transition);
+      ">Search</button>
   </form>
 
   {% if error_message %}
-    <p class="error-text">{{ error_message }}</p>
+    <p class="error-text" style="color:var(--accent); text-align:center; margin-bottom:1rem;">{{ error_message }}</p>
   {% endif %}
 
   {% if results %}
-    <div class="search-results">
+    <div class="search-results" style="
+        display:grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap:1rem;
+      ">
       {% for movie in results %}
-        <div class="search-card">
+        <div class="search-card" style="
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            overflow:hidden;
+            box-shadow:0 4px 12px rgba(0,0,0,0.5);
+            display:flex;
+            flex-direction:column;
+            transition:var(--transition);
+          ">
           {% if movie.poster_path %}
             <img
               src="https://image.tmdb.org/t/p/w300{{ movie.poster_path }}"
               alt="{{ movie.title }}"
               class="search-poster"
+              style="width:100%; aspect-ratio:555/817; object-fit:cover;"
             />
           {% else %}
-            <div class="search-poster placeholder">No Poster</div>
+            <div class="search-poster placeholder" style="height:300px; display:flex; align-items:center; justify-content:center; color:#fff; background:#333;">No Poster</div>
           {% endif %}
 
-          <div class="search-info">
-            <h3 class="movie-title">{{ movie.title }}</h3>
-            {% if movie.release_date %}
-              <p class="movie-year">({{ movie.release_date|slice:":4" }})</p>
-            {% endif %}
-            <p class="movie-overview">
-              {{ movie.overview|truncatechars:150 }}
-            </p>
-            <a href="{% url 'movie_detail' movie.id %}" class="read-more">Read More & Reviews →</a>
+          <div class="search-info" style="padding:1rem; flex:1; display:flex; flex-direction:column; justify-content:space-between;">
+            <div>
+              <h3 class="movie-title" style="margin:0 0 0.3rem 0; font-size:1.1rem; color:var(--text-color);">{{ movie.title }}</h3>
+              {% if movie.release_date %}
+                <p class="movie-year" style="margin:0 0 0.5rem 0; color:var(--muted-text); font-size:0.85rem;">({{ movie.release_date|slice:":4" }})</p>
+              {% endif %}
+              <p class="movie-overview" style="font-size:0.9rem; color:var(--text-color); margin-bottom:0.8rem;">{{ movie.overview|truncatechars:150 }}</p>
+            </div>
+            <!-- Link to Detail Page using TMDb ID -->
+        <a href="{% url 'movie_detail' movie.id %}" class="read-more" style="
+    align-self:flex-start;
+    color: var(--brand-yellow);
+    text-decoration:underline;
+    font-weight:600;
+    transition: color 0.2s ease;
+  ">View Details →</a>
           </div>
         </div>
       {% endfor %}
     </div>
   {% elif request.GET.q %}
-    <p class="no-results">No results found.</p>
+    <p class="no-results" style="text-align:center; color:var(--muted-text); margin-top:1rem;">No results found.</p>
   {% endif %}
 </section>
 {% endblock %}
