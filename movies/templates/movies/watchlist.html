@@ -1,51 +1,60 @@
 {% extends "base.html" %}
 {% block content %}
-<h2 class="mb-4">My Watchlist</h2>
+<section class="watchlist-section">
+  <h2 class="page-title">🎬 My Watchlist</h2>
 
-{% if entries %}
-  <div class="row g-3">
-    {% for entry in entries %}
-      <div class="col-6 col-md-4 col-lg-3">
-        <div class="card h-100 shadow-sm">
-          <!-- Poster display -->
+  {% if entries %}
+    <div class="watchlist-grid">
+      {% for entry in entries %}
+        <div class="movie-card">
+          <!-- Movie Poster -->
           {% if entry.movie.poster %}
-            <img src="{{ entry.movie.poster.url }}" class="card-img-top" alt="{{ entry.movie.title }} poster" />
+            <img
+              src="{{ entry.movie.poster.url }}"
+              alt="{{ entry.movie.title }} poster"
+              class="movie-poster"
+            />
           {% elif entry.movie.poster_path %}
-            <img src="https://image.tmdb.org/t/p/w200{{ entry.movie.poster_path }}" class="card-img-top" alt="{{ entry.movie.title }} poster" />
+            <img
+              src="https://image.tmdb.org/t/p/w300{{ entry.movie.poster_path }}"
+              alt="{{ entry.movie.title }} poster"
+              class="movie-poster"
+            />
           {% else %}
-            <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 260px">
-              No Poster
-            </div>
+            <div class="movie-poster placeholder">No Poster</div>
           {% endif %}
 
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title mb-1">{{ entry.movie.title }}</h5>
+          <!-- Card Body -->
+          <div class="movie-info">
+            <h3 class="movie-title">{{ entry.movie.title }}</h3>
 
-            <!-- Release year -->
             {% if entry.movie.release_year %}
-              <p class="card-text text-muted mb-2">({{ entry.movie.release_year }})</p>
+              <p class="movie-year">({{ entry.movie.release_year }})</p>
             {% elif entry.movie.release_date %}
-              <p class="card-text text-muted mb-2">({{ entry.movie.release_date|slice:":4" }})</p>
+              <p class="movie-year">({{ entry.movie.release_date|slice:":4" }})</p>
             {% endif %}
 
-            <p class="card-text mb-2">Watched: {{ entry.watched|yesno:"✅,❌" }}</p>
+            <p class="movie-status">
+              Watched: <span class="status-icon">{{ entry.watched|yesno:"✅,❌" }}</span>
+            </p>
 
-            <div class="mt-auto">
-              <!-- Toggle Watched -->
+            <div class="button-group">
               {% if entry.movie.tmdb_id %}
-                <a href="{% url 'toggle_watched_tmdb' entry.movie.tmdb_id %}" class="btn btn-sm btn-warning mb-1">Toggle Watched</a>
-                <a href="{% url 'remove_from_watchlist_tmdb' entry.movie.tmdb_id %}" class="btn btn-sm btn-danger">Remove</a>
+                <a href="{% url 'toggle_watched_tmdb' entry.movie.tmdb_id %}" class="btn-watch">Toggle Watched</a>
+                <a href="{% url 'remove_from_watchlist_tmdb' entry.movie.tmdb_id %}" class="btn-remove">Remove</a>
               {% else %}
-                <a href="{% url 'toggle_watched_local' entry.movie.id %}" class="btn btn-sm btn-warning mb-1">Toggle Watched</a>
-                <a href="{% url 'remove_from_watchlist_local' entry.movie.id %}" class="btn btn-sm btn-danger">Remove</a>
+                <a href="{% url 'toggle_watched_local' entry.movie.id %}" class="btn-watch">Toggle Watched</a>
+                <a href="{% url 'remove_from_watchlist_local' entry.movie.id %}" class="btn-remove">Remove</a>
               {% endif %}
             </div>
           </div>
         </div>
-      </div>
-    {% endfor %}
-  </div>
-{% else %}
-  <div class="alert alert-info">Your watchlist is empty.</div>
-{% endif %}
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty-watchlist">
+      <p>Your watchlist is empty.</p>
+    </div>
+  {% endif %}
+</section>
 {% endblock %}

@@ -386,3 +386,130 @@ h2 {
 .movie-description .read-more:hover {
   color: #ffd54f;
 }
+
+/*  WATCHLIST PAGE STYLING */
+.watchlist-section {
+  padding: 2rem 1rem 4rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-title {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #222;
+  font-weight: 600;
+}
+
+.watchlist-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.8rem;
+  justify-content: center;
+}
+
+.movie-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.movie-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+}
+
+.movie-poster {
+  width: 100%;
+  height: 360px;
+  object-fit: cover;
+}
+
+.movie-poster.placeholder {
+  background-color: #ddd;
+  color: #555;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.movie-info {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.movie-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #222;
+  margin: 0;
+}
+
+.movie-year {
+  color: #777;
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+}
+
+.movie-status {
+  font-size: 0.95rem;
+}
+
+.status-icon {
+  font-weight: 600;
+}
+
+.button-group {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.btn-watch,
+.btn-remove {
+  flex: 1;
+  text-align: center;
+  border: none;
+  padding: 0.5rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-watch {
+  background-color: #f4c542;
+  color: #000;
+}
+
+.btn-watch:hover {
+  background-color: #e0b736;
+}
+
+.btn-remove {
+  background-color: #ff4e4e;
+  color: #fff;
+}
+
+.btn-remove:hover {
+  background-color: #d93636;
+}
+
+.empty-watchlist {
+  text-align: center;
+  padding: 3rem 1rem;
+  font-size: 1.2rem;
+  color: #555;
+}
+
