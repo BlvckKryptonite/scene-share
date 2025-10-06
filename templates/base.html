@@ -1,94 +1,77 @@
 {% load static %}
-{% load extras %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>SceneShare</title>
 
-    <!-- Bootstrap CSS (CDN) -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
+    <!-- Google Fonts -->
     <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Orbitron:wght@600&display=swap"
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-      crossorigin="anonymous"
     />
 
-    <!-- Google Fonts -->
-     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  </head>
 
-    <!-- Updated: Dark Theme Global CSS -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-  <!-- NAVBAR -->
-  <nav class="navbar navbar-expand-lg shadow-sm">
-    <div class="container">
-      <a class="navbar-brand fw-bold" href="{% url 'home' %}">SceneShare</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+  <body>
+    <nav class="navbar">
+      <a href="{% url 'home' %}" class="navbar-brand">SceneShare</a>
 
-      <div class="collapse navbar-collapse" id="mainNav">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
-        </ul>
-
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
-          {% if user.is_authenticated %}
-            <li class="nav-item me-2">
-              <a class="nav-link" href="{% url 'profile' %}">Hi, {{ user.username }}</a>
-            </li>
-
-            <!-- The watchlist link -->
-            <li class="nav-item me-2">
-              <a class="nav-link" href="{% url 'watchlist' %}">My Watchlist</a>
-            </li>
-
-            {% if user.is_staff %}
-              <li class="nav-item me-2">
-                <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
-              </li>
-            {% endif %}
-            <li class="nav-item">
-              <form method="POST" action="{% url 'logout' %}" class="d-inline">
-                {% csrf_token %}
-                <button class="btn btn-link nav-link p-0" type="submit">Logout</button>
-              </form>
-            </li>
-          {% else %}
-            <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
-          {% endif %}
-        </ul>
+      <!-- Burger Icon -->
+      <div class="burger">
+        <span></span>
+        <span></span>
+        <span></span>
       </div>
-    </div>
-  </nav>
 
-  <!-- MAIN CONTENT -->
-  <main class="container mt-4">
-    {% if messages %}
-      {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-          {{ message }}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-      {% endfor %}
-    {% endif %}
+      <!-- Navbar Links -->
+      <div class="nav-links">
+        <a href="{% url 'home' %}">Home</a>
 
-    {% block content %}{% endblock %}
-  </main>
+        {% if user.is_authenticated %}
+          <a href="{% url 'watchlist' %}">My Watchlist</a>
+          <a href="{% url 'profile' %}">Hi, {{ user.username }}</a>
 
-  <!-- FOOTER -->
-  <footer class="mt-5">
-    <p>🎬 SceneShare — Connect Through Cinema</p>
-  </footer>
+          {% if user.is_staff %}
+            <a href="{% url 'admin:index' %}">Admin</a>
+          {% endif %}
 
-  <!-- Bootstrap JS bundle -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+          <form method="POST" action="{% url 'logout' %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-secondary" style="margin-left: 10px;">Logout</button>
+          </form>
+        {% else %}
+          <a href="{% url 'register' %}">Register</a>
+          <a href="{% url 'login' %}">Login</a>
+        {% endif %}
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+      {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer style="text-align:center; padding:2rem 0; color:#9e9e9e; font-size:0.9rem;">
+      <p>© 2025 SceneShare. All rights reserved.</p>
+    </footer>
+
+    <!-- Burger Script -->
+    <script>
+      const burger = document.querySelector('.burger');
+      const nav = document.querySelector('.nav-links');
+      burger.addEventListener('click', () => {
+        nav.classList.toggle('active');
+      });
+    </script>
+  </body>
 </html>
