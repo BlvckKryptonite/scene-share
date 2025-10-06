@@ -513,3 +513,140 @@ h2 {
   color: #555;
 }
 
+/* SEARCH PAGE STYLES */
+.search-section {
+  padding: 2rem 1rem 4rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.search-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 250px;
+  max-width: 400px;
+  padding: 0.8rem 1rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.25s ease;
+}
+
+.search-input:focus {
+  border-color: #f4c542;
+  box-shadow: 0 0 6px rgba(244, 197, 66, 0.5);
+  outline: none;
+}
+
+.search-btn {
+  padding: 0.8rem 1.2rem;
+  background-color: #f4c542;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
+
+.search-btn:hover {
+  background-color: #e0b736;
+}
+
+.error-text {
+  color: #d93636;
+  text-align: center;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+}
+
+.search-results {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.8rem;
+}
+
+.search-card {
+  width: 260px;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.search-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+}
+
+.search-poster {
+  width: 100%;
+  height: 360px;
+  object-fit: cover;
+}
+
+.search-poster.placeholder {
+  background-color: #ddd;
+  color: #555;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-info {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.movie-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #222;
+  margin: 0;
+}
+
+.movie-year {
+  color: #777;
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+}
+
+.movie-overview {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.4;
+  margin-bottom: 0.6rem;
+}
+
+.read-more {
+  color: #f4c542;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.25s ease;
+  margin-top: auto;
+}
+
+.read-more:hover {
+  color: #d9ae33;
+}
+
+.no-results {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #777;
+  padding-top: 2rem;
+}

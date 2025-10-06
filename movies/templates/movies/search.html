@@ -1,30 +1,53 @@
 {% extends "base.html" %}
-
 {% block content %}
-<h2>Movie Search</h2>
+<section class="search-section">
+  <h2 class="page-title">🔍 Movie Search</h2>
 
-<form method="GET" action="{% url 'movie_search' %}">
-    <input type="text" name="q" placeholder="Search for a movie..." value="{{ query|default:'' }}" required>
-    <button type="submit">🔍 Search</button>
-</form>
+  <form method="GET" action="{% url 'movie_search' %}" class="search-form">
+    <input
+      type="text"
+      name="q"
+      placeholder="Search for a movie..."
+      value="{{ query|default:'' }}"
+      required
+      class="search-input"
+    />
+    <button type="submit" class="search-btn">Search</button>
+  </form>
 
-{% if error_message %}
-    <p style="color:red">{{ error_message }}</p>
-{% endif %}
+  {% if error_message %}
+    <p class="error-text">{{ error_message }}</p>
+  {% endif %}
 
-{% if results %}
-  <ul>
-    {% for movie in results %}
-      <li>
-        <strong>{{ movie.title }}</strong> ({{ movie.release_date }})
-        <p>{{ movie.overview|truncatechars:150 }}</p>
-        <img src="https://image.tmdb.org/t/p/w200{{ movie.poster_path }}" alt="{{ movie.title }}">
-        <br>
-        <a href="{% url 'movie_detail' movie.id %}">Read More & Reviews</a>
-      </li>
-    {% endfor %}
-  </ul>
-{% elif request.GET.q %}
-  <p>No results found.</p>
-{% endif %}
+  {% if results %}
+    <div class="search-results">
+      {% for movie in results %}
+        <div class="search-card">
+          {% if movie.poster_path %}
+            <img
+              src="https://image.tmdb.org/t/p/w300{{ movie.poster_path }}"
+              alt="{{ movie.title }}"
+              class="search-poster"
+            />
+          {% else %}
+            <div class="search-poster placeholder">No Poster</div>
+          {% endif %}
+
+          <div class="search-info">
+            <h3 class="movie-title">{{ movie.title }}</h3>
+            {% if movie.release_date %}
+              <p class="movie-year">({{ movie.release_date|slice:":4" }})</p>
+            {% endif %}
+            <p class="movie-overview">
+              {{ movie.overview|truncatechars:150 }}
+            </p>
+            <a href="{% url 'movie_detail' movie.id %}" class="read-more">Read More & Reviews →</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% elif request.GET.q %}
+    <p class="no-results">No results found.</p>
+  {% endif %}
+</section>
 {% endblock %}
