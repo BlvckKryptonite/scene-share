@@ -650,3 +650,103 @@ h2 {
   color: #777;
   padding-top: 2rem;
 }
+
+/* EDIT REVIEW PAGE */
+.edit-review-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+  padding: 2rem 1rem;
+  background: #fafafa;
+}
+
+.edit-review-card {
+  background: #fff;
+  border: 2px solid #e2e2e2;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  max-width: 600px;
+  width: 100%;
+  padding: 2rem;
+  text-align: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.edit-review-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
+}
+
+.edit-review-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 1.5rem;
+}
+
+.edit-review-title span {
+  color: #f4c542;
+}
+
+.edit-review-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+.edit-review-form label {
+  font-weight: 600;
+  text-align: left;
+  display: block;
+  color: #333;
+}
+
+.edit-review-form input[type="text"],
+.edit-review-form textarea,
+.edit-review-form select {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1.5px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.edit-review-form input:focus,
+.edit-review-form textarea:focus,
+.edit-review-form select:focus {
+  border-color: #f4c542;
+  box-shadow: 0 0 6px rgba(244, 197, 66, 0.4);
+  outline: none;
+}
+
+.btn-primary {
+  background-color: #f4c542;
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  padding: 0.8rem 1.4rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.25s ease, transform 0.25s ease;
+}
+
+.btn-primary:hover {
+  background-color: #e0b736;
+  transform: translateY(-2px);
+}
+
+.back-link {
+  display: inline-block;
+  color: #555;
+  text-decoration: none;
+  font-weight: 500;
+  margin-top: 0.8rem;
+  transition: color 0.25s ease;
+}
+
+.back-link:hover {
+  color: #f4c542;
+}

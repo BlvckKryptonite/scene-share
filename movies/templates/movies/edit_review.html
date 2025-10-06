@@ -1,12 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
-<h3>Edit Review for {{ review.movie.title }}</h3>
+<section class="edit-review-section">
+  <div class="edit-review-card">
+    <h2 class="edit-review-title">✏️ Edit Review for <span>{{ review.movie.title }}</span></h2>
 
-<form method="POST">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit" class="btn btn-primary">Save</button>
-</form>
+    <form method="POST" class="edit-review-form">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn-primary">💾 Save Changes</button>
+    </form>
 
-<a href="{% url 'home' %}">Back to movies</a>
+    <a href="{% url 'home' %}" class="back-link">← Back to Movies</a>
+  </div>
+</section>
 {% endblock %}
