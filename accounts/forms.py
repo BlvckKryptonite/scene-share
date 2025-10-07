@@ -16,7 +16,26 @@ class CustomUserCreationForm(UserCreationForm):
 
 # Profile form
 class ProfileUpdateForm(forms.ModelForm):
+    username = forms.CharField(
+        max_length=150,
+        required=True,
+        widget=forms.TextInput(attrs={
+            'class': 'review-input',
+            'placeholder': 'Update your username...',
+            'style': 'width:100%; padding:0.75rem 1rem; border-radius:6px; border:1px solid #444; background:#2a2a2a; color:#fff; font-size:1rem;'
+        })
+    )
+
     class Meta:
         model = Profile
-        fields = ['bio', 'avatar']
+        fields = ['bio']
+        widgets = {
+            'bio': forms.Textarea(attrs={
+                'class': 'review-input',
+                'placeholder': 'Update your bio...',
+                'rows': 2,
+                'style': 'width:100%; padding:0.75rem 1rem; border-radius:6px; border:1px solid #444; background:#2a2a2a; color:#fff; font-size:1rem; resize:none;'
+            })
+        }
+
 

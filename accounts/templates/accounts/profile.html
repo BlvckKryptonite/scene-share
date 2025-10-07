@@ -10,7 +10,9 @@
       max-width:500px;
       width:100%;
   ">
-    <h2 style="text-align:center; margin-bottom:1.5rem; color:var(--text-color);">👤 Update Your Profile</h2>
+    <h2 style="text-align:center; margin-bottom:1.5rem; color:var(--text-color);">
+      👤 Update Your Profile
+    </h2>
 
     <!-- Display saved bio -->
     <div style="margin-bottom:1.5rem; text-align:center; color:var(--muted-text);">
@@ -24,18 +26,42 @@
     <!-- Profile Form -->
     <form method="POST" enctype="multipart/form-data" style="display:flex; flex-direction:column; gap:1rem;">
       {% csrf_token %}
-      {{ form.as_p }}
+
+      <!-- Username Input -->
+      <div style="width:100%;">
+        {{ form.username }}
+        {% if form.username.errors %}
+          <p style="color: var(--accent); font-size:0.85rem; margin-top:0.25rem;">
+            {{ form.username.errors|striptags }}
+          </p>
+        {% endif %}
+      </div>
+
+      <!-- Bio Input -->
+      <div style="width:100%;">
+        {{ form.bio }}
+        {% if form.bio.errors %}
+          <p style="color: var(--accent); font-size:0.85rem; margin-top:0.25rem;">
+            {{ form.bio.errors|striptags }}
+          </p>
+        {% endif %}
+      </div>
+
+      <!-- Update Button -->
       <button type="submit" style="
           background: var(--brand-yellow);
           color:#000;
           border:none;
-          padding:0.7rem 1.2rem;
+          padding:0.75rem 1.25rem;
           border-radius: var(--radius);
           font-weight:600;
           cursor:pointer;
           transition:var(--transition);
           align-self:center;
-      ">Update Profile</button>
+          width:100%;
+      ">
+        Update Profile
+      </button>
     </form>
   </div>
 </section>

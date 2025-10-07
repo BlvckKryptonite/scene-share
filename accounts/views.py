@@ -23,13 +23,20 @@ def register(request):
 # Profile page view 
 @login_required
 def profile(request):
+    user = request.user
+
     if request.method == 'POST':
-        form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+        form = ProfileUpdateForm(request.POST, instance=user.profile)
         if form.is_valid():
-            form.save()
+            # Save bio
+            profile = form.save(commit=False)
+            profile.save()
+            # Save username
+            user.username = form.cleaned_data['username']
+            user.save()
             return redirect('profile')
     else:
-        form = ProfileUpdateForm(instance=request.user.profile)
-    
+        form = ProfileUpdateForm(instance=user.profile, initial={'username': user.username})
+
     return render(request, 'accounts/profile.html', {'form': form})
 
