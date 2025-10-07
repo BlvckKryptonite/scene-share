@@ -1,5 +1,46 @@
 {% extends "base.html" %}
+{% load static %}
+
 {% block content %}
-  <h2>You have been logged out.</h2>
-  <a href="{% url 'login' %}">Log in again?</a>
+<section style="
+  min-height: 100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:2rem;
+  background: url('{% static "images/bg-placeholder.png" %}') center/cover no-repeat;
+">
+
+  <h2 style="margin-bottom:1.5rem; color:var(--text-color); text-align:center; font-size:2rem;">🔑 Log In</h2>
+
+  <form method="POST" style="display:flex; flex-direction:column; gap:1.25rem; width:100%; max-width:400px; background: rgba(0,0,0,0.6); padding:2rem; border-radius: var(--radius);">
+    {% csrf_token %}
+    {% for field in form %}
+      <div style="display:flex; flex-direction:column;">
+        {{ field.label_tag }}
+        {{ field }}
+        {% if field.errors %}
+          <p style="color: var(--accent); font-size:0.85rem; margin-top:0.25rem;">{{ field.errors|striptags }}</p>
+        {% endif %}
+      </div>
+    {% endfor %}
+    <button type="submit" style="
+      padding:0.85rem 1.4rem;
+      background: var(--brand-yellow);
+      color:#000;
+      border:none;
+      border-radius: var(--radius);
+      font-weight:600;
+      cursor:pointer;
+      transition:var(--transition);
+      font-size:1rem;
+    " onmouseover="this.style.opacity=0.85" onmouseout="this.style.opacity=1">Log In</button>
+  </form>
+
+  <p style="margin-top:1rem; color:var(--muted-text); font-size:0.9rem; text-align:center;">
+    Don't have an account? 
+    <a href="{% url 'register' %}" style="color:var(--brand-yellow); text-decoration:none; font-weight:600;">Sign up here</a>
+  </p>
+</section>
 {% endblock %}

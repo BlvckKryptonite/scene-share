@@ -2,10 +2,26 @@
 {% load static %}
 
 {% block content %}
-  <h2>Login</h2>
-  <form method="POST">
+<section class="auth-page">
+  <h2 class="auth-title">🔑 Log In</h2>
+
+  <form method="POST" class="auth-form">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Log In</button>
+    {% for field in form %}
+      <div class="auth-field">
+        {{ field.label_tag }}
+        {{ field }}
+        {% if field.errors %}
+          <p class="field-error">{{ field.errors|striptags }}</p>
+        {% endif %}
+      </div>
+    {% endfor %}
+    <button type="submit" class="auth-btn">Log In</button>
   </form>
+
+  <p class="auth-switch">
+    Don't have an account? 
+    <a href="{% url 'register' %}">Sign up here</a>
+  </p>
+</section>
 {% endblock %}

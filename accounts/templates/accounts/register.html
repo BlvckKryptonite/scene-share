@@ -2,11 +2,26 @@
 {% load static %}
 
 {% block content %}
-  <h2>Register</h2>
-  <form method="POST">
-    <!-- Protects against Cross-Site Request Forgery attacks -->
+<section class="auth-page">
+  <h2 class="auth-title">📝 Register</h2>
+
+  <form method="POST" class="auth-form">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Sign Up</button>
+    {% for field in form %}
+      <div class="auth-field">
+        {{ field.label_tag }}
+        {{ field }}
+        {% if field.errors %}
+          <p class="field-error">{{ field.errors|striptags }}</p>
+        {% endif %}
+      </div>
+    {% endfor %}
+    <button type="submit" class="auth-btn">Sign Up</button>
   </form>
+
+  <p class="auth-switch">
+    Already have an account? 
+    <a href="{% url 'login' %}">Log in here</a>
+  </p>
+</section>
 {% endblock %}

@@ -1,16 +1,42 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Update Your Profile</h2>
-  <!-- Display saved bio -->
-  {% if user.profile.bio %}
-    <p><strong>Bio:</strong> {{ user.profile.bio }}</p>
-  {% else %}
-    <p><em>No bio yet. Add one below!</em></p>
-  {% endif %}
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Update Profile</button>
-</form>
+<section class="profile-section" style="padding:2rem 1rem; min-height:calc(100vh - 80px); display:flex; justify-content:center; align-items:flex-start;">
+  <div class="profile-card" style="
+      background: var(--card-bg);
+      padding:2rem;
+      border-radius: var(--radius);
+      box-shadow:0 4px 12px rgba(0,0,0,0.5);
+      max-width:500px;
+      width:100%;
+  ">
+    <h2 style="text-align:center; margin-bottom:1.5rem; color:var(--text-color);">👤 Update Your Profile</h2>
+
+    <!-- Display saved bio -->
+    <div style="margin-bottom:1.5rem; text-align:center; color:var(--muted-text);">
+      {% if user.profile.bio %}
+        <p><strong>Bio:</strong> {{ user.profile.bio }}</p>
+      {% else %}
+        <p><em>No bio yet. Add one below!</em></p>
+      {% endif %}
+    </div>
+
+    <!-- Profile Form -->
+    <form method="POST" enctype="multipart/form-data" style="display:flex; flex-direction:column; gap:1rem;">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" style="
+          background: var(--brand-yellow);
+          color:#000;
+          border:none;
+          padding:0.7rem 1.2rem;
+          border-radius: var(--radius);
+          font-weight:600;
+          cursor:pointer;
+          transition:var(--transition);
+          align-self:center;
+      ">Update Profile</button>
+    </form>
+  </div>
+</section>
 {% endblock %}

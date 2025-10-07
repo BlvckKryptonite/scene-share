@@ -1,50 +1,123 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="watchlist-section">
-  <h2 class="page-title">🎬 My Watchlist</h2>
+<section class="watchlist-section" style="padding:2rem 1rem; min-height:calc(100vh - 80px);">
+  <h2 class="page-title" style="text-align:center; margin-bottom:2rem; color:var(--text-color);">🎬 My Watchlist</h2>
 
   {% if entries %}
-    <div class="watchlist-grid">
+    <div class="watchlist-grid" style="
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap:1.5rem;
+    ">
       {% for entry in entries %}
-        <div class="movie-card">
-          <!-- Movie Poster -->
+        <div class="movie-card" style="
+          background: var(--card-bg);
+          border-radius: var(--radius);
+          overflow:hidden;
+          box-shadow:0 6px 16px rgba(0,0,0,0.5);
+          display:flex;
+          flex-direction:column;
+          transition:var(--transition);
+        ">
+          <!-- Poster -->
           {% if entry.movie.poster %}
-            <img
-              src="{{ entry.movie.poster.url }}"
-              alt="{{ entry.movie.title }} poster"
-              class="movie-poster"
-            />
+            <img src="{{ entry.movie.poster.url }}" alt="{{ entry.movie.title }} poster" style="width:100%; aspect-ratio:555/817; object-fit:cover;" />
           {% elif entry.movie.poster_path %}
-            <img
-              src="https://image.tmdb.org/t/p/w300{{ entry.movie.poster_path }}"
-              alt="{{ entry.movie.title }} poster"
-              class="movie-poster"
-            />
+            <img src="https://image.tmdb.org/t/p/w300{{ entry.movie.poster_path }}" alt="{{ entry.movie.title }} poster" style="width:100%; aspect-ratio:555/817; object-fit:cover;" />
           {% else %}
-            <div class="movie-poster placeholder">No Poster</div>
+            <div style="height:300px; display:flex; align-items:center; justify-content:center; background:#333; color:#fff;">No Poster</div>
           {% endif %}
 
-          <!-- Card Body -->
-          <div class="movie-info">
-            <h3 class="movie-title">{{ entry.movie.title }}</h3>
+          <!-- Info -->
+          <div class="movie-info" style="padding:1rem; flex:1; display:flex; flex-direction:column; justify-content:space-between;">
+            <div>
+              <h3 style="margin:0 0 0.3rem 0; font-size:1.2rem; color:var(--text-color);">{{ entry.movie.title }}</h3>
+              {% if entry.movie.release_year %}
+                <p style="margin:0 0 0.5rem 0; color:var(--muted-text); font-size:0.9rem;">({{ entry.movie.release_year }})</p>
+              {% elif entry.movie.release_date %}
+                <p style="margin:0 0 0.5rem 0; color:var(--muted-text); font-size:0.9rem;">({{ entry.movie.release_date|slice:":4" }})</p>
+              {% endif %}
 
-            {% if entry.movie.release_year %}
-              <p class="movie-year">({{ entry.movie.release_year }})</p>
-            {% elif entry.movie.release_date %}
-              <p class="movie-year">({{ entry.movie.release_date|slice:":4" }})</p>
-            {% endif %}
+              <p style="text-align:center; font-size:0.95rem; margin-bottom:0.8rem; color:var(--text-color);">
+                Watched: <span>{{ entry.watched|yesno:"✅,❌" }}</span>
+              </p>
+            </div>
 
-            <p class="movie-status">
-              Watched: <span class="status-icon">{{ entry.watched|yesno:"✅,❌" }}</span>
-            </p>
-
-            <div class="button-group">
+            <!-- Buttons -->
+            <div style="display:flex; flex-direction:column; gap:0.5rem;">
+              <!-- Review Button Full Width -->
               {% if entry.movie.tmdb_id %}
-                <a href="{% url 'toggle_watched_tmdb' entry.movie.tmdb_id %}" class="btn-watch">Toggle Watched</a>
-                <a href="{% url 'remove_from_watchlist_tmdb' entry.movie.tmdb_id %}" class="btn-remove">Remove</a>
+                <a href="{% url 'movie_detail' entry.movie.tmdb_id %}" style="
+                  width:100%;
+                  text-align:center;
+                  padding:0.5rem 0;
+                  background: var(--brand-yellow);
+                  color:#000;
+                  border-radius: var(--radius);
+                  font-weight:600;
+                  text-decoration:none;
+                  transition:var(--transition);
+                ">View & Review</a>
+                <div style="display:flex; gap:0.5rem;">
+                  <a href="{% url 'toggle_watched_tmdb' entry.movie.tmdb_id %}" style="
+                    flex:1;
+                    text-align:center;
+                    padding:0.4rem 0;
+                    background: var(--accent);
+                    color:#fff;
+                    border-radius: var(--radius);
+                    font-weight:600;
+                    text-decoration:none;
+                    transition:var(--transition);
+                  ">Toggle Watched</a>
+                  <a href="{% url 'remove_from_watchlist_tmdb' entry.movie.tmdb_id %}" style="
+                    flex:1;
+                    text-align:center;
+                    padding:0.4rem 0;
+                    background: var(--muted-text);
+                    color:#fff;
+                    border-radius: var(--radius);
+                    font-weight:600;
+                    text-decoration:none;
+                    transition:var(--transition);
+                  ">Remove</a>
+                </div>
               {% else %}
-                <a href="{% url 'toggle_watched_local' entry.movie.id %}" class="btn-watch">Toggle Watched</a>
-                <a href="{% url 'remove_from_watchlist_local' entry.movie.id %}" class="btn-remove">Remove</a>
+                <a href="{% url 'movie_detail' entry.movie.id %}" style="
+                  width:100%;
+                  text-align:center;
+                  padding:0.5rem 0;
+                  background: var(--brand-yellow);
+                  color:#000;
+                  border-radius: var(--radius);
+                  font-weight:600;
+                  text-decoration:none;
+                  transition:var(--transition);
+                ">View & Review</a>
+                <div style="display:flex; gap:0.5rem;">
+                  <a href="{% url 'toggle_watched_local' entry.movie.id %}" style="
+                    flex:1;
+                    text-align:center;
+                    padding:0.4rem 0;
+                    background: var(--accent);
+                    color:#fff;
+                    border-radius: var(--radius);
+                    font-weight:600;
+                    text-decoration:none;
+                    transition:var(--transition);
+                  ">Toggle Watched</a>
+                  <a href="{% url 'remove_from_watchlist_local' entry.movie.id %}" style="
+                    flex:1;
+                    text-align:center;
+                    padding:0.4rem 0;
+                    background: var(--muted-text);
+                    color:#fff;
+                    border-radius: var(--radius);
+                    font-weight:600;
+                    text-decoration:none;
+                    transition:var(--transition);
+                  ">Remove</a>
+                </div>
               {% endif %}
             </div>
           </div>
@@ -52,7 +125,7 @@
       {% endfor %}
     </div>
   {% else %}
-    <div class="empty-watchlist">
+    <div style="text-align:center; margin-top:2rem; color:var(--muted-text);">
       <p>Your watchlist is empty.</p>
     </div>
   {% endif %}
