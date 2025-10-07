@@ -439,7 +439,7 @@ h2 {
   align-items: center;
   justify-content: flex-start; /* push form closer to top */
   padding: 2rem 1rem;
-  background: url('../images/animated-bg.gif') center/cover no-repeat; /* Placeholder */
+  background: url('https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3cnoxNXpxb2xuMnYyMXB5aDNyM2hrdm1jcDFvNGY1NHVqMzgzdjhwOCZlcD12MV9naWZzX3JlbGF0ZWQmY3Q9Zw/3o7aDcrsww5Ybp18hq/giphy.gif') center/cover no-repeat; /* Placeholder */
 }
 
 .auth-title {

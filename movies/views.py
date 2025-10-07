@@ -203,6 +203,11 @@ def remove_from_watchlist(request, tmdb_id=None, movie_id=None):
 
     movie = get_object_or_404(Movie, tmdb_id=tmdb_id) if tmdb_id else get_object_or_404(Movie, id=movie_id)
     Watchlist.objects.filter(user=request.user, movie=movie).delete()
+
+    # Redirect user back to referring page or fallback to home
+    next_url = request.META.get('HTTP_REFERER', None)
+    if next_url:
+        return redirect(next_url)
     return redirect('home')
 
 # Toggle watched/unwatched

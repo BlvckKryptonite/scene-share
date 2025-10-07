@@ -11,7 +11,7 @@
   <!-- Search Form -->
   <form method="GET" action="{% url 'movie_search' %}" class="search-form">
     <input type="text" name="q" placeholder="Search for a movie..." required />
-    <button type="submit">🔍 Search</button>
+    <button type="submit">Search</button>
   </form>
 
   <!-- Movie Grid -->
@@ -56,10 +56,10 @@
             {% if movie.id in watchlist_movie_ids %}
               {% if movie.tmdb_id %}
                 <a href="{% url 'remove_from_watchlist_tmdb' movie.tmdb_id %}" class="btn btn-danger">Remove</a>
-                <a href="{% url 'toggle_watched_tmdb' movie.tmdb_id %}" class="btn btn-secondary">Toggle Watched</a>
+                <a href="{% url 'movie_detail' movie.id %}" class="btn btn-secondary">Watchlist</a>
               {% else %}
                 <a href="{% url 'remove_from_watchlist_local' movie.id %}" class="btn btn-danger">Remove</a>
-                <a href="{% url 'toggle_watched_local' movie.id %}" class="btn btn-secondary">Toggle Watched</a>
+                <a href="{% url 'movie_detail' movie.id %}" class="btn btn-secondary">Watchlist →</a>
               {% endif %}
             {% else %}
               {% if movie.tmdb_id %}

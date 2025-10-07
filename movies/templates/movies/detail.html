@@ -18,10 +18,6 @@
     <div class="watchlist-buttons" style="display:flex; justify-content:center; gap:1rem; margin-bottom:2rem; flex-wrap:wrap;">
       {% if movie.tmdb_id in watchlist_movies %}
         <a href="{% url 'remove_from_watchlist_tmdb' movie.tmdb_id %}" class="btn btn-sm btn-danger">Remove from Watchlist</a>
-        <a href="{% url 'toggle_watched_tmdb' movie.tmdb_id %}" class="btn btn-sm btn-secondary">
-          {% comment %} Determine watched status in view {% endcomment %}
-          Mark as Watched / Unwatched
-        </a>
       {% else %}
         <a href="{% url 'add_to_watchlist_tmdb' movie.tmdb_id %}" class="btn btn-sm btn-primary">Add to Watchlist</a>
       {% endif %}
@@ -71,7 +67,7 @@
       <textarea name="comment" placeholder="Write a review..." class="review-input" required rows="3">{{ review.comment }}</textarea>
 
       <!-- Centered Submit Button -->
-      <button type="submit" class="btn-primary" style="align-self:center; padding:0.7rem 1.2rem; border-radius:var(--radius); font-weight:600; cursor:pointer;">Submit</button>
+      <button type="submit" class="auth-btn" style="align-self:center; padding:0.7rem 1.2rem; border-radius:var(--radius); font-weight:600; cursor:pointer;">Submit Review</button>
     </form>
     
       {% csrf_token %}

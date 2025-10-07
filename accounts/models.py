@@ -5,10 +5,8 @@ from django.dispatch import receiver
 
 # Create your models here.
 class Profile(models.Model):
-    # Will ensure each user has excatly one profile
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(blank=True, null=True)
-    avatar = models.ImageField(upload_to='avatars/', default='avatars/default.png')
 
     def __str__(self):
         return f"{self.user.username}'s profile"
