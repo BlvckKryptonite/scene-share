@@ -6,6 +6,7 @@ from .models import Movie, Review, Watchlist
 from .forms import ReviewForm
 from django.conf import settings
 import requests
+from community.models import ReviewLike 
 
 def home(request):
     # Annotate movies with their average rating
@@ -22,6 +23,7 @@ def home(request):
         watchlist_movie_ids = [entry.movie.id for entry in entries]
         watch_status = {entry.movie.id: entry.watched for entry in entries}
 
+    # New or updated review submission
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         movie_id = request.POST.get('movie_id')
@@ -40,11 +42,22 @@ def home(request):
         else:
             forms_dict[int(movie_id)] = form
 
+    # Add "is_liked" flag for each review
+    if request.user.is_authenticated:
+        reviews = Review.objects.select_related('user', 'movie').prefetch_related('reviewlike_set')
+        for review in reviews:
+            review.is_liked = review.reviewlike_set.filter(user=request.user).exists()
+    else:
+        reviews = Review.objects.select_related('user', 'movie')
+        for review in reviews:
+            review.is_liked = False
+
     context = {
         'movies': movies,
         'forms_dict': forms_dict,
         'watchlist_movie_ids': watchlist_movie_ids,
-        'watch_status': watch_status,  
+        'watch_status': watch_status,
+        'reviews': reviews, 
     }
 
     return render(request, 'movies/home.html', context)

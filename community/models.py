@@ -5,15 +5,15 @@ from django.utils import timezone # For review tiem posted.
 
 # Create your models here.
 class ReviewLike(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="review_likes")
-    review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name="likes")
-    created_at = models.DateTimeField(default=timezone.now)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name="reviewlike_set")
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         unique_together = ('user', 'review')
 
     def __str__(self):
-        return f"{self.user.username} liked {self.review}"
+        return f"{self.user.username} liked {self.review.id}"
 
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")

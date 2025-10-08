@@ -512,3 +512,50 @@ h2 {
   text-decoration: none;
   font-weight: 600;
 }
+
+.like-form {
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+.like-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.75rem;
+  border: 2px solid var(--brand-yellow);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--brand-yellow);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-size: 0.9rem;
+}
+
+.like-btn i {
+  font-size: 1rem;
+  transition: transform 0.25s ease, color 0.25s ease;
+}
+
+.like-btn:hover i {
+  transform: scale(1.1);
+}
+
+.like-btn:hover {
+  background: var(--brand-yellow);
+  color: #000;
+}
+
+.like-btn.liked {
+  background: var(--brand-yellow);
+  color: #000;
+}
+
+.like-btn.liked i {
+  color: #000;
+}
+
+.like-btn .like-text {
+  font-size: 0.85rem;
+}

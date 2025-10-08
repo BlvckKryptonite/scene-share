@@ -105,26 +105,45 @@
         {% endif %}
 
         <!-- Reviews List -->
-        <ul class="reviews-list" id="reviews-{{ movie.id }}">
-          {% for review in movie.reviews.all %}
-            <li>
-              <div>
-                <strong>{{ review.user.username }}</strong>: {{ review.comment }}<br>
-                {% for i in "12345" %}
-                  {% if forloop.counter <= review.rating %} ⭐ {% else %} ☆ {% endif %}
-                {% endfor %}
-              </div>
-              {% if user.is_authenticated and review.user == user %}
-                <div class="review-actions">
-                  <a href="{% url 'edit_review' review.id %}" title="Edit"><i class="fa-solid fa-pen-to-square"></i></a>
-                  <a href="{% url 'delete_review' review.id %}" title="Delete" onclick="return confirm('Are you sure?')"><i class="fa-solid fa-trash"></i></a>
-                </div>
-              {% endif %}
-            </li>
-          {% empty %}
-            <li class="no-reviews">No reviews yet.</li>
+<ul class="reviews-list" id="reviews-{{ movie.id }}">
+  {% for review in movie.reviews.all %}
+    <li style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #333; padding:0.5rem 0;">
+      <div style="flex:1;">
+        <strong style="color:var(--brand-yellow);">{{ review.user.username }}</strong>: 
+        <span style="color:#fff;">{{ review.comment }}</span><br>
+        <span style="color:var(--accent);">
+          {% for i in "12345" %}
+            {% if forloop.counter <= review.rating %} ⭐ {% else %} ☆ {% endif %}
           {% endfor %}
-        </ul>
+        </span>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:0.75rem;">
+<!-- Review Like Button -->
+<form action="{% url 'toggle_review_like' review.id %}" method="POST" class="like-form">
+  {% csrf_token %}
+  <button type="submit"
+    class="like-btn{% if review.is_liked %} liked{% endif %}"
+    title="{% if review.is_liked %}Unlike{% else %}Like this review{% endif %}">
+    <i class="fa-regular fa-star"></i>
+    <span class="like-text">{% if review.is_liked %}Liked{% else %}Like{% endif %}</span>
+  </button>
+</form>
+
+        <!-- Edit/Delete actions -->
+        {% if user.is_authenticated and review.user == user %}
+          <div class="review-actions" style="display:flex; gap:0.5rem;">
+            <a href="{% url 'edit_review' review.id %}" title="Edit" style="color:#999;"><i class="fa-solid fa-pen-to-square"></i></a>
+            <a href="{% url 'delete_review' review.id %}" title="Delete" onclick="return confirm('Are you sure?')" style="color:#999;"><i class="fa-solid fa-trash"></i></a>
+          </div>
+        {% endif %}
+      </div>
+    </li>
+  {% empty %}
+    <li class="no-reviews">No reviews yet.</li>
+  {% endfor %}
+</ul>
+
 
       </div> <!-- end movie-info -->
     </div> <!-- end movie-card -->
@@ -171,3 +190,5 @@ document.querySelectorAll('.movie-description').forEach(desc => {
 });
 </script>
 {% endblock %}
+</script>
+
