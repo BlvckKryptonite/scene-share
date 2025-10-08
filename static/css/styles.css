@@ -317,50 +317,92 @@ h2 {
   font-size: 0.85rem;
 }
 
-/* Reviews */
+/* === REVIEWS === */
 .reviews-list {
   list-style: none;
   padding: 0;
-  margin: 0.8rem 0 0 0;
+  margin: 1rem 0 0 0;
   display: none;
 }
 .reviews-list.active { display: block; }
-.reviews-list li {
-  border-top: 1px solid #333;
-  padding: 0.5rem 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-.reviews-list li .review-actions a {
-  margin-left: 0.5rem;
-  color: var(--muted-text);
-}
-.reviews-list li .review-actions a:hover { color: var(--warning); }
-.no-reviews {
-  color: var(--muted-text);
-  font-style: italic;
-}
-
-.reviews-list {
-  list-style: none;
-  margin-top: 1rem;
-  padding-left: 0;
-}
 
 .reviews-list li {
   background: #222;
   border-radius: 6px;
   padding: 0.8rem;
   margin-bottom: 0.6rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  display: block;           
   color: #fff;
   font-size: 0.95rem;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
+/* Comment & Rating */
+.review-comment {
+  margin-bottom: 0.5rem;
+}
+
+/* Footer: Like left, Edit/Delete right */
+.review-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Like Button */
+.like-form {
+  display: inline-block;  
+  margin: 0;              
+}
+
+.like-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border: 1.5px solid var(--brand-yellow);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--brand-yellow);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+}
+
+.like-btn i {
+  font-size: 0.95rem;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.like-btn:hover i {
+  transform: scale(1.15);
+}
+
+.like-btn:hover {
+  background: var(--brand-yellow);
+  color: #000;
+}
+
+.like-btn.liked {
+  background: var(--brand-yellow);
+  color: #000;
+}
+
+.like-btn.liked i {
+  color: #000;
+}
+
+.like-btn .like-text {
+  font-size: 0.8rem;
+}
+
+.like-btn .like-count {
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+/* Edit/Delete actions */
 .review-actions {
   display: flex;
   gap: 0.6rem;
@@ -380,8 +422,13 @@ h2 {
 .review-actions i {
   font-size: 1rem;
   cursor: pointer;
-  display: inline-block; /* ensure visibility */
-  color: var(--brand-yellow); 
+  color: var(--brand-yellow);
+}
+
+/* No reviews placeholder */
+.no-reviews {
+  color: var(--muted-text);
+  font-style: italic;
 }
 
 
@@ -513,33 +560,34 @@ h2 {
   font-weight: 600;
 }
 
+/* == LIKE BUTTON STYLING (COMPACT) == */
 .like-form {
-  display: inline-block;
-  margin-top: 0.5rem;
+  display: block;            /* full-width line */
+  margin: 0.25rem 0;         /* minimal vertical spacing */
 }
 
 .like-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  padding: 0.4rem 0.75rem;
-  border: 2px solid var(--brand-yellow);
-  border-radius: 8px;
+  gap: 0.25rem;              /* tighter spacing between icon and text */
+  padding: 0.25rem 0.5rem;   /* smaller padding for compact size */
+  border: 1.5px solid var(--brand-yellow);
+  border-radius: 6px;
   background: transparent;
   color: var(--brand-yellow);
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.25s ease;
-  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;         /* slightly smaller font */
 }
 
 .like-btn i {
-  font-size: 1rem;
-  transition: transform 0.25s ease, color 0.25s ease;
+  font-size: 0.95rem;         /* keeps icon slightly larger than text */
+  transition: transform 0.2s ease, color 0.2s ease;
 }
 
 .like-btn:hover i {
-  transform: scale(1.1);
+  transform: scale(1.15);
 }
 
 .like-btn:hover {
@@ -557,5 +605,10 @@ h2 {
 }
 
 .like-btn .like-text {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+}
+
+.like-btn .like-count {
+  font-size: 0.8rem;
+  font-weight: 500;
 }
