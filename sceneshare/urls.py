@@ -23,6 +23,7 @@ urlpatterns = [
     path('', include('movies.urls')), # Home page points to movies app
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
+    path("community/", include("community.urls")),
 ]
 
 # Will allow my development server to serve avatars for testing
