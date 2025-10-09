@@ -13,6 +13,14 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 
+# Load .env locally only; skip on Heroku
+if "DYNO" not in os.environ:
+    try:
+        from dotenv import load_dotenv
+        load_dotenv()  # Load .env file from project root
+    except ModuleNotFoundError:
+        pass
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
