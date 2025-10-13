@@ -11,7 +11,7 @@ class MovieAdmin(admin.ModelAdmin):
         if obj.release_year:
             return obj.release_year
         elif obj.release_date:
-            return obj.release_date[:4]  # extract YYYY
+            return obj.release_date[:4]  # extract year
         return None
     get_release_year.short_description = "Release Year"
 
@@ -23,7 +23,26 @@ class MovieAdmin(admin.ModelAdmin):
         return "No Poster"
     get_poster_thumb.short_description = "Poster"
 
+
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
-    list_display = ("movie", "user", "rating", "created_at")
-    search_fields = ("movie__title", "user__username")
+    list_display = ("movie", "user", "rating", "approved", "flagged", "created_at")
+    search_fields = ("movie__title", "user__username", "content")
+    list_filter = ("approved", "flagged", "rating", "created_at")
+    actions = ["approve_reviews", "flag_reviews", "unflag_reviews"]
+
+    # For bulk actions
+    def approve_reviews(self, request, queryset):
+        updated = queryset.update(approved=True, flagged=False)
+        self.message_user(request, f"{updated} review(s) approved.")
+    approve_reviews.short_description = "✅ Approve selected reviews"
+
+    def flag_reviews(self, request, queryset):
+        updated = queryset.update(flagged=True)
+        self.message_user(request, f"{updated} review(s) flagged for review.")
+    flag_reviews.short_description = "🚩 Flag selected reviews"
+
+    def unflag_reviews(self, request, queryset):
+        updated = queryset.update(flagged=False)
+        self.message_user(request, f"{updated} review(s) unflagged.")
+    unflag_reviews.short_description = "❎ Unflag selected reviews"
