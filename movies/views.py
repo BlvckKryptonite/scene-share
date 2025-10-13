@@ -44,11 +44,11 @@ def home(request):
 
     # Add "is_liked" flag for each review (only approved ones)
     if request.user.is_authenticated:
-        reviews = Review.objects.filter(is_approved=True).select_related('user', 'movie').prefetch_related('reviewlike_set')
+        reviews = Review.objects.filter(approved=True).select_related('user', 'movie').prefetch_related('reviewlike_set')
         for review in reviews:
             review.is_liked = review.reviewlike_set.filter(user=request.user).exists()
     else:
-        reviews = Review.objects.filter(is_approved=True).select_related('user', 'movie')
+        reviews = Review.objects.filter(approved=True).select_related('user', 'movie')
     for review in reviews:
         review.is_liked = False
 

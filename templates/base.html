@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -15,13 +16,15 @@
     <!-- Font Awesome -->
 <script src="https://kit.fontawesome.com/e0a2ecfe2f.js" crossorigin="anonymous"></script>
 
-    <!-- Custom Styles -->
+    <!-- Custom Stylesheet -->
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
   </head>
 
   <body>
     <nav class="navbar">
-      <a href="{% url 'home' %}" class="navbar-brand">SceneShare</a>
+      <a href="{% url 'home' %}" class="navbar-brand">SceneShare
+      <img src="{% static 'logo/logo.png' %}" alt="SceneShare Logo" class="navbar-logo">
+      </a>
 
       <!-- Burger Icon -->
       <div class="burger">
