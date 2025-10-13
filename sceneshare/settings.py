@@ -165,20 +165,34 @@ if not TMDB_API_KEY:
 
 
 # ----- CLOUDINARY SET UP -----
-# Get Cloudinary URL from environment
+# Try to get CLOUDINARY_URL from environment
 CLOUDINARY_URL = os.environ.get("CLOUDINARY_URL", "").strip()
 
-# Defensive check
-if not CLOUDINARY_URL:
-    raise ValueError("Cloudinary credentials not set in environment! Check your Heroku config.")
+# Parse URL if available
+if CLOUDINARY_URL:
+    parsed_url = urlparse(CLOUDINARY_URL)
+    cloud_name = parsed_url.hostname
+    api_key = parsed_url.username
+    api_secret = parsed_url.password
+else:
+    # Fallback to individual env vars
+    cloud_name = os.environ.get("CLOUDINARY_CLOUD_NAME", "").strip()
+    api_key = os.environ.get("CLOUDINARY_API_KEY", "").strip()
+    api_secret = os.environ.get("CLOUDINARY_API_SECRET", "").strip()
 
-# Parse CLOUDINARY_URL automatically
-parsed_url = urlparse(CLOUDINARY_URL)
+# Graceful defensive check
+if not all([cloud_name, api_key, api_secret]):
+    raise ValueError(
+        "Cloudinary credentials not fully set! "
+        "Check CLOUDINARY_URL or individual env vars."
+    )
+
+# Configure Cloudinary
 cloudinary.config(
-    cloud_name=parsed_url.hostname,
-    api_key=parsed_url.username,
-    api_secret=parsed_url.password
+    cloud_name=cloud_name,
+    api_key=api_key,
+    api_secret=api_secret
 )
 
-# Use Cloudinary for media storage
+# Use Cloudinary as default media storage
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
