@@ -166,8 +166,8 @@ def movie_detail(request, tmdb_id):
             movie.overview = "No details available."
             movie.save()
 
-    # Fetch reviews
-    reviews = Review.objects.filter(movie=movie).order_by("-id")
+    # Fetch only approved reviews
+    reviews = Review.objects.filter(movie=movie, approved=True).order_by("-id")
 
     # Determine if user already has this movie in watchlist
     watchlist_movies = []
