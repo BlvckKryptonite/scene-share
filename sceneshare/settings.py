@@ -164,20 +164,15 @@ if not TMDB_API_KEY:
 
 
 # ----- CLOUDINARY SET UP -----
-CLOUDINARY_CLOUD_NAME = os.environ.get("CLOUDINARY_CLOUD_NAME")
-CLOUDINARY_API_KEY = os.environ.get("CLOUDINARY_API_KEY")
-CLOUDINARY_API_SECRET = os.environ.get("CLOUDINARY_API_SECRET")
+# Defensive - Read the URL from environment and strip whitespace
+CLOUDINARY_URL = os.environ.get("CLOUDINARY_URL", "").strip()
 
-# Raise error if missing (Defensive prog)
-if not all([CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET]):
+if not CLOUDINARY_URL:
+    print("CLOUDINARY_URL =", os.environ.get("CLOUDINARY_URL"))
     raise ValueError("Cloudinary credentials not set in environment!")
 
 # Configure Cloudinary
-cloudinary.config(
-    cloud_name=CLOUDINARY_CLOUD_NAME,
-    api_key=CLOUDINARY_API_KEY,
-    api_secret=CLOUDINARY_API_SECRET
-)
+cloudinary.config(cloudinary_url=CLOUDINARY_URL)
 
 # Use Cloudinary as default media storage
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
