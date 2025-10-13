@@ -42,9 +42,11 @@
         </div>
 
         <!-- Movie Description -->
-        {% if movie.description or movie.overview %}
-          <p class="movie-description">{{ movie.description|default:movie.overview }}</p>
-        {% endif %}
+       {% if movie.description or movie.overview %}
+  <p class="movie-description">
+    {{ movie.description|default:movie.overview }}
+  </p>
+{% endif %}
 
         <!-- Rating & Watchlist Inline -->
         <div class="rating-watchlist">
@@ -170,31 +172,31 @@ document.querySelectorAll('.toggle-reviews').forEach(btn => {
 });
 
 // Read More / Show Less for movie descriptions (shows all text)
-document.querySelectorAll('.movie-description').forEach(desc => {
-  const fullText = desc.innerText;
-  const maxLength = 120; // adjust length cutoff
-  if (fullText.length > maxLength) {
-    const shortText = fullText.slice(0, maxLength);
-    desc.innerHTML = `
-      <span class="short-text">${shortText}...</span>
-      <span class="full-text" style="display:none;">${fullText}</span>
-      <span class="read-more">Read More</span>
-    `;
-    const readMoreBtn = desc.querySelector('.read-more');
-    readMoreBtn.addEventListener('click', () => {
-      const shortTextSpan = desc.querySelector('.short-text');
-      const fullTextSpan = desc.querySelector('.full-text');
-      if (fullTextSpan.style.display === 'none') {
-        shortTextSpan.style.display = 'none';
-        fullTextSpan.style.display = 'inline';
-        readMoreBtn.innerText = 'Show Less';
-      } else {
-        shortTextSpan.style.display = 'inline';
-        fullTextSpan.style.display = 'none';
-        readMoreBtn.innerText = 'Read More';
-      }
-    });
-  }
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.movie-description').forEach(desc => {
+    const fullText = desc.textContent.trim();
+    const maxLength = 150; // adjust character limit as desired
+
+    if (fullText.length > maxLength) {
+      const shortText = fullText.slice(0, maxLength).trim();
+      desc.innerHTML = `
+        <span class="short-text">${shortText}...</span>
+        <span class="full-text" style="display:none;">${fullText}</span>
+        <span class="read-more">Read More</span>
+      `;
+
+      const readMoreBtn = desc.querySelector('.read-more');
+      readMoreBtn.addEventListener('click', () => {
+        const shortTextSpan = desc.querySelector('.short-text');
+        const fullTextSpan = desc.querySelector('.full-text');
+
+        const isCollapsed = fullTextSpan.style.display === 'none';
+        shortTextSpan.style.display = isCollapsed ? 'none' : 'inline';
+        fullTextSpan.style.display = isCollapsed ? 'inline' : 'none';
+        readMoreBtn.textContent = isCollapsed ? 'Show Less' : 'Read More';
+      });
+    }
+  });
 });
 
 // Review LIKE button AJAX script:

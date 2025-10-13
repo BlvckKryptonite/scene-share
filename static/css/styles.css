@@ -41,18 +41,12 @@ body {
 }
 
 .navbar-brand {
-  align-items: center;      /* vertically center logo + text */
+  align-items: center;    
   gap: 0.5rem;
   font-family: "Orbitron", sans-serif;
   color: var(--warning);
   font-size: 1.8rem;
   text-decoration: none;
-}
-
-.navbar-brand img.navbar-logo {
-  height: 1.8rem;           /* match text size */
-  width: auto;               /* maintain aspect ratio */
-  display: inline-block;
 }
 
 .nav-links {
@@ -117,11 +111,6 @@ body {
   .burger { display: flex; }
 }
 
-@media (max-width: 768px) {
-  .navbar-brand img.navbar-logo {
-    height: 1.4rem;         
-  }
-}
 
 /* Headings */
 h2 {
@@ -213,22 +202,20 @@ h2 {
   margin: 0.5rem 0 1rem 0;
   overflow: hidden;
   position: relative;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-  -webkit-box-orient: vertical;
+  min-height: 4.5rem; /* ensures uniform card height */
 }
+
 .movie-description .read-more {
   color: var(--brand-yellow);
   cursor: pointer;
   font-weight: 600;
   margin-left: 0.3rem;
-  display: inline-block; /* ensures clickable area is visible */
   text-decoration: underline;
   transition: color 0.2s ease;
 }
+
 .movie-description .read-more:hover {
-  color: #ffd54f;
+  color: var(--brand-orange);
 }
 
 /* ====== Updated Badge & Watchlist Inline ====== */
