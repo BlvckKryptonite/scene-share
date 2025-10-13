@@ -25,6 +25,10 @@ class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     rating = models.IntegerField(choices=RATING_CHOICES)
     comment = models.TextField(blank=True)
+
+     # Moderation fields
+    approved = models.BooleanField(default=False)
+    flagged = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
