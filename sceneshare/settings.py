@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'movies',
     'community',
     'cloudinary',
+    'cloudinary_storage'
 ]
 
 MIDDLEWARE = [

@@ -7,6 +7,7 @@ colorama==0.4.6
 dj-database-url==3.0.1
 dj3-cloudinary-storage==0.0.6
 Django==4.2.24
+django-cloudinary-storage==0.3.0
 django-summernote==0.8.20.0
 gunicorn==20.1.0
 idna==3.10
