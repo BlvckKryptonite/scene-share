@@ -1,5 +1,4 @@
-{% load static %}
-{% load cloudinary %}
+{% load static %} {% load cloudinary %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +14,10 @@
     />
 
     <!-- Font Awesome -->
-<script src="https://kit.fontawesome.com/e0a2ecfe2f.js" crossorigin="anonymous"></script>
+    <script
+      src="https://kit.fontawesome.com/e0a2ecfe2f.js"
+      crossorigin="anonymous"
+    ></script>
 
     <!-- Custom Stylesheet -->
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
@@ -23,8 +25,7 @@
 
   <body>
     <nav class="navbar">
-      <a href="{% url 'home' %}" class="navbar-brand">SceneShare
-      </a>
+      <a href="{% url 'home' %}" class="navbar-brand">SceneShare </a>
 
       <!-- Burger Icon -->
       <div class="burger">
@@ -38,46 +39,52 @@
         <a href="{% url 'home' %}">Home</a>
 
         {% if user.is_authenticated %}
-          <a href="{% url 'watchlist' %}">My Watchlist</a>
-          <a href="{% url 'profile' %}">Hi, {{ user.username }}</a>
+        <a href="{% url 'watchlist' %}">My Watchlist</a>
+        <a href="{% url 'profile' %}">Hi, {{ user.username }}</a>
 
-          {% if user.is_staff %}
-            <a href="{% url 'admin:index' %}">Admin</a>
-          {% endif %}
+        {% if user.is_staff %}
+        <a href="{% url 'admin:index' %}">Admin</a>
+        {% endif %}
 
-          <form method="POST" action="{% url 'logout' %}" style="display:inline;">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-secondary" style="margin-left: 10px;">Logout</button>
-          </form>
+        <form method="POST" action="{% url 'logout' %}" style="display: inline">
+          {% csrf_token %}
+          <button
+            type="submit"
+            class="btn btn-secondary"
+            style="margin-left: 10px"
+          >
+            Logout
+          </button>
+        </form>
         {% else %}
-          <a href="{% url 'register' %}">Register</a>
-          <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'register' %}">Register</a>
+        <a href="{% url 'login' %}">Login</a>
         {% endif %}
       </div>
     </nav>
 
     <!-- Main Content -->
     <main class="container">
-      {% if messages %}
-        {% for message in messages %}
-          <div class="alert">{{ message }}</div>
-        {% endfor %}
-      {% endif %}
-      {% block content %}{% endblock %}
+      {% if messages %} {% for message in messages %}
+      <div class="alert">{{ message }}</div>
+      {% endfor %} {% endif %} {% block content %}{% endblock %}
     </main>
 
     <!-- Footer -->
-    <footer style="text-align:center; padding:2rem 0; background-color: #1a1a1a; color: #9e9e9e; font-size:0.9rem;">
+    <footer
+      style="
+        text-align: center;
+        padding: 2rem 0;
+        background-color: #1a1a1a;
+        color: #9e9e9e;
+        font-size: 0.9rem;
+      "
+    >
       <p>© 2025 SceneShare. All rights reserved.</p>
     </footer>
 
-    <!-- Burger Script -->
-    <script>
-      const burger = document.querySelector('.burger');
-      const nav = document.querySelector('.nav-links');
-      burger.addEventListener('click', () => {
-        nav.classList.toggle('active');
-      });
-    </script>
+    {% block scripts %}
+    <script src="{% static 'js/main.js' %}"></script>
+    {% endblock %}
   </body>
 </html>
