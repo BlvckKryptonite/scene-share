@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 import cloudinary
 from pathlib import Path
+from urllib.parse import urlparse
 
 # Load .env locally only; skip on Heroku
 if "DYNO" not in os.environ:
@@ -164,15 +165,20 @@ if not TMDB_API_KEY:
 
 
 # ----- CLOUDINARY SET UP -----
-# Defensive - Read the URL from environment and strip whitespace
+# Get Cloudinary URL from environment
 CLOUDINARY_URL = os.environ.get("CLOUDINARY_URL", "").strip()
 
+# Defensive check
 if not CLOUDINARY_URL:
-    print("CLOUDINARY_URL =", os.environ.get("CLOUDINARY_URL"))
-    raise ValueError("Cloudinary credentials not set in environment!")
+    raise ValueError("Cloudinary credentials not set in environment! Check your Heroku config.")
 
-# Configure Cloudinary
-cloudinary.config(cloudinary_url=CLOUDINARY_URL)
+# Parse CLOUDINARY_URL automatically
+parsed_url = urlparse(CLOUDINARY_URL)
+cloudinary.config(
+    cloud_name=parsed_url.hostname,
+    api_key=parsed_url.username,
+    api_secret=parsed_url.password
+)
 
-# Use Cloudinary as default media storage
+# Use Cloudinary for media storage
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
