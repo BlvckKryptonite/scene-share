@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 import os
+import cloudinary
 from pathlib import Path
 
 # Load .env locally only; skip on Heroku
@@ -51,6 +52,7 @@ INSTALLED_APPS = [
     'accounts',
     'movies',
     'community',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -151,9 +153,6 @@ LOGIN_REDIRECT_URL = '/'   # Redirect after successful login
 LOGOUT_REDIRECT_URL = '/accounts/login/'  # Redirect after logout
 
 # Uploaded files url & folder in which they'll be stored
-#                   --- IMPORTANT --- 
-# WILL NEED CLOUD STORAGE TO HANDLE UPLOADS FOR PRODUCTION
-# - CLOUDINARY OR AWS S3
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -163,3 +162,22 @@ TMDB_API_KEY = os.environ.get("TMDB_API_KEY")
 if not TMDB_API_KEY:
     raise ValueError("TMDB_API_KEY not set in environment!")
 
+
+# ----- CLOUDINARY SET UP -----
+CLOUDINARY_CLOUD_NAME = os.environ.get("CLOUDINARY_CLOUD_NAME")
+CLOUDINARY_API_KEY = os.environ.get("CLOUDINARY_API_KEY")
+CLOUDINARY_API_SECRET = os.environ.get("CLOUDINARY_API_SECRET")
+
+# Raise error if missing (Defensive prog)
+if not all([CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET]):
+    raise ValueError("Cloudinary credentials not set in environment!")
+
+# Configure Cloudinary
+cloudinary.config(
+    cloud_name=CLOUDINARY_CLOUD_NAME,
+    api_key=CLOUDINARY_API_KEY,
+    api_secret=CLOUDINARY_API_SECRET
+)
+
+# Use Cloudinary as default media storage
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
