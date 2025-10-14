@@ -7,13 +7,14 @@
     <div class="watchlist-grid">
       {% for entry in entries %}
         <div class="movie-card">
+
           <!-- Poster -->
           {% if entry.movie.poster %}
-            <img src="{{ entry.movie.poster.url }}" alt="{{ entry.movie.title }} poster" class="movie-poster" />
+            <img src="{{ entry.movie.poster.url }}" alt="{{ entry.movie.title }} poster" class="movie-poster"/>
           {% elif entry.movie.poster_path %}
-            <img src="https://image.tmdb.org/t/p/w300{{ entry.movie.poster_path }}" alt="{{ entry.movie.title }} poster" class="movie-poster" />
+            <img src="https://image.tmdb.org/t/p/w300{{ entry.movie.poster_path }}" alt="{{ entry.movie.title }} poster" class="movie-poster"/>
           {% else %}
-            <div class="poster-placeholder">No Poster</div>
+            <div class="no-poster">No Poster</div>
           {% endif %}
 
           <!-- Info -->
@@ -32,25 +33,26 @@
             </div>
 
             <!-- Buttons -->
-            <div class="watchlist-buttons">
+            <div class="movie-buttons">
               {% if entry.movie.tmdb_id %}
-                <a href="{% url 'movie_detail' entry.movie.tmdb_id %}" class="view-review-btn">View & Review</a>
-                <div class="watchlist-action-btns">
-                  <a href="{% url 'toggle_watched_tmdb' entry.movie.tmdb_id %}" class="toggle-watched-btn">Toggle Watched</a>
-                  <a href="{% url 'remove_from_watchlist_tmdb' entry.movie.tmdb_id %}" class="remove-btn">Remove</a>
+                <a href="{% url 'movie_detail' entry.movie.tmdb_id %}" class="btn-review">View & Review</a>
+                <div class="btn-group">
+                  <a href="{% url 'toggle_watched_tmdb' entry.movie.tmdb_id %}" class="btn-accent">Toggle Watched</a>
+                  <a href="{% url 'remove_from_watchlist_tmdb' entry.movie.tmdb_id %}" class="btn-remove">Remove</a>
                 </div>
               {% else %}
-                <a href="{% url 'movie_detail' entry.movie.id %}" class="view-review-btn">View & Review</a>
-                <div class="watchlist-action-btns">
-                  <a href="{% url 'toggle_watched_local' entry.movie.id %}" class="toggle-watched-btn">Toggle Watched</a>
-                  <a href="{% url 'remove_from_watchlist_local' entry.movie.id %}?next={{ request.path }}" class="remove-btn">Remove</a>
+                <a href="{% url 'movie_detail' entry.movie.id %}" class="btn-review">View & Review</a>
+                <div class="btn-group">
+                  <a href="{% url 'toggle_watched_local' entry.movie.id %}" class="btn-accent">Toggle Watched</a>
+                  <a href="{% url 'remove_from_watchlist_local' entry.movie.id %}?next={{ request.path }}" class="btn-remove">Remove</a>
                 </div>
               {% endif %}
             </div>
-          </div>
-        </div>
+
+          </div> <!-- movie-info -->
+        </div> <!-- movie-card -->
       {% endfor %}
-    </div>
+    </div> <!-- watchlist-grid -->
   {% else %}
     <div class="empty-watchlist">
       <p>Your watchlist is empty.</p>

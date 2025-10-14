@@ -8,6 +8,11 @@ from .models import Movie, Review
 
 @admin.register(Movie)
 class MovieAdmin(admin.ModelAdmin):
+    """
+    Admin interface for the Movie model.
+    Displays movie title, release year, and poster thumbnail.
+    Allows searching by title.
+    """
     list_display = ("title", "get_release_year", "get_poster_thumb")
     search_fields = ("title",)
 
@@ -20,27 +25,48 @@ class MovieAdmin(admin.ModelAdmin):
     get_release_year.short_description = "Release Year"
 
     def get_poster_thumb(self, obj):
+        """
+        Returns an HTML image tag for the movie's poster thumbnail.
+        Uses local poster if available, otherwise uses external poster path.
+        """
         if obj.poster:
-            return format_html('<img src="{}" width="60" />', obj.poster.url)
+            return format_html(
+                '<img src="{}" width="60" />', obj.poster.url
+            )
         elif obj.poster_path:
-            return format_html('<img src="https://image.tmdb.org/t/p/w200{}" width="60" />', obj.poster_path)
+            return format_html(
+                '<img src="https://image.tmdb.org/t/p/w200{}" width="60" />',
+                obj.poster_path
+            )
         return "No Poster"
     get_poster_thumb.short_description = "Poster"
 
 
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
-    list_display = ("movie", "user", "rating", "approved", "flagged", "created_at")
+    """
+    Admin interface for the Review model.
+    Displays review details and provides bulk actions for approving,
+    flagging, and unflagging reviews, with logging for each action.
+    """
+    list_display = (
+        "movie", "user", "rating", "approved", "flagged", "created_at"
+    )
     search_fields = ("movie__title", "user__username", "comment")
     list_filter = ("approved", "flagged", "rating", "created_at")
     actions = ["approve_reviews", "flag_reviews", "unflag_reviews"]
 
-    # Helper to get content type
     def get_content_type_id(self):
+        """
+        Returns the content type ID for the Review model.
+        """
         return ContentType.objects.get_for_model(self.model).pk
 
-    # Bulk actions with logging
     def approve_reviews(self, request, queryset):
+        """
+        Bulk action to approve selected reviews and unflag them.
+        Logs each approval action.
+        """
         updated = queryset.update(approved=True, flagged=False)
         content_type_id = self.get_content_type_id()
         for review in queryset:
@@ -65,9 +91,13 @@ class ReviewAdmin(admin.ModelAdmin):
                 object_id=review.id,
                 object_repr=force_str(review),
                 action_flag=CHANGE,
-                change_message=f"Flagged review for moderation: {review.id}",
+                change_message=(
+                    f"Flagged review for moderation: {review.id}"
+                ),
             )
-        self.message_user(request, f"{updated} review(s) flagged for review.")
+        self.message_user(
+            request, f"{updated} review(s) flagged for review."
+        )
     flag_reviews.short_description = "🚩 Flag selected reviews"
 
     def unflag_reviews(self, request, queryset):
@@ -85,8 +115,10 @@ class ReviewAdmin(admin.ModelAdmin):
         self.message_user(request, f"{updated} review(s) unflagged.")
     unflag_reviews.short_description = "❎ Unflag selected reviews"
 
-    # Log deletions
     def delete_queryset(self, request, queryset):
+        """
+        Logs each review deletion before performing the bulk delete.
+        """
         content_type_id = self.get_content_type_id()
         for review in queryset:
             LogEntry.objects.log_action(

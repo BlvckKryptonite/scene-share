@@ -262,7 +262,8 @@ h2 {
 
 /* Base form */
 .base-form {
-  display: inline}
+  display: inline
+}
 
 /* Flex Groups */
 .action-row {
@@ -1147,9 +1148,11 @@ h2 {
   width: 100%;
   aspect-ratio: 555/817;
   object-fit: cover;
+  display: block;
+  margin: 0 auto;
 }
 
-.poster-placeholder {
+.no-poster {
   height: 300px;
   display: flex;
   align-items: center;
@@ -1176,6 +1179,7 @@ h2 {
   margin: 0 0 0.5rem 0;
   color: var(--muted-text);
   font-size: 0.9rem;
+  text-align: center;
 }
 
 .watched-status {
@@ -1185,13 +1189,13 @@ h2 {
   color: var(--text-color);
 }
 
-.watchlist-buttons {
+.movie-buttons {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-.view-review-btn {
+.btn-review {
   width: 100%;
   text-align: center;
   padding: 0.5rem 0;
@@ -1203,29 +1207,33 @@ h2 {
   transition: var(--transition);
 }
 
-.watchlist-action-btns {
+.btn-group {
   display: flex;
   gap: 0.5rem;
 }
 
-.toggle-watched-btn, .remove-btn {
+.btn-accent {
   flex: 1;
   text-align: center;
   padding: 0.4rem 0;
+  background: var(--accent);
+  color: #fff;
   border-radius: var(--radius);
   font-weight: 600;
   text-decoration: none;
   transition: var(--transition);
 }
 
-.toggle-watched-btn {
-  background: var(--accent);
-  color: #fff;
-}
-
-.remove-btn {
+.btn-remove {
+  flex: 1;
+  text-align: center;
+  padding: 0.4rem 0;
   background: var(--muted-text);
   color: #fff;
+  border-radius: var(--radius);
+  font-weight: 600;
+  text-decoration: none;
+  transition: var(--transition);
 }
 
 .empty-watchlist {
@@ -1234,3 +1242,12 @@ h2 {
   color: var(--muted-text);
 }
 
+
+/* ====== CUSTOM FOOTER ====== */
+.site-footer {
+  text-align: center;
+  padding: 2rem 0;
+  background-color: #1a1a1a;
+  color: #9e9e9e;
+  font-size: 0.9rem;
+}
