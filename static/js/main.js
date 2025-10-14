@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// Toggle Reviews
+// Toggle Reviews' Visibility
 document.querySelectorAll('.toggle-reviews').forEach(btn => {
   btn.addEventListener('click', () => {
     const list = document.querySelector(btn.dataset.target);

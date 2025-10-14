@@ -1,21 +1,24 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="movie-detail-section" style="padding:2rem 1rem; min-height: calc(100vh - 80px); display:flex; flex-direction:column; align-items:center;">
+<section class="movie-detail-section">
   
   <!-- Movie Title -->
-  <h1 class="movie-title" style="text-align:center; margin-bottom:1rem; color:var(--text-color);">{{ movie.title }}</h1>
+  <h1 class="movie-title">{{ movie.title }}</h1>
   
   <!-- Poster -->
   {% if movie.poster_path %}
-    <img src="https://image.tmdb.org/t/p/w300{{ movie.poster_path }}" alt="{{ movie.title }}" style="border-radius:8px; margin-bottom:1.5rem; max-width:300px; width:100%; object-fit:cover;">
+    <img 
+      src="https://image.tmdb.org/t/p/w300{{ movie.poster_path }}" 
+      alt="{{ movie.title }}" 
+      class="movie-poster">
   {% endif %}
   
   <!-- Overview -->
-  <p class="movie-overview" style="max-width:700px; text-align:center; color:var(--text-color); margin-bottom:2rem;">{{ movie.overview }}</p>
+  <p class="movie-overview">{{ movie.overview }}</p>
   
   <!-- Watchlist / Watched Buttons -->
   {% if user.is_authenticated %}
-    <div class="watchlist-buttons" style="display:flex; justify-content:center; gap:1rem; margin-bottom:2rem; flex-wrap:wrap;">
+    <div class="watchlist-buttons">
       {% if movie.tmdb_id in watchlist_movies %}
         <a href="{% url 'remove_from_watchlist_tmdb' movie.tmdb_id %}" class="btn btn-sm btn-danger">Remove from Watchlist</a>
       {% else %}
@@ -25,10 +28,10 @@
   {% endif %}
   
   <!-- Reviews Section -->
-  <h2 style="margin-bottom:1rem; color:var(--text-color);">Reviews</h2>
-  <ul class="reviews-list" style="list-style:none; padding:0; max-width:700px; width:100%;">
+  <h2 class="reviews-heading">Reviews</h2>
+  <ul class="reviews-list">
     {% for review in reviews %}
-      <li style="background:#222; border-radius:6px; padding:0.8rem; margin-bottom:0.6rem; display:flex; justify-content:space-between; align-items:flex-start; color:#fff; font-size:0.95rem; box-shadow:0 2px 6px rgba(0,0,0,0.3);">
+      <li class="review-item">
         <div>
           <strong>{{ review.user.username }}</strong>: {{ review.comment }}<br>
           {% for i in "12345" %}
@@ -36,26 +39,26 @@
           {% endfor %}
         </div>
         {% if user.is_authenticated and review.user == user %}
-          <div class="review-actions" style="display:flex; gap:0.6rem;">
+          <div class="review-actions">
             <a href="{% url 'edit_review' review.id %}" title="Edit"><i class="fa-solid fa-pen-to-square"></i></a>
             <a href="{% url 'delete_review' review.id %}" title="Delete" onclick="return confirm('Are you sure?')"><i class="fa-solid fa-trash"></i></a>
           </div>
         {% endif %}
       </li>
     {% empty %}
-      <li class="no-reviews" style="color:var(--muted-text); font-style:italic;">No reviews yet.</li>
+      <li class="no-reviews">No reviews yet.</li>
     {% endfor %}
   </ul>
   
   <!-- Add Review Form -->
   {% if user.is_authenticated %}
-        <form method="POST" class="edit-review-form" style="display:flex; flex-direction:column; gap:1.5rem; width:100%;">
+    <form method="POST" class="edit-review-form">
       {% csrf_token %}
 
-      <!-- Star Rating (row-reverse like homepage) -->
-      <div class="rating-group" style="display:flex; align-items:center; gap:0.5rem;">
-        <label style="font-weight:600;">Rating:</label>
-        <div class="star-rating" style="flex-direction: row-reverse;">
+      <!-- Star Rating -->
+      <div class="rating-group">
+        <label class="rating-label">Rating:</label>
+        <div class="star-rating">
           {% for star_value in "54321" %}
             <input type="radio" name="rating" id="star{{ review.id }}-{{ star_value }}" value="{{ star_value }}" {% if review.rating|stringformat:"s" == star_value|stringformat:"s" %}checked{% endif %}>
             <label for="star{{ review.id }}-{{ star_value }}">&#9733;</label>
@@ -66,14 +69,12 @@
       <!-- Multi-line Comment Input -->
       <textarea name="comment" placeholder="Write a review..." class="review-input" required rows="3">{{ review.comment }}</textarea>
 
-      <!-- Centered Submit Button -->
-      <button type="submit" class="auth-btn" style="align-self:center; padding:0.7rem 1.2rem; border-radius:var(--radius); font-weight:600; cursor:pointer;">Submit Review</button>
+      <!-- Submit Button -->
+      <button type="submit" class="auth-btn">Submit Review</button>
     </form>
-    
-      {% csrf_token %}
-      {{ form.as_p }}
-      
-    
+
+    {% csrf_token %}
+    {{ form.as_p }}
   {% endif %}
 
 </section>

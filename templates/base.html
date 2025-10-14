@@ -46,12 +46,11 @@
         <a href="{% url 'admin:index' %}">Admin</a>
         {% endif %}
 
-        <form method="POST" action="{% url 'logout' %}" style="display: inline">
+        <form method="POST" action="{% url 'logout' %}" class="base-form">
           {% csrf_token %}
           <button
             type="submit"
             class="btn btn-secondary"
-            style="margin-left: 10px"
           >
             Logout
           </button>
@@ -71,15 +70,7 @@
     </main>
 
     <!-- Footer -->
-    <footer
-      style="
-        text-align: center;
-        padding: 2rem 0;
-        background-color: #1a1a1a;
-        color: #9e9e9e;
-        font-size: 0.9rem;
-      "
-    >
+    <footer>
       <p>© 2025 SceneShare. All rights reserved.</p>
     </footer>
 
