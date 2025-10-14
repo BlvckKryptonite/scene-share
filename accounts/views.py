@@ -50,6 +50,8 @@ def profile(request):
             # Save username
             user.username = form.cleaned_data['username']
             user.save()
+            messages.success(
+                request, 'Your profile has been updated successfully!')
             return redirect('profile')
     else:
         form = ProfileUpdateForm(

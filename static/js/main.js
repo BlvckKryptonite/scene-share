@@ -82,3 +82,16 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 });
+
+
+// REVIEW VISUAL FEEDBACK
+  // Remove messages after 4 seconds
+  setTimeout(() => {
+    const messages = document.querySelectorAll('.messages .alert');
+    messages.forEach(msg => {
+      msg.style.transition = 'opacity 0.5s, transform 0.5s';
+      msg.style.opacity = '0';
+      msg.style.transform = 'translateY(-10px)';
+      setTimeout(() => msg.remove(), 500);
+    });
+  }, 1500);

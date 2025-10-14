@@ -6,9 +6,12 @@ from .models import Movie, Review, Watchlist
 from .forms import ReviewForm
 from django.conf import settings
 import requests
-from community.models import ReviewLike
+from django.contrib import messages
 
 
+# ===========================
+# Home View
+# ===========================
 def home(request):
     # Annotate movies with their average rating
     movies = Movie.objects.all().annotate(avg_rating=Avg('reviews__rating'))
@@ -39,9 +42,15 @@ def home(request):
                     'comment': form.cleaned_data['comment']
                 }
             )
+            # Visual feedback
+            messages.success(request, "Your review was posted successfully!")
             return redirect('home')
         else:
             forms_dict[int(movie_id)] = form
+            messages.error(
+                request,
+                "Your review was not posted successfully. Please try again."
+            )
 
     # Add "is_liked" flag for each review (only approved ones)
     if request.user.is_authenticated:
@@ -73,6 +82,9 @@ def home(request):
     return render(request, 'movies/home.html', context)
 
 
+# ===========================
+# Edit Review View
+# ===========================
 def edit_review(request, review_id):
     review = get_object_or_404(Review, id=review_id)
     if review.user != request.user:
@@ -80,13 +92,10 @@ def edit_review(request, review_id):
 
     if request.method == 'POST':
         form = ReviewForm(request.POST, instance=review)
-        # Redirect to movie detail if review belongs to an API-fetched
-        # movie
         form.save()
-        # Redirect to movie detail if review belongs to an API-fetched movie
         if review.movie.tmdb_id:
             return redirect('movie_detail', tmdb_id=review.movie.tmdb_id)
-            return redirect('home')
+        return redirect('home')
     else:
         form = ReviewForm(instance=review)
 
@@ -97,6 +106,9 @@ def edit_review(request, review_id):
     )
 
 
+# ===========================
+# Delete Review View
+# ===========================
 def delete_review(request, review_id):
     review = get_object_or_404(Review, id=review_id)
     if review.user != request.user:
@@ -104,18 +116,19 @@ def delete_review(request, review_id):
 
     movie = review.movie
     review.delete()
-    # Redirect to movie detail if review belongs to an API-fetched movie
     if movie.tmdb_id:
         return redirect('movie_detail', tmdb_id=movie.tmdb_id)
     return redirect('home')
 
 
+# ===========================
+# Movie Search View
+# ===========================
 def movie_search(request):
     query = request.GET.get("q")
     results = []
     error_message = None
 
-    # Check if API key is set
     api_key = getattr(settings, "TMDB_API_KEY", None)
     if not api_key:
         error_message = (
@@ -171,11 +184,12 @@ def movie_search(request):
     )
 
 
+# ===========================
+# Movie Detail View
+# ===========================
 def movie_detail(request, tmdb_id):
-    # Try to get the movie locally
     movie, created = Movie.objects.get_or_create(tmdb_id=tmdb_id)
 
-    # If newly created, fetch details from TMDb
     if created:
         url = f"https://api.themoviedb.org/3/movie/{tmdb_id}"
         params = {"api_key": settings.TMDB_API_KEY, "language": "en-US"}
@@ -188,15 +202,12 @@ def movie_detail(request, tmdb_id):
             movie.poster_path = data.get("poster_path")
             movie.save()
         else:
-            # Fallback if TMDb fails
             movie.title = "Unknown Title"
             movie.overview = "No details available."
             movie.save()
 
-    # Fetch only approved reviews
     reviews = Review.objects.filter(movie=movie, approved=True).order_by("-id")
 
-    # Determine if user already has this movie in watchlist
     watchlist_movies = []
     if request.user.is_authenticated:
         watchlist_movies = request.user.watchlist.values_list(
@@ -211,6 +222,9 @@ def movie_detail(request, tmdb_id):
     return render(request, "movies/detail.html", context)
 
 
+# ====================
+# Add Review View
+# ====================
 @login_required
 def add_review(request, movie_id):
     movie = get_object_or_404(Movie, id=movie_id)
@@ -221,9 +235,14 @@ def add_review(request, movie_id):
             review.movie = movie
             review.user = request.user
             review.save()
+            # Visual feedback
+            messages.success(request, "Your review was posted successfully!")
             return redirect("movie_detail", tmdb_id=movie.tmdb_id)
     else:
         form = ReviewForm()
+        messages.error(
+                request,
+                "Your review was not posted successfully. Please try again.")
     return render(
         request,
         "movies/detail.html",
@@ -231,6 +250,9 @@ def add_review(request, movie_id):
     )
 
 
+# ===========================
+# Add to Watchlist View
+# ===========================
 @login_required
 def add_to_watchlist(request, tmdb_id=None, movie_id=None):
     if not request.user.is_authenticated:
@@ -244,6 +266,9 @@ def add_to_watchlist(request, tmdb_id=None, movie_id=None):
     return redirect('home')
 
 
+# ===========================
+# Remove from Watchlist View
+# ===========================
 @login_required
 def remove_from_watchlist(request, tmdb_id=None, movie_id=None):
     if not request.user.is_authenticated:
@@ -255,13 +280,15 @@ def remove_from_watchlist(request, tmdb_id=None, movie_id=None):
     )
     Watchlist.objects.filter(user=request.user, movie=movie).delete()
 
-    # Redirect user back to referring page or fallback to home
     next_url = request.META.get('HTTP_REFERER', None)
     if next_url:
         return redirect(next_url)
     return redirect('home')
 
 
+# ===========================
+# Toggle Watched Status View
+# ===========================
 @login_required
 def toggle_watched(request, tmdb_id=None, movie_id=None):
     if not request.user.is_authenticated:
@@ -275,23 +302,17 @@ def toggle_watched(request, tmdb_id=None, movie_id=None):
     watch_entry.watched = not watch_entry.watched
     watch_entry.save()
 
-    # Redirect back to where user came from, fallback to home
     return redirect(request.META.get('HTTP_REFERER', 'home'))
 
 
+# ================
+# Watchlist View
+# ================
 @login_required
 def watchlist(request):
-    # Get all Watchlist entries for the current user
     entries = request.user.watchlist.select_related('movie').all()
 
     context = {
         'entries': entries
     }
     return render(request, 'movies/watchlist.html', context)
-
-    return render(request, "movies/watchlist.html")
-
-
-@login_required
-def my_watchlist(request):
-    return render(request, "movies/watchlist.html")
