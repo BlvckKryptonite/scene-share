@@ -615,3 +615,77 @@ h2 {
   font-size: 0.8rem;
   font-weight: 500;
 }
+
+/* ============================= */
+/* LOGOUT / LOGIN PAGE STYLES    */
+/* ============================= */
+
+.logout-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.logout-heading {
+  margin-bottom: 1.5rem;
+  color: var(--text-color);
+  text-align: center;
+  font-size: 2rem;
+}
+
+.logout-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 400px;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 2rem;
+  border-radius: var(--radius);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.error-text {
+  color: var(--accent);
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+.btn-submit {
+  padding: 0.85rem 1.4rem;
+  background: var(--brand-yellow);
+  color: #000;
+  border: none;
+  border-radius: var(--radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 1rem;
+}
+
+.btn-submit:hover {
+  opacity: 0.85;
+}
+
+.logout-footer {
+  margin-top: 1rem;
+  color: var(--muted-text);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.link-signup {
+  color: var(--brand-yellow);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.link-signup:hover {
+  text-decoration: underline;
+}
