@@ -10,22 +10,29 @@ from .forms import ProfileUpdateForm
 def register(request):
     """
     Handle user registration.
-
-    Renders the registration form on GET requests.
+     Renders the registration form on GET requests.
     On POST, validates and creates a new user, then redirects to login.
-    Displays a success message upon successful registration.
+
+    Provides success or error feedback via messages.
     """
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            form.save()  # This creates a new user in the database
+            form.save()
             username = form.cleaned_data.get('username')
             messages.success(
-                request,
-                f'Account created for {username}! You can now log in.'
+                request, f'Account created for {username}! You can now log in.'
             )
-            # Redirect to login page after registration
             return redirect('login')
+        else:
+            # Add an error message for invalid form
+            messages.error(
+                request,
+                (
+                    'Registration failed. Please check the details and '
+                    'try again.'
+                )
+            )
     else:
         form = CustomUserCreationForm()
     return render(request, 'accounts/register.html', {'form': form})
