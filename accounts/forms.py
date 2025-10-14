@@ -3,39 +3,45 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .models import Profile
 
-# Creating a custom registration form by extending Django's built-in
-# UserCreationForm
+
 class CustomUserCreationForm(UserCreationForm):
-    email = forms.EmailField(required=True) 
+    """
+    Custom user registration form extending Django's built-in UserCreationForm.
+    Adds an email field and specifies the fields to be used from the User
+    model.
+    """
+    email = forms.EmailField(required=True)
 
     class Meta:
-        model = User  # This form will save data to Django's default User model
+        model = User
         fields = ['username', 'email', 'password1', 'password2']
-        # password1 and password2 are used to confirm the password
 
 
-# Profile form
 class ProfileUpdateForm(forms.ModelForm):
+    """
+    Form for updating the user's profile information.
+    Includes a custom username field and a styled bio textarea.
+    """
     username = forms.CharField(
         max_length=150,
         required=True,
-        widget=forms.TextInput(attrs={
-            'class': 'review-input',
-            'placeholder': 'Update your username...',
-            'style': 'width:100%; padding:0.75rem 1rem; border-radius:6px; border:1px solid #444; background:#2a2a2a; color:#fff; font-size:1rem;'
-        })
+        widget=forms.TextInput(
+            attrs={
+                'class': 'profile-input',
+                'placeholder': 'Update your username...'
+            }
+        )
     )
 
     class Meta:
         model = Profile
         fields = ['bio']
         widgets = {
-            'bio': forms.Textarea(attrs={
-                'class': 'review-input',
-                'placeholder': 'Update your bio...',
-                'rows': 2,
-                'style': 'width:100%; padding:0.75rem 1rem; border-radius:6px; border:1px solid #444; background:#2a2a2a; color:#fff; font-size:1rem; resize:none;'
-            })
+            'bio': forms.Textarea(
+                attrs={
+                    'class': 'profile-input profile-bio',
+                    'placeholder': 'Update your bio...',
+                    'rows': 2,
+                }
+            )
         }
-
-
