@@ -228,6 +228,7 @@ def movie_detail(request, tmdb_id):
 @login_required
 def add_review(request, movie_id):
     movie = get_object_or_404(Movie, id=movie_id)
+
     if request.method == "POST":
         form = ReviewForm(request.POST)
         if form.is_valid():
@@ -235,19 +236,30 @@ def add_review(request, movie_id):
             review.movie = movie
             review.user = request.user
             review.save()
-            # Visual feedback
             messages.success(request, "Your review was posted successfully!")
             return redirect("movie_detail", tmdb_id=movie.tmdb_id)
+        else:
+            messages.error(
+                request,
+                "Your review was not posted successfully. Please try again."
+            )
     else:
         form = ReviewForm()
-        messages.error(
-                request,
-                "Your review was not posted successfully. Please try again.")
-    return render(
-        request,
-        "movies/detail.html",
-        {"movie": movie, "form": form}
-    )
+
+    # Include all context needed for detail page
+    reviews = Review.objects.filter(movie=movie, approved=True).order_by("-id")
+    watchlist_movies = []
+    if request.user.is_authenticated:
+        watchlist_movies = request.user.watchlist.values_list(
+            'movie__tmdb_id', flat=True)
+
+    context = {
+        "movie": movie,
+        "reviews": reviews,
+        "watchlist_movies": watchlist_movies,
+        "form": form,
+    }
+    return render(request, "movies/detail.html", context)
 
 
 # ===========================

@@ -51,31 +51,32 @@
   </ul>
   
   <!-- Add Review Form -->
-  {% if user.is_authenticated %}
-    <form method="POST" class="edit-review-form">
-      {% csrf_token %}
-
-      <!-- Star Rating -->
-      <div class="rating-group">
-        <label class="rating-label">Rating:</label>
-        <div class="star-rating">
-          {% for star_value in "54321" %}
-            <input type="radio" name="rating" id="star{{ review.id }}-{{ star_value }}" value="{{ star_value }}" {% if review.rating|stringformat:"s" == star_value|stringformat:"s" %}checked{% endif %}>
-            <label for="star{{ review.id }}-{{ star_value }}">&#9733;</label>
-          {% endfor %}
-        </div>
-      </div>
-
-      <!-- Multi-line Comment Input -->
-      <textarea name="comment" placeholder="Write a review..." class="review-input" required rows="3">{{ review.comment }}</textarea>
-
-      <!-- Submit Button -->
-      <button type="submit" class="auth-btn">Submit Review</button>
-    </form>
-
+{% if user.is_authenticated %}
+  <form method="POST" action="{% url 'add_review' movie.id %}" class="edit-review-form">
     {% csrf_token %}
-    {{ form.as_p }}
-  {% endif %}
 
+    {{ form.non_field_errors }}
+
+    <!-- Rating -->
+    <div class="rating-group">
+      <label class="rating-label">Rating:</label>
+      <div class="star-rating">
+        {% for star_value in "54321" %}
+          <input type="radio" name="rating" id="star{{ star_value }}" value="{{ star_value }}" {% if form.rating.value == star_value %}checked{% endif %}>
+          <label for="star{{ star_value }}">&#9733;</label>
+        {% endfor %}
+      </div>
+      {{ form.rating.errors }}
+    </div>
+
+    <!-- Comment -->
+    <div class="comment-group">
+      {{ form.comment.errors }}
+      <textarea name="comment" placeholder="Write a review..." class="review-input" required rows="3">{{ form.comment.value }}</textarea>
+    </div>
+
+    <button type="submit" class="auth-btn">Submit Review</button>
+  </form>
+{% endif %}
 </section>
 {% endblock %}
