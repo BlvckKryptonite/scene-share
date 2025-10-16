@@ -1299,6 +1299,7 @@ h2 {
 
 .alert.error {
   background-color: #e53935; 
+  color: white !important;
 }
 
 /* fade-in animation */

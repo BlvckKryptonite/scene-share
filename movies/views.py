@@ -213,11 +213,15 @@ def movie_detail(request, tmdb_id):
         watchlist_movies = request.user.watchlist.values_list(
             'movie__tmdb_id', flat=True
         )
+    
+    # Added a review form to the context to pass KeyError test
+    review_form = ReviewForm()
 
     context = {
         "movie": movie,
         "reviews": reviews,
         "watchlist_movies": watchlist_movies,
+        "review_form": review_form,  # ✅ Now available to template and tests
     }
     return render(request, "movies/detail.html", context)
 
