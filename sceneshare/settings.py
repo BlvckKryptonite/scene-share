@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 import cloudinary
+import dj_database_url
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -91,7 +92,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'sceneshare.wsgi.application'
 
-# Database
+# == DATABASE ===
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
@@ -100,6 +101,21 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# Will Auto-switch to Postgres if running on Heroku
+DATABASE_URL = os.environ.get("DATABASE_URL")
+if DATABASE_URL:
+    # Parse Heroku Postgres configuration
+    DATABASES["default"] = dj_database_url.parse(
+        DATABASE_URL,
+        conn_max_age=600,
+        ssl_require=True
+    )
+    print("✅ Using Heroku Postgres database")
+else:
+    print("💾 Using local SQLite database")
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
