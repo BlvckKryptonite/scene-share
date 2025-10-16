@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 // REVIEW VISUAL FEEDBACK
-  // Remove messages after 4 seconds
+  // Remove messages after a while
   setTimeout(() => {
     const messages = document.querySelectorAll('.messages .alert');
     messages.forEach(msg => {
@@ -94,5 +94,24 @@ document.addEventListener('DOMContentLoaded', function() {
       msg.style.transform = 'translateY(-10px)';
       setTimeout(() => msg.remove(), 500);
     });
-  }, 1500);
+  }, 2000); // Can adjust accordingly
   
+
+// Override injected styles for error message
+document.addEventListener('DOMContentLoaded', function () {
+  // Find all message nodes that are error alerts
+  const errorAlerts = document.querySelectorAll('.messages .alert.error');
+
+  errorAlerts.forEach(el => {
+    // Force white text inline with !important 
+    el.style.setProperty('color', 'white', 'important');
+
+    // Set background inline too 
+    el.style.setProperty('background-color', '#e53935', 'important');
+
+    // Ensure children inherit color
+    el.querySelectorAll('*').forEach(child => {
+      child.style.setProperty('color', 'white', 'important');
+    });
+  });
+});

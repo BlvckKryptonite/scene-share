@@ -92,10 +92,18 @@ def edit_review(request, review_id):
 
     if request.method == 'POST':
         form = ReviewForm(request.POST, instance=review)
-        form.save()
-        if review.movie.tmdb_id:
-            return redirect('movie_detail', tmdb_id=review.movie.tmdb_id)
-        return redirect('home')
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request, "Your review was updated successfully!")
+            if review.movie.tmdb_id:
+                return redirect('movie_detail', tmdb_id=review.movie.tmdb_id)
+            return redirect('home')
+        else:
+            messages.error(
+                request,
+                "There was an error updating your review. Please try again."
+            )
     else:
         form = ReviewForm(instance=review)
 
