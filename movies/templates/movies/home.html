@@ -58,7 +58,7 @@
             {% if movie.id in watchlist_movie_ids %}
               {% if movie.tmdb_id %}
                 <a href="{% url 'remove_from_watchlist_tmdb' movie.tmdb_id %}" class="btn btn-danger">Remove</a>
-                <a href="{% url 'movie_detail' movie.id %}" class="btn btn-secondary">Watchlist</a>
+                <a href="{% url 'movie_detail' movie.id %}" class="btn btn-secondary">Watchlist →</a>
               {% else %}
                 <a href="{% url 'remove_from_watchlist_local' movie.id %}" class="btn btn-danger">Remove</a>
                 <a href="{% url 'movie_detail' movie.id %}" class="btn btn-secondary">Watchlist →</a>
