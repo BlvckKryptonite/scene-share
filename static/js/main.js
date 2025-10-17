@@ -94,13 +94,13 @@ document.addEventListener('DOMContentLoaded', function() {
       msg.style.transform = 'translateY(-10px)';
       setTimeout(() => msg.remove(), 500);
     });
-  }, 2000); // Can adjust accordingly
+  }, 3000); // Can adjust accordingly
   
 
 // Override injected styles for error message
 document.addEventListener('DOMContentLoaded', function () {
   // Find all message nodes that are error alerts
-  const errorAlerts = document.querySelectorAll('.messages .alert.error');
+  const errorAlerts = document.querySelectorAll('.alert.error');
 
   errorAlerts.forEach(el => {
     // Force white text inline with !important 

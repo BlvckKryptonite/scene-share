@@ -29,7 +29,7 @@ def register(request):
             messages.error(
                 request,
                 (
-                    'Registration failed. Please check the details and '
+                    'Registration failed. Please check your details and '
                     'try again.'
                 )
             )
