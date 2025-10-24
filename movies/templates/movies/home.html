@@ -49,7 +49,7 @@
        {% endif %}
 
         <!-- Rating & Watchlist Inline -->
-        <div class="rating-watchlist">
+                <div class="rating-watchlist">
           {% if movie.avg_rating %}
             <span class="badge">⭐ {{ movie.avg_rating|floatformat:1 }}</span>
           {% endif %}
@@ -58,20 +58,16 @@
             {% if movie.id in watchlist_movie_ids %}
               {% if movie.tmdb_id %}
                 <a href="{% url 'remove_from_watchlist_tmdb' movie.tmdb_id %}" class="btn btn-danger">Remove</a>
-                <a href="{% url 'movie_detail' movie.id %}" class="btn btn-secondary">Watchlist →</a>
+                <a href="{% url 'watchlist' %}" class="btn btn-secondary">Watchlist →</a>
               {% else %}
                 <a href="{% url 'remove_from_watchlist_local' movie.id %}" class="btn btn-danger">Remove</a>
-                <a href="{% url 'movie_detail' movie.id %}" class="btn btn-secondary">Watchlist →</a>
+                <a href="{% url 'watchlist' %}" class="btn btn-secondary">Watchlist →</a>
               {% endif %}
             {% else %}
               {% if movie.tmdb_id %}
-    <a href="{% url 'add_to_watchlist_tmdb' movie.tmdb_id %}" class="watchlist-btn btn btn-primary">
-        Add to Watchlist
-    </a>
-{% else %}
-    <a href="{% url 'add_to_watchlist_local' movie.id %}" class="watchlist-btn btn btn-primary">
-        Add to Watchlist
-    </a>
+                <a href="{% url 'add_to_watchlist_tmdb' movie.tmdb_id %}" class="btn btn-primary">Add to Watchlist</a>
+              {% else %}
+                <a href="{% url 'add_to_watchlist_local' movie.id %}" class="btn btn-primary">Add to Watchlist</a>
               {% endif %}
             {% endif %}
           {% endif %}

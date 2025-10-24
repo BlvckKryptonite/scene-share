@@ -117,35 +117,71 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-//  Watchlist AJAX Toggle 
+// Watchlist AJAX Toggle
 // Handles adding/removing movies from the user's watchlist without reloading the page.
 
-document.querySelectorAll('.watchlist-btn').forEach(button => {
-    button.addEventListener('click', async (e) => {
-        e.preventDefault(); // prevent full page reload
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.startsWith(name + "=")) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
 
-        const url = button.getAttribute('href');
+const csrftoken = getCookie("csrftoken");
 
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}',
-                'X-Requested-With': 'XMLHttpRequest', // lets Django detect AJAX
-                'Accept': 'application/json',
-            },
-        });
+// Add click event to all watchlist buttons
+document.querySelectorAll(".watchlist-btn").forEach(button => {
+    button.addEventListener("click", async (e) => {
+        e.preventDefault(); // Prevent full page reload
 
-        const data = await response.json();
+        const url = button.getAttribute("href");
 
-        // Show instant feedback message
-        const messageBox = document.createElement('div');
-        messageBox.textContent = data.message;
-        messageBox.classList.add('alert', 'alert-success'); // or style differently per status
-        document.body.prepend(messageBox);
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrftoken,
+                    "X-Requested-With": "XMLHttpRequest",
+                    "Accept": "application/json",
+                },
+            });
 
-        setTimeout(() => messageBox.remove(), 3000);
+            if (!response.ok) throw new Error("Network response was not OK");
 
-        // Toggle button text
-        button.textContent = data.status === 'added' ? 'Remove from Watchlist' : 'Add to Watchlist';
+            const data = await response.json();
+
+            // Show instant feedback message
+            const messageBox = document.createElement("div");
+            messageBox.textContent = data.message;
+            messageBox.classList.add("alert");
+
+            // Style differently depending on status
+            if (data.status === "added") {
+                messageBox.classList.add("alert-success");
+            } else if (data.status === "removed") {
+                messageBox.classList.add("alert-warning");
+            } else {
+                messageBox.classList.add("alert-info");
+            }
+
+            document.body.prepend(messageBox);
+
+            setTimeout(() => messageBox.remove(), 3000);
+
+            // Toggle button text
+            button.textContent =
+                data.status === "added" ? "Remove from Watchlist" : "Add to Watchlist";
+
+        } catch (error) {
+            console.error("Error toggling watchlist:", error);
+        }
     });
 });
