@@ -10,9 +10,9 @@
 
           <!-- Poster -->
           {% if entry.movie.poster %}
-            <img src="{{ entry.movie.poster.url }}" alt="{{ entry.movie.title }} poster" class="movie-poster"/>
+            <img src="{{ entry.movie.poster.url }}" alt="{{ entry.movie.title }} poster" class="movie-poster" loading="lazy"/>
           {% elif entry.movie.poster_path %}
-            <img src="https://image.tmdb.org/t/p/w300{{ entry.movie.poster_path }}" alt="{{ entry.movie.title }} poster" class="movie-poster"/>
+            <img src="https://image.tmdb.org/t/p/w300{{ entry.movie.poster_path }}" alt="{{ entry.movie.title }} poster" class="movie-poster" loading="lazy"/>
           {% else %}
             <div class="no-poster">No Poster</div>
           {% endif %}

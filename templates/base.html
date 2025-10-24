@@ -19,7 +19,8 @@
       crossorigin="anonymous"
     ></script>
 
-    <!-- Custom Stylesheet -->
+    <!-- Custom Stylesheet with preloading for critical assets -->
+    <link rel="preload" href="{% static 'css/styles.css' %}" as="style" />
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
   </head>
 
@@ -48,12 +49,7 @@
 
         <form method="POST" action="{% url 'logout' %}" class="base-form">
           {% csrf_token %}
-          <button
-            type="submit"
-            class="btn btn-secondary"
-          >
-            Logout
-          </button>
+          <button type="submit" class="btn btn-secondary">Logout</button>
         </form>
         {% else %}
         <a href="{% url 'register' %}">Register</a>
@@ -63,15 +59,13 @@
     </nav>
 
     <!-- Messages Visual Feedback -->
-     {% if messages %}
-  <div class="messages">
-    {% for message in messages %}
-      <div class="alert {{ message.tags }}">
-        {{ message }}
-      </div>
-    {% endfor %}
-  </div>
-{% endif %}
+    {% if messages %}
+    <div class="messages">
+      {% for message in messages %}
+      <div class="alert {{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
 
     <!-- Main Content -->
     <main class="container">
@@ -81,12 +75,15 @@
     </main>
 
     <!-- Footer -->
-<footer class="site-footer">
-  <p>© 2025 SceneShare. All rights reserved.</p>
-</footer>
+    <footer class="site-footer">
+      <p>© 2025 SceneShare. All rights reserved.</p>
+    </footer>
 
     {% block scripts %}
-    <script src="{% static 'js/main.js' %}"></script>
+    <!-- JavaScript preload/defer: 
+    Ensures the script downloads early but executes after the DOM is parsed -->
+    <link rel="preload" href="{% static 'js/main.js' %}" as="script" />
+    <script src="{% static 'js/main.js' %}" defer></script>
     {% endblock %}
   </body>
 </html>

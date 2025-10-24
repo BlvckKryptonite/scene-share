@@ -292,7 +292,8 @@ def add_to_watchlist_tmdb(request, tmdb_id):
     movie = get_object_or_404(Movie, tmdb_id=tmdb_id)
 
     # Toggle logic
-    watchlist_item = Watchlist.objects.filter(user=request.user, movie=movie).first()
+    watchlist_item = Watchlist.objects.filter(
+        user=request.user, movie=movie).first()
     if watchlist_item:
         watchlist_item.delete()
         message = f"'{movie.title}' was removed from your watchlist."
@@ -321,7 +322,8 @@ def add_to_watchlist_tmdb(request, tmdb_id):
 def add_to_watchlist_local(request, movie_id):
     movie = get_object_or_404(Movie, id=movie_id)
 
-    watchlist_item = Watchlist.objects.filter(user=request.user, movie=movie).first()
+    watchlist_item = Watchlist.objects.filter(
+        user=request.user, movie=movie).first()
     if watchlist_item:
         watchlist_item.delete()
         message = f"'{movie.title}' was removed from your watchlist."

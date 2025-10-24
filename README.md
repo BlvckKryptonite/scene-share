@@ -32,6 +32,7 @@
 
 ## **Table of Contents**
 1. [Project Overview](#project-overview)
+    - [Technologies Used](#technologies-used)
     - [Real-World Rationale](#real-world-rationale)
 2. [User Experience (UX)](#user-experience-ux)
    - [Project Goals](#project-goals)
@@ -41,10 +42,12 @@
 4. [Database Design](#database-design)
 5. [Features](#features)
     - [Future Features](#future-features)
-6. [Technologies Used](#technologies-used)
-7. [Testing](#testing)
-8. [Deployment](#deployment)
-9. [Credits](#credits)
+6. [Testing](#testing)
+    - [Automated Test Coverage Overview](#automated-test-coverage-overview)
+    - [Manual Testing](#manual-testing)
+    - [Validation](#validation)
+7. [Deployment](#deployment)
+8. [Credits](#credits)
 
 <br><br>
 
@@ -68,9 +71,22 @@ The platform blends **community interaction** with **individualized movie manage
   <p><em>Desktop, Tablet & Mobile Device Mockup</em></p>
 </div>
 
+<br><br>
+
+## **Technologies Used**
+
 <br>
 
----
+| Category | Technology |
+|-----------|-------------|
+| **Frontend** | HTML5, CSS3, JavaScript (modularized) |
+| **Backend** | Python 3, Django Framework |
+| **Database** | SQLite (development), PostgreSQL (Heroku deployment) |
+| **Version Control** | Git & GitHub |
+| **Deployment** | Heroku |
+| **Tools** | GitHub Projects (Agile board), ERD diagramming tools, Code Validator, Django Admin, Bootstrap (initially) |
+
+<br><br>
 
 ## **Real-World Rationale**
 
@@ -230,28 +246,28 @@ A hand-drawn **Entity Relationship Diagram (ERD)** was used in early design stag
 
 
 ### **Implemented Features**
-I. **User Authentication** ✅ 
+I. **User Authentication** 
 - Custom sign-up, login, and logout functionality.  
 - Form validation and error messaging.  
 
-II. **Movie Listing & Detail Views** ✅ 
+II. **Movie Listing & Detail Views** 
 - Dynamic pages display movie details and user reviews.  
 - Slug-based URLs ensure clean and descriptive routing.  
 
-III. **Review System** ✅ 
+III. **Review System** 
 - Authenticated users can submit, edit, and delete reviews.  
 - Ratings integrated into movie detail pages.  
 - Confirmation messages provide feedback on successful submission.  
 
-IV. **Watchlist Management** ✅ 
+IV. **Watchlist Management** 
 - Users can add movies to a personal watchlist.  
 - Accessible from the profile menu.  
 
-V. **Responsive Frontend** ✅ 
+V. **Responsive Frontend** 
 - All CSS refactored and validated through W3C tools.  
 - Clean, minimal interface built with custom CSS (Bootstrap replaced).  
 
-VI. **Code Quality** ✅ 
+VI. **Code Quality** 
 - Docstrings and inline comments added for maintainability.  
 - JavaScript and Python logic separated for clarity and validation compliance.  
 
@@ -277,21 +293,6 @@ Potential future enhancements include:
 **Rationale for exclusion:**
 
 Adding these features would have increased database and view complexity, potentially detracting from the project’s core functionality. The app remains focused, streamlined, and aligned with the agile and MVP goals.
-
-<br><br>
-
-# **Technologies Used**
-
----
-
-| Category | Technology |
-|-----------|-------------|
-| **Frontend** | HTML5, CSS3, JavaScript (modularized) |
-| **Backend** | Python 3, Django Framework |
-| **Database** | SQLite (development), PostgreSQL (Heroku deployment) |
-| **Version Control** | Git & GitHub |
-| **Deployment** | Heroku |
-| **Tools** | GitHub Projects (Agile board), ERD diagramming tools, Code Validator, Django Admin, Bootstrap (initially) |
 
 <br><br>
 
@@ -336,7 +337,7 @@ During testing, Django automatically creates a temporary test database, applies 
 
 <br>
 
-## Test Coverage Overview
+## Automated Test Coverage Overview
 
 ### 1. Movies App
 
@@ -452,22 +453,29 @@ During user-based testing sessions, it was discovered through test users that ce
 
 To improve user experience, **visual feedback messages** were implemented throughout the site. These appear upon successful actions (e.g., review submission, profile update) and automatically disappear after a short delay using basic `setTimeout` JavaScript for smoother UX.
 
+<br>
 
-### Manual Functional Testing
+**Each core feature was manually tested to confirm successful operation. Below are a few user operations and their respective visual feedback messages:**
 
-Each core feature was manually tested to confirm successful operation.  
-Below are example screenshots you can include:
+<br>
 
-
-| Test | Description | Screenshot Placeholder |
+| Test | Description | Action Screenshot |
 |------|--------------|------------------------|
 | **Add Review** | Successful review submission with success message | ![Add Review Screenshot](static/images/review-sucess.png) |
-| **Edit Review** | Edited review displayed correctly | ![Edit Review Screenshot](docs/screenshots/edit-review.png) |
-| **Delete Review** | Review removed successfully | ![Delete Review Screenshot](docs/screenshots/delete-review.png) |
-| **Watchlist Management** | Add/remove movies from watchlist | ![Watchlist Screenshot](docs/screenshots/watchlist.png) |
-| **Authentication Flow** | Login and logout confirmation | ![Auth Screenshot](docs/screenshots/auth.png) |
+| **Edit Review** | Edited review displayed correctly | ![Edit Review Screenshot](static/images/edit-review.png) |
+| **Delete Review** | Review removed successfully | ![Delete Review Screenshot](static/images/delete-review.png) |
+| **Watchlist Management** | Add/remove movies from watchlist | ![Watchlist Screenshot](static/images/add-to-watchlist.png) |
 
 
+<br><br>
+
+### Manual Testing Breakdown
+
+Below is a detailed breakdown of manual user actions conducted by test users to ensure that all core features of the application function as intended.
+
+Each key feature was tested across various devices and browsers to confirm consistent performance, proper validation, and expected user feedback.
+
+<br>
 
 | Feature | Test Scenario | Expected Outcome | Result | Pass/Fail |
 |----------|----------------|------------------|---------|------------|
@@ -482,104 +490,127 @@ Below are example screenshots you can include:
 | **Form Validation** | Submit invalid or empty fields | Errors displayed, submission blocked | Works as expected | ✅ Pass |
 | **Responsive Design** | Test on Chrome, Safari, Firefox, mobile viewports | Layout adjusts and remains readable | Works as expected | ✅ Pass |
 
+<br><br>
+
 **Additional Browser Testing:**  
 - Chrome (Mac, Windows)  
 - Safari (Mac)  
 - Firefox (Mac)  
 - iPhone 14 Safari Mobile  
 
+<br>
+
 **Accessibility Check:**  
+Responsiveness was tested using Chrome DevTools and multiple devices (iPhone, iPad, MacBook Air).  
+Accessibility audits were run using the **Lighthouse** tool and **Chrome Accessibility Insights**.
+
 - All buttons and form elements have accessible labels.  
 - Keyboard navigation tested successfully.  
 - Contrast ratio validated through Chrome DevTools accessibility checker.
 
----
-
-### **Test Summary**
-All critical paths (user authentication, CRUD operations, navigation, and feedback messages) function as intended. Minor layout refinements were applied during testing to improve spacing consistency on smaller devices.  
-
-The app is considered **stable, validated, and deployable**.
 
 ---
 
+<br><br>
 
-## **Testing Evidence**
+## Validation
 
-This section includes visual documentation of the testing process to demonstrate that all app functionality performs as expected and that validation standards have been met.
+All HTML, CSS, Javascript and Python code validated through W3C, JSHint and PEP8 standards. Files were validated using official standards and the recommended tools to ensure clean, maintainable, and error-free code. Each language was tested through its respective validator, and any issues identified were resolved prior to deployment.
 
-### Validation Tools:
+The following sections outline the specific validation tools and processes used for each language, along with any adjustments or findings from the validation results.
 
-- HTML, CSS, and Python code validated through W3C and PEP8 standards.
+<br>
 
-- Manual testing verified form submissions, login/logout flow, and CRUD operations.
-
-- Tested across Chrome, Safari, and Firefox for responsiveness and UI integrity.
-
-
-### **1. Automated Testing Results**
-
-The project includes Django unit tests covering models, views, and forms.  
-All tests were executed successfully in the local environment:
-
-
-**Screenshot:**  
-![Automated Test Results](docs/screenshots/automated-tests.png)
-
----
-
-### **2. HTML Validation**
+### **1. HTML Validation**
 
 All HTML templates were tested using the [W3C Markup Validation Service](https://validator.w3.org/).  
-Minor warnings related to Django templating syntax (`{% %}` and `{{ }}`) were ignored, as they do not affect browser rendering.  
+Only informational messages (e.g., notes about optional trailing slashes on void elements) and minor warnings related to Django templating syntax (`{% %}` and `{{ }}`) were returned. 
 
-**Screenshot:**  
-![HTML Validation Screenshot](docs/screenshots/html-validation.png)
+They were ignored, as they do not affect browser rendering, code functionality or compliance.
+
+<br>
+
+<div align="center">
+  <img src="static/images/html-validation.png" alt="HTML Validation Screenshot" width="700">
+  <p><em>HTML Validation Screenshot</em></p>
+</div>
+
+<br>
+
 
 ---
 
-### **3. CSS Validation**
+### **2. CSS Validation**
 
 All CSS passed through the [W3C CSS Validator](https://jigsaw.w3.org/css-validator/).  
-No errors detected.  
 
-**Screenshot:**  
-![CSS Validation Screenshot](docs/screenshots/css-validation.png)
+The W3C CSS Validator confirmed that all stylesheets passed with no errors found.
+An informational note appeared stating that CSS variables are “not statically checked due to their dynamic nature”, which is expected behavior for custom CSS properties and does not affect validation.
+
+
+<br>
+
+<div align="center">
+  <img src="static/images/css-validation.png" alt="CSS Validation Screenshot" width="700">
+  <p><em>CSS Validation Screenshot</em></p>
+</div>
+
+<br>
+
 
 ---
+
+### **3. Javascript Code Validation**
+
+All JavaScript files were validated using [JSHint](https://jshint.com/) to ensure code quality and adherence to best practices. The validation process helped identify potential syntax errors, undeclared variables, and compatibility issues.
+
+No major issues were found during validation. Minor warnings, such as ES6 syntax compatibility (`'const' is available in ES6 (use 'esversion: 6')`), were resolved by updating the JSHint configuration to support modern JavaScript features.
+
+<br>
+
+<div align="center">
+  <img src="static/images/js-validation.png" alt="Javascript Validation Screenshot" width="700">
+  <p><em>JSHint Validation Screenshot</em></p>
+</div>
+
+<br>
+
+---
+
 
 ### **4. Python Code Validation**
 
-All Python files were validated through [PEP8 Online Checker](https://pep8ci.herokuapp.com/) to ensure compliance with PEP8 standards.
+This project has *several* Python files across all custom apps. All of them were validated through [PEP8 Online Checker](https://pep8ci.herokuapp.com/) to ensure compliance with PEP8 standards.
 
-**Screenshot:**  
-![PEP8 Validation Screenshot](docs/screenshots/pep8-validation.png)
+The validation process involved reviewing each file for proper indentation, spacing, line length, and naming conventions to maintain code readability and consistency.
 
+No significant errors were found during validation. Minor whitespace and formatting issues identified in development were corrected to meet the standard Python style guide requirements.
 
----
+<br>
 
-### **6. Responsiveness & Accessibility**
+<div align="center">
+  <img src="static/images/python-validation.png" alt="Python Validation Screenshot" width="700">
+  <p><em>PEP8 Validation Screenshot</em></p>
+</div>
 
-Responsiveness was tested using Chrome DevTools and multiple devices (iPhone, iPad, MacBook Air).  
-Accessibility audits were run using the **Lighthouse** tool and **Chrome Accessibility Insights**.
-
-| Test | Tool | Result | Screenshot |
-|------|------|---------|-------------|
-| **Responsive Layout** | Chrome DevTools | Passed for all breakpoints | ![Responsive Screenshot](docs/screenshots/responsive.png) |
-| **Accessibility Audit** | Lighthouse | Score: 94/100 | ![Accessibility Screenshot](docs/screenshots/accessibility.png) |
+<br>
 
 ---
 
 
 ### **Testing Evidence Summary**
 
-All core features and pages passed both automated and manual testing phases.  
+All core features and pages passed both automated and manual testing phases. All critical paths (user authentication, CRUD operations, navigation, and feedback messages) function as intended. Minor layout refinements were applied during testing to improve spacing consistency on smaller devices.  
+
 Validation results confirm that SceneShare adheres to:
+
 - Django framework best practices  
 - PEP8 Python styling standards  
-- HTML/CSS validation compliance  
+- HTML/CSS validation compliance 
+- JSHint code quality and adherence to best practices
 - Accessibility and responsiveness standards  
 
-The application is verified as **stable, performant, and compliant** with Code Institute’s *Distinction-level assessment criteria*.
+The application is verified as **stable, performant, and developed to a high standard** in line with Code Institute’s assessment criteria.
 
 
 <br><br>
@@ -612,16 +643,11 @@ The application is verified as **stable, performant, and compliant** with Code I
    ```bash
    heroku run python manage.py migrate
 
-6. Deploy and verify the live version using the link below: 
+6. Deploy and verify the live version. 
 
-🔗 Live App: https://sceneshare-0073094647bb.herokuapp.com/
+[🔗 You can access my live app here →](https://sceneshare-0073094647bb.herokuapp.com/)
 
-### **7. Deployment Verification**
-
-Final deployment was tested via the live Heroku app to ensure all URLs, static files, and forms functioned correctly.
-
-**Screenshot:**  
-![Live Deployment Screenshot](docs/screenshots/heroku-deployment.png)
+<br>
 
 
 ---
@@ -630,9 +656,8 @@ Final deployment was tested via the live Heroku app to ensure all URLs, static f
 
 This section outlines the full deployment process, configuration steps, and environment setup used to deploy **SceneShare** to Heroku.
 
-### **1. Project Setup**
-- Cloned repository from GitHub using:
-  git clone https://github.com/<username>/sceneshare.git
+## **1. Project Setup**
+- Created a repository on [GitHub](https://github.com/).
 
 - Created and activated a virtual environment:
    ```bash
@@ -646,7 +671,7 @@ This section outlines the full deployment process, configuration steps, and envi
    pip3 install -r requirements.txt
  
 
-### 2. Django Configuration
+## 2. Django Configuration
 
 - Created .env file (excluded from version control via .gitignore).
 
@@ -751,19 +776,17 @@ This section outlines the full deployment process, configuration steps, and envi
 
 ## 7. Forking and Cloning Instructions
 
-- To Fork the Repository:
+To Fork the Repository:
+ - Log in to GitHub.
+ - Navigate to SceneShare Repository
+ - Click Fork in the upper right corner to copy it to your account.
 
-        Log in to GitHub.
+<br>
 
-        Navigate to SceneShare Repository
+To Clone the Repository:
 
-        Click Fork in the upper right corner to copy it to your account.
-
-        To Clone the Repository:
-
-        On your forked repository page, click Code → HTTPS.
-
-- Copy the URL and run:
+ - On your forked repository page, click Code → HTTPS.
+ - Copy the URL and run:
 
         git clone https://github.com/<your-username>/sceneshare.git
 
@@ -799,17 +822,19 @@ This section outlines the full deployment process, configuration steps, and envi
         python3 manage.py runserver
 
 
-Visit http://127.0.0.1:8000/ in your browser.
+Visit http://127.0.0.1:8000/ (or whichever link is provided by your terminal) in your browser.
 
 <br><br>
 
 # Credits
 ---
 
-- ### Developer: Muma Kalobwe
+- ### Developer: Muma Kalobwe - [GitHub Profile](https://github.com/BlvckKryptonite)
 
 - ### Framework & Language:
     - Built with Django (Python 3)
+
+<br>
 
 ## 📚 Learning Resources
 
@@ -832,6 +857,7 @@ Visit http://127.0.0.1:8000/ in your browser.
 - [GitHub Discussions](https://github.com/orgs/community/discussions)
      — troubleshooting repository management and workflow tips.
 
+<br>
 
 ## 💡 Acknowledgements
 
@@ -842,6 +868,3 @@ Grateful recognition is extended to:
 - Peer reviewers and testers, who provided critical insights on usability and design polish.
 
 - Open-source contributors to Django and its ecosystem for maintaining clear, up-to-date documentation and tools.
-
-
-

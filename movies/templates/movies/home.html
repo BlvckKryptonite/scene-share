@@ -1,8 +1,5 @@
-{% extends "base.html" %}
-{% load extras %}
-{% block content %}
+{% extends "base.html" %} {% load extras %} {% block content %}
 <div class="container">
-
   <!-- Featured Movies Header -->
   <div class="movies-header">
     <h2>Featured Movies</h2>
@@ -18,94 +15,127 @@
   <div class="movie-grid">
     {% for movie in movies %}
     <div class="movie-card">
-
       <!-- Poster -->
       {% if movie.poster %}
-        <img src="{{ movie.poster.url }}" alt="{{ movie.title }} poster" class="movie-poster">
+      <img
+        src="{{ movie.poster.url }}"
+        alt="{{ movie.title }} poster"
+        class="movie-poster"
+        loading="lazy"
+      />
       {% elif movie.poster_path %}
-        <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} poster" class="movie-poster">
+      <img
+        src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}"
+        alt="{{ movie.title }} poster"
+        class="movie-poster"
+        loading="lazy"
+      />
       {% else %}
-        <div class="no-poster">No Poster</div>
+      <div class="no-poster">No Poster</div>
       {% endif %}
 
       <!-- Movie Info -->
       <div class="movie-info">
-
         <!-- Title and Release Year Row -->
         <div class="title-year-row">
           <h5 title="{{ movie.title }}">{{ movie.title }}</h5>
           {% if movie.release_year %}
-            <span class="muted">({{ movie.release_year }})</span>
+          <span class="muted">({{ movie.release_year }})</span>
           {% elif movie.release_date %}
-            <span class="muted">({{ movie.release_date|slice:":4" }})</span>
+          <span class="muted">({{ movie.release_date|slice:":4" }})</span>
           {% endif %}
         </div>
 
         <!-- Movie Description -->
-       {% if movie.description or movie.overview %}
+        {% if movie.description or movie.overview %}
         <p class="movie-description">
           {{ movie.description|default:movie.overview }}
         </p>
-       {% endif %}
+        {% endif %}
 
         <!-- Rating & Watchlist Inline -->
         <div class="rating-watchlist">
           {% if movie.avg_rating %}
-            <span class="badge">⭐ {{ movie.avg_rating|floatformat:1 }}</span>
-          {% endif %}
-
-          {% if user.is_authenticated %}
-            {% if movie.id in watchlist_movie_ids %}
-              {% if movie.tmdb_id %}
-                <a href="{% url 'remove_from_watchlist_tmdb' movie.tmdb_id %}" class="btn btn-danger">Remove</a>
-                <a href="{% url 'movie_detail' movie.id %}" class="btn btn-secondary">Watchlist →</a>
-              {% else %}
-                <a href="{% url 'remove_from_watchlist_local' movie.id %}" class="btn btn-danger">Remove</a>
-                <a href="{% url 'movie_detail' movie.id %}" class="btn btn-secondary">Watchlist →</a>
-              {% endif %}
-            {% else %}
-              {% if movie.tmdb_id %}
-    <a href="{% url 'add_to_watchlist_tmdb' movie.tmdb_id %}" class="watchlist-btn btn btn-primary">
-        Add to Watchlist
-    </a>
-{% else %}
-    <a href="{% url 'add_to_watchlist_local' movie.id %}" class="watchlist-btn btn btn-primary">
-        Add to Watchlist
-    </a>
-              {% endif %}
-            {% endif %}
-          {% endif %}
+          <span class="badge">⭐ {{ movie.avg_rating|floatformat:1 }}</span>
+          {% endif %} {% if user.is_authenticated %} {% if movie.id in
+          watchlist_movie_ids %} {% if movie.tmdb_id %}
+          <a
+            href="{% url 'remove_from_watchlist_tmdb' movie.tmdb_id %}"
+            class="btn btn-danger"
+            >Remove</a
+          >
+          <a href="{% url 'movie_detail' movie.id %}" class="btn btn-secondary"
+            >Watchlist →</a
+          >
+          {% else %}
+          <a
+            href="{% url 'remove_from_watchlist_local' movie.id %}"
+            class="btn btn-danger"
+            >Remove</a
+          >
+          <a href="{% url 'movie_detail' movie.id %}" class="btn btn-secondary"
+            >Watchlist →</a
+          >
+          {% endif %} {% else %} {% if movie.tmdb_id %}
+          <a
+            href="{% url 'add_to_watchlist_tmdb' movie.tmdb_id %}"
+            class="watchlist-btn btn btn-primary"
+          >
+            Add to Watchlist
+          </a>
+          {% else %}
+          <a
+            href="{% url 'add_to_watchlist_local' movie.id %}"
+            class="watchlist-btn btn btn-primary"
+          >
+            Add to Watchlist
+          </a>
+          {% endif %} {% endif %} {% endif %}
         </div>
 
         <!-- Review Form -->
         {% if user.is_authenticated %}
         <form method="POST" class="review-form">
-          {% csrf_token %}
-          {% with form=forms_dict|get_item:movie.id %}
+          {% csrf_token %} {% with form=forms_dict|get_item:movie.id %}
 
-            <!-- Star Rating -->
-            <div class="rating-group action-row">
-              <label class="rating-label"><strong>Rating:</strong></label>
-              <div class="star-rating">
-                {% for star_value in "54321" %}
-                  <input type="radio" name="rating" id="star{{ movie.id }}-{{ star_value }}" value="{{ star_value }}" {% if form.rating.value|stringformat:"s" == star_value|stringformat:"s" %}checked{% endif %}/>
-                  <label for="star{{ movie.id }}-{{ star_value }}">&#9733;</label>
-                {% endfor %}
-              </div>
+          <!-- Star Rating -->
+          <div class="rating-group action-row">
+            <label class="rating-label"><strong>Rating:</strong></label>
+            <div class="star-rating">
+              {% for star_value in "54321" %} <input type="radio" name="rating"
+              id="star{{ movie.id }}-{{ star_value }}" value="{{ star_value }}"
+              {% if form.rating.value|stringformat:"s" ==
+              star_value|stringformat:"s" %}checked{% endif %}/>
+              <label for="star{{ movie.id }}-{{ star_value }}">&#9733;</label>
+              {% endfor %}
             </div>
+          </div>
 
-            <!-- Review Input Field Row -->
-            <div class="review-input-row">
-              <input type="text" name="comment" placeholder="Write a review..." class="review-input">
-            </div>
+          <!-- Review Input Field Row -->
+          <div class="review-input-row">
+            <input
+              type="text"
+              name="comment"
+              placeholder="Write a review..."
+              class="review-input"
+            />
+          </div>
 
-            <!-- Post Review + Show Reviews Inline -->
-            <div class="review-actions-row">
-              <button type="submit" class="btn btn-primary btn-sm">Post Review</button>
-              <button class="btn btn-secondary toggle-reviews" type="button" data-target="#reviews-{{ movie.id }}">Show Reviews</button>
-            </div>
+          <!-- Post Review + Show Reviews Inline -->
+          <div class="review-actions-row">
+            <button type="submit" class="btn btn-primary btn-sm">
+              Post Review
+            </button>
+            <button
+              class="btn btn-secondary toggle-reviews"
+              type="button"
+              data-target="#reviews-{{ movie.id }}"
+            >
+              Show Reviews
+            </button>
+          </div>
 
-            <input type="hidden" name="movie_id" value="{{ movie.id }}">
+          <input type="hidden" name="movie_id" value="{{ movie.id }}" />
           {% endwith %}
         </form>
         {% endif %}
@@ -113,48 +143,66 @@
         <!-- Reviews List -->
         <ul class="reviews-list" id="reviews-{{ movie.id }}">
           {% for review in movie.reviews.all %}
-            <li>
-              <div class="review-comment">
-                <strong class="review-username">{{ review.user.username }}</strong>:
-                <span class="review-text">{{ review.comment }}</span><br>
-                <span class="review-rating">
-                  {% for i in "12345" %}
-                    {% if forloop.counter <= review.rating %} ⭐ {% else %} ☆ {% endif %}
-                  {% endfor %}
-                </span>
-              </div>
+          <li>
+            <div class="review-comment">
+              <strong class="review-username">{{ review.user.username }}</strong
+              >: <span class="review-text">{{ review.comment }}</span><br />
+              <span class="review-rating">
+                {% for i in "12345" %} {% if forloop.counter <= review.rating %}
+                ⭐ {% else %} ☆ {% endif %} {% endfor %}
+              </span>
+            </div>
 
-              <div class="review-footer">
-                <form class="like-form" data-review-id="{{ review.id }}">
-                  {% csrf_token %}
-                  <button type="button" class="like-btn{% if review.is_liked %} liked{% endif %}" title="{% if review.is_liked %}Unlike{% else %}Like this review{% endif %}" data-csrf="{{ csrf_token }}">
-                    <i class="{% if review.is_liked %}fa-solid{% else %}fa-regular{% endif %} fa-star"></i>
-                    <span class="like-text">{% if review.is_liked %}Liked{% else %}Like{% endif %}</span>
-                    <span class="like-count">{{ review.reviewlike_set.count }}</span>
-                  </button>
-                </form>
+            <div class="review-footer">
+              <form class="like-form" data-review-id="{{ review.id }}">
+                {% csrf_token %}
+                <button
+                  type="button"
+                  class="like-btn{% if review.is_liked %} liked{% endif %}"
+                  title="{% if review.is_liked %}Unlike{% else %}Like this review{% endif %}"
+                  data-csrf="{{ csrf_token }}"
+                >
+                  <i
+                    class="{% if review.is_liked %}fa-solid{% else %}fa-regular{% endif %} fa-star"
+                  ></i>
+                  <span class="like-text"
+                    >{% if review.is_liked %}Liked{% else %}Like{% endif
+                    %}</span
+                  >
+                  <span class="like-count"
+                    >{{ review.reviewlike_set.count }}</span
+                  >
+                </button>
+              </form>
 
-                {% if user.is_authenticated and review.user == user %}
-                  <div class="review-actions">
-                    <a href="{% url 'edit_review' review.id %}" title="Edit">
-                      <i class="fa-solid fa-pen-to-square"></i>
-                    </a>
-                    <a href="{% url 'delete_review' review.id %}" title="Delete" onclick="return confirm('Are you sure?')">
-                      <i class="fa-solid fa-trash"></i>
-                    </a>
-                  </div>
-                {% endif %}
+              {% if user.is_authenticated and review.user == user %}
+              <div class="review-actions">
+                <a href="{% url 'edit_review' review.id %}" title="Edit">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </a>
+                <a
+                  href="{% url 'delete_review' review.id %}"
+                  title="Delete"
+                  onclick="return confirm('Are you sure?')"
+                >
+                  <i class="fa-solid fa-trash"></i>
+                </a>
               </div>
-            </li>
+              {% endif %}
+            </div>
+          </li>
           {% empty %}
-            <li class="no-reviews">No reviews yet.</li>
+          <li class="no-reviews">No reviews yet.</li>
           {% endfor %}
         </ul>
-
-      </div> <!-- end movie-info -->
-    </div> <!-- end movie-card -->
+      </div>
+      <!-- end movie-info -->
+    </div>
+    <!-- end movie-card -->
     {% endfor %}
-  </div> <!-- end movie-grid -->
-</div> <!-- end container -->
+  </div>
+  <!-- end movie-grid -->
+</div>
+<!-- end container -->
 
 {% endblock %}

@@ -102,7 +102,7 @@ DATABASES = {
     }
 }
 
-# Will Auto-switch to Postgres if running on Heroku
+# Auto-switch to Postgres if running on Heroku
 DATABASE_URL = os.environ.get("DATABASE_URL")
 if DATABASE_URL:
     # Parse Heroku Postgres configuration
@@ -111,9 +111,6 @@ if DATABASE_URL:
         conn_max_age=600,
         ssl_require=True
     )
-    print("✅ Using Heroku Postgres database")
-else:
-    print("💾 Using local SQLite database")
 
 
 # Password validation
