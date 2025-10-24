@@ -36,7 +36,7 @@ if not SECRET_KEY:
     raise ValueError("SECRET_KEY not set in environment!")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     'sceneshare-0073094647bb.herokuapp.com',
