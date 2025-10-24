@@ -247,7 +247,7 @@ A hand-drawn **Entity Relationship Diagram (ERD)** was used in early design stag
 
 ### **Implemented Features**
 I. **User Authentication** 
-- Custom sign-up, login, and logout functionality.  
+- Custom user authentication system (sign-up, login, and logout) featuring a dynamic, space-themed background GIF created by a very talented digital artist — credit and source [available here](https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3cnoxNXpxb2xuMnYyMXB5aDNyM2hrdm1jcDFvNGY1NHVqMzgzdjhwOCZlcD12MV9naWZzX3JlbGF0ZWQmY3Q9Zw/3o7aDcrsww5Ybp18hq/giphy.gif).
 - Form validation and error messaging.  
 
 II. **Movie Listing & Detail Views** 
@@ -277,7 +277,7 @@ VI. **Code Quality**
 
 ## **Future Features**
 
-The following features were planned but deliberately postponed to maintain a clear MVP scope. While interactive, some functionalities - such as comment threads —c ould detract from the app’s main purpose: allowing users to **review movies and manage watchlists efficiently**.
+The following features were planned but deliberately postponed to maintain a clear MVP scope. While interactive, some functionalities - such as comment threads — could detract from the app’s main purpose: allowing users to **review movies and manage watchlists efficiently**.
 <br><br>
 Keeping the platform lean ensures that users can quickly see what others think about a movie without unnecessary clutter. Users can still engage with reviews through a “like” system to highlight helpful or insightful opinions.
 
@@ -302,13 +302,15 @@ Adding these features would have increased database and view complexity, potenti
 
 A combination of extensive automated and manual tests was implemented across key components of the application to ensure reliability, maintainability, and consistent functionality after code changes.
 
-- All views, models, and forms were tested using Django’s built-in **`TestCase` framework** and executed with:  
+- All views, models, and forms were tested using Django’s built-in **`TestCase` framework** and executed with: 
+
 <br>  
-  ```bash
-  python3 manage.py test
 
+    python3 manage.py test
 
-### **30 tests executed successfully without errors below ✅**
+<br>
+
+### A total of **30 site-wide tests were executed successfully without errors below ✅**
 
 <br>
 
@@ -319,7 +321,7 @@ A combination of extensive automated and manual tests was implemented across key
 
 <br>
 
-## Comprehensive Testing Breakdown:
+## Comprehensive Testing Breakdown
 
 Extensive unit tests were implemented across all key Django app modules to verify functionality, reliability, and integration between components.
 
@@ -331,7 +333,7 @@ Each test suite was executed using Django’s built-in test runner, for example:
 
 <br>
 
-All tests were run locally using the development SQLite database (💾 Using local SQLite database), and all test cases passed successfully.
+All tests were run locally using the development SQLite database, and all test cases passed successfully.
 
 During testing, Django automatically creates a temporary test database, applies migrations, and tears it down after completion — ensuring that no production or development data is affected.
 
@@ -492,24 +494,64 @@ Each key feature was tested across various devices and browsers to confirm consi
 
 <br><br>
 
-**Additional Browser Testing:**  
-- Chrome (Mac, Windows)  
-- Safari (Mac)  
-- Firefox (Mac)  
-- iPhone 14 Safari Mobile  
 
-<br>
+**Accessibility Check:** 
 
-**Accessibility Check:**  
 Responsiveness was tested using Chrome DevTools and multiple devices (iPhone, iPad, MacBook Air).  
 Accessibility audits were run using the **Lighthouse** tool and **Chrome Accessibility Insights**.
 
 - All buttons and form elements have accessible labels.  
 - Keyboard navigation tested successfully.  
 - Contrast ratio validated through Chrome DevTools accessibility checker.
+- Additional Browser Testing: Chrome (Mac, Windows), Safari (Mac), Firefox (Mac) and Safari Mobile (iPhone 14)
+
+<br>
+
+### Performance Optimization Summary
+
+SceneShare underwent Lighthouse performance testing to evaluate load speed, accessibility, and best practices. The application achieved outstanding scores in all key areas, with Accessibility (97), Best Practices (100), and SEO (91).
+
+The Performance score (65) primarily reflects network and static file delivery factors related to the Heroku hosting environment rather than inefficient code.
 
 
----
+
+#### Optimizations Implemented:
+
+1. Deferred JavaScript loading to reduce render-blocking scripts.
+
+2. CSS preloading to prioritize essential styles and improve First Contentful Paint (FCP).
+
+3. Lazy loading for images to minimize initial payloads and enhance visual load performance.
+
+3. Optimized Django template structure for minimal DOM depth and efficient rendering.
+
+4. Responsive image sizing and compressed assets to ensure smooth loading on all devices.
+
+
+<br>
+
+<div align="center">
+  <img src="static/images/lighthouse-report.png" alt="Lighthouse Audit Results Screenshot" width="600">
+  <p><em>Lighthouse Audit Results.</em></p>
+</div>
+
+<br>
+
+#### Performance Analysis
+
+  While the perfomance metric is not ideal, testing revealed that Heroku’s static file delivery slightly limits raw performance scores due to the lack of CDN-level caching and edge optimization. However, all client-side optimizations are in place, and the site remains fast and responsive across real-world usage.
+
+
+### Future Optimization:
+
+- Migrate to a CDN-backed platform (e.g., Vercel or Cloudflare Pages) for static asset caching and reduced latency.
+
+- Implement HTTP caching headers to leverage browser-side asset reuse.
+
+- Further minify CSS/JS bundles through build-time optimization.
+
+Overall, SceneShare demonstrates high optimization maturity, balancing Django’s dynamic functionality with frontend performance best practices.
+
 
 <br><br>
 
@@ -656,7 +698,7 @@ The application is verified as **stable, performant, and developed to a high sta
 
 This section outlines the full deployment process, configuration steps, and environment setup used to deploy **SceneShare** to Heroku.
 
-## **1. Project Setup**
+#### **1. Project Setup**
 - Created a repository on [GitHub](https://github.com/).
 
 - Created and activated a virtual environment:
@@ -671,16 +713,16 @@ This section outlines the full deployment process, configuration steps, and envi
    pip3 install -r requirements.txt
  
 
-## 2. Django Configuration
+#### 2. Django Configuration
 
 - Created .env file (excluded from version control via .gitignore).
 
     - Added the following environment variables:
 
-        * SECRET_KEY=<your_secret_key>
-        * DEBUG=False
-        * DATABASE_URL=<your_postgresql_database_url>
-        * ALLOWED_HOSTS=['sceneshare-0073094647bb.herokuapp.com', 'localhost', 127.0.0.1]
+          SECRET_KEY=<your_secret_key>
+          DEBUG=False
+          DATABASE_URL=<your_postgresql_database_url>
+          ALLOWED_HOSTS=['sceneshare-0073094647bb.herokuapp.com', 'localhost', 127.0.0.1]
 
 
 - Updated settings.py to:
@@ -691,15 +733,26 @@ This section outlines the full deployment process, configuration steps, and envi
 
     * Set DEBUG=False in production.
 
-## 3. Database Setup
+#### 3. Database Setup
 
 - Initially used SQLite3 for local development.
 
 - For production, the project was migrated to PostgreSQL on Heroku, since Heroku’s filesystem is ephemeral — meaning any data stored locally is lost after each deployment or dyno restart.
 
+- Automatically switched between database setups later in development and had print statements in place to verify which database was active at any given time.
+
+<br>
+
+<div align="center">
+  <img src="static/images/database-feedback-message.png" alt="Database feedback message screenshot" width="700">
+  <p><em>Active Database Terminal Feedback</em></p>
+</div>
+
+<br>
+
 - Using PostgreSQL ensures that user data (e.g., reviews, comments, and accounts) persists reliably across app restarts and updates. 
 
-### Configuration
+#### Configuration:
 
 - To enable PostgreSQL support and prepare the project for Heroku deployment, the following dependencies were installed:
    ```bash
@@ -722,7 +775,7 @@ This section outlines the full deployment process, configuration steps, and envi
    ```bash
    python3 manage.py migrate
 
-## 4. Static Files
+#### 4. Static Files
 
 - Created and configured the STATIC_ROOT directory in settings.py.
 
@@ -731,7 +784,7 @@ This section outlines the full deployment process, configuration steps, and envi
    python3 manage.py collectstatic
 
 
-## 5. Heroku Deployment
+#### 5. Heroku Deployment
 
 - Logged into Heroku and created a new app:
 
@@ -761,7 +814,7 @@ This section outlines the full deployment process, configuration steps, and envi
   heroku run python3 manage.py createsuperuser
 
 
-## 6. Final Checks
+#### 6. Final Checks
 
 - All environment variables configured and secured 
 
@@ -774,7 +827,7 @@ This section outlines the full deployment process, configuration steps, and envi
 - Debug mode disabled for production.
 
 
-## 7. Forking and Cloning Instructions
+#### 7. Forking and Cloning Instructions
 
 To Fork the Repository:
  - Log in to GitHub.
