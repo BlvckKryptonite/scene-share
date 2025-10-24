@@ -115,3 +115,37 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 });
+
+
+//  Watchlist AJAX Toggle 
+// Handles adding/removing movies from the user's watchlist without reloading the page.
+
+document.querySelectorAll('.watchlist-btn').forEach(button => {
+    button.addEventListener('click', async (e) => {
+        e.preventDefault(); // prevent full page reload
+
+        const url = button.getAttribute('href');
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'X-Requested-With': 'XMLHttpRequest', // lets Django detect AJAX
+                'Accept': 'application/json',
+            },
+        });
+
+        const data = await response.json();
+
+        // Show instant feedback message
+        const messageBox = document.createElement('div');
+        messageBox.textContent = data.message;
+        messageBox.classList.add('alert', 'alert-success'); // or style differently per status
+        document.body.prepend(messageBox);
+
+        setTimeout(() => messageBox.remove(), 3000);
+
+        // Toggle button text
+        button.textContent = data.status === 'added' ? 'Remove from Watchlist' : 'Add to Watchlist';
+    });
+});

@@ -65,9 +65,13 @@
               {% endif %}
             {% else %}
               {% if movie.tmdb_id %}
-                <a href="{% url 'add_to_watchlist_tmdb' movie.tmdb_id %}" class="btn btn-primary">Add to Watchlist</a>
-              {% else %}
-                <a href="{% url 'add_to_watchlist_local' movie.id %}" class="btn btn-primary">Add to Watchlist</a>
+    <a href="{% url 'add_to_watchlist_tmdb' movie.tmdb_id %}" class="watchlist-btn btn btn-primary">
+        Add to Watchlist
+    </a>
+{% else %}
+    <a href="{% url 'add_to_watchlist_local' movie.id %}" class="watchlist-btn btn btn-primary">
+        Add to Watchlist
+    </a>
               {% endif %}
             {% endif %}
           {% endif %}

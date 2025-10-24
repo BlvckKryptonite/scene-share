@@ -5,6 +5,7 @@ from django.db.models import Avg
 from .models import Movie, Review, Watchlist
 from .forms import ReviewForm
 from django.conf import settings
+from django.http import JsonResponse
 import requests
 from django.contrib import messages
 
@@ -119,13 +120,22 @@ def edit_review(request, review_id):
 # ===========================
 def delete_review(request, review_id):
     review = get_object_or_404(Review, id=review_id)
+
     if review.user != request.user:
         raise PermissionDenied
 
-    movie = review.movie
-    review.delete()
-    if movie.tmdb_id:
-        return redirect('movie_detail', tmdb_id=movie.tmdb_id)
+    try:
+        review.delete()
+        messages.error(request, "Your review was deleted successfully!")
+    except Exception:
+        messages.error(
+            request, "There was an error deleting your review. "
+            "Please try again.")
+
+    # Redirect to the previous page if available, otherwise home
+    next_url = request.META.get('HTTP_REFERER', None)
+    if next_url:
+        return redirect(next_url)
     return redirect('home')
 
 
@@ -221,7 +231,7 @@ def movie_detail(request, tmdb_id):
         watchlist_movies = request.user.watchlist.values_list(
             'movie__tmdb_id', flat=True
         )
-    
+
     # Added a review form to the context to pass KeyError test
     review_form = ReviewForm()
 
@@ -275,18 +285,59 @@ def add_review(request, movie_id):
 
 
 # ===========================
-# Add to Watchlist View
+# Add/Remove Watchlist - API
 # ===========================
 @login_required
-def add_to_watchlist(request, tmdb_id=None, movie_id=None):
-    if not request.user.is_authenticated:
-        return redirect('home')
+def add_to_watchlist_tmdb(request, tmdb_id):
+    movie = get_object_or_404(Movie, tmdb_id=tmdb_id)
 
-    movie = (
-        get_object_or_404(Movie, tmdb_id=tmdb_id)
-        if tmdb_id else get_object_or_404(Movie, id=movie_id)
-    )
-    Watchlist.objects.get_or_create(user=request.user, movie=movie)
+    # Toggle logic
+    watchlist_item = Watchlist.objects.filter(user=request.user, movie=movie).first()
+    if watchlist_item:
+        watchlist_item.delete()
+        message = f"'{movie.title}' was removed from your watchlist."
+        status = 'removed'
+    else:
+        Watchlist.objects.create(user=request.user, movie=movie)
+        message = f"'{movie.title}' was added to your watchlist!"
+        status = 'added'
+
+    # AJAX request: send JSON
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return JsonResponse({'message': message, 'status': status})
+
+    # Fallback for non-JS: classic Django message + redirect
+    messages.success(request, message)
+    next_url = request.META.get('HTTP_REFERER', None)
+    if next_url:
+        return redirect(next_url)
+    return redirect('home')
+
+
+# ===========================
+# Add/Remove Watchlist - Local
+# ===========================
+@login_required
+def add_to_watchlist_local(request, movie_id):
+    movie = get_object_or_404(Movie, id=movie_id)
+
+    watchlist_item = Watchlist.objects.filter(user=request.user, movie=movie).first()
+    if watchlist_item:
+        watchlist_item.delete()
+        message = f"'{movie.title}' was removed from your watchlist."
+        status = 'removed'
+    else:
+        Watchlist.objects.create(user=request.user, movie=movie)
+        message = f"'{movie.title}' was added to your watchlist!"
+        status = 'added'
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return JsonResponse({'message': message, 'status': status})
+
+    messages.success(request, message)
+    next_url = request.META.get('HTTP_REFERER', None)
+    if next_url:
+        return redirect(next_url)
     return redirect('home')
 
 
@@ -295,14 +346,20 @@ def add_to_watchlist(request, tmdb_id=None, movie_id=None):
 # ===========================
 @login_required
 def remove_from_watchlist(request, tmdb_id=None, movie_id=None):
-    if not request.user.is_authenticated:
-        return redirect('home')
-
     movie = (
         get_object_or_404(Movie, tmdb_id=tmdb_id)
         if tmdb_id else get_object_or_404(Movie, id=movie_id)
     )
-    Watchlist.objects.filter(user=request.user, movie=movie).delete()
+
+    deleted, _ = Watchlist.objects.filter(
+        user=request.user, movie=movie).delete()
+
+    if deleted:
+        messages.error(
+            request, f"'{movie.title}' was removed from your watchlist.")
+    else:
+        messages.warning(
+            request, f"'{movie.title}' was not found in your watchlist.")
 
     next_url = request.META.get('HTTP_REFERER', None)
     if next_url:

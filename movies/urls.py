@@ -28,14 +28,11 @@ urlpatterns = [
     # Watchlist URLs — support both tmdb_id and local movie_id
     path(
         'watchlist/add/tmdb/<int:tmdb_id>/',
-        views.add_to_watchlist,
-        name='add_to_watchlist_tmdb'
-    ),
+        views.add_to_watchlist_tmdb, name='add_to_watchlist_tmdb'),
     path(
         'watchlist/add/local/<int:movie_id>/',
-        views.add_to_watchlist,
-        name='add_to_watchlist_local'
-    ),
+        views.add_to_watchlist_local, name='add_to_watchlist_local'),
+    
     path(
         'watchlist/remove/tmdb/<int:tmdb_id>/',
         views.remove_from_watchlist,
