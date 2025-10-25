@@ -153,7 +153,7 @@ To achieve greater control and versatility, I transitioned to custom styling. Be
 - **JavaScript Refactoring:** All Javascript code was moved to a standalone file for clarity and validation compliance.  
 
 <br><br>
-The final iteration adopted a hybrid approach, merging features from the initial layout with the dark mode aesthetic developed in a separate movie watchlist project. A screenshot of the Figma design file is shown below, and [the live link is provided for reference](https://www.figma.com/design/2PZDPDM0KO42hHp0lHsygM/Movie-Watchlist---Muma?node-id=0-1&p=f).
+The final iteration adopted a hybrid approach, merging features from the initial layout with the dark mode aesthetic developed in a separate movie watchlist project. A screenshot of the Figma design file is shown below, and [the live link is provided here for reference](https://www.figma.com/design/2PZDPDM0KO42hHp0lHsygM/Movie-Watchlist---Muma?node-id=0-1&p=f).
 
 <br>
 
@@ -207,7 +207,7 @@ Below is a refined version of initial user stories, scribbled down prior to deve
 
 ---
 
-SceneShare was structured around Django’s ORM with custom models across three custom apps:
+SceneShare was structured around Django’s ORM with custom models across three apps:
 - **Movie app** 
     - Movie model - represents a movie with details such as title, description, release year and poster.
     - Review model - linked to both User and Movie, containing rating and review text.
@@ -333,7 +333,7 @@ Each test suite was executed using Django’s built-in test runner, for example:
 
 <br>
 
-All tests were run locally using the development SQLite database, and all test cases passed successfully.
+All tests were run locally using the development SQLite database, and after interation - all test cases passed successfully.
 
 During testing, Django automatically creates a temporary test database, applies migrations, and tears it down after completion — ensuring that no production or development data is affected.
 
@@ -509,9 +509,9 @@ Accessibility audits were run using the **Lighthouse** tool and **Chrome Accessi
 
 ### Performance Optimization Summary
 
-SceneShare underwent Lighthouse performance testing to evaluate load speed, accessibility, and best practices. The application achieved outstanding scores in all key areas, with Accessibility (97), Best Practices (100), and SEO (91).
+SceneShare underwent Lighthouse performance testing to evaluate load speed, accessibility, and best practices. The application achieved outstanding scores in all key areas, with **Accessibility (97)**, **Best Practices (100)**, and **SEO (91)**.
 
-The Performance score (65) primarily reflects network and static file delivery factors related to the Heroku hosting environment rather than inefficient code.
+The **Performance score (67)** primarily reflects network and static file delivery factors related to the Heroku hosting environment rather than inefficient code.
 
 
 
