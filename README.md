@@ -412,7 +412,7 @@ This app’s tests are contained in a single file, focusing on validating model 
 
 <br>
 
-### 2. Community app
+### 3. Community app
 
 The **Community app**’s test suite focuses on validating the like/unlike system for movie reviews through the `ReviewLike model` and related view logic.
 
