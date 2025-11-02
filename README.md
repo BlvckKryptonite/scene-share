@@ -755,7 +755,23 @@ This section outlines the full deployment process, configuration steps, and envi
 
    ```bash
    pip3 install -r requirements.txt
- 
+   
+- Add installed dependencies to `requirements.txt` file with this command:
+
+   ```bash
+   pip3 freeze > requirements.txt
+
+- This ensures that the latest working versions of all dependencies are recorded.
+
+  - Example dependencies included in this project:
+
+    ```bash
+    Django==5.0.2
+    dj-database-url==2.1.0
+    gunicorn==21.2.0
+    psycopg2==2.9.9
+    whitenoise==6.6.0
+    cloudinary==1.36.0
 
 #### 2. Django Configuration
 
@@ -930,6 +946,8 @@ Visit http://127.0.0.1:8000/ (or whichever link is provided by your terminal) in
 
 - ### Framework & Language:
     - Built with Django (Python 3)
+
+  🔗 [Full Project Github Repo](https://github.com/BlvckKryptonite/scene-share/tree/main)
 
 <br>
 
