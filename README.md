@@ -264,7 +264,17 @@ SceneShare was structured around Django’s ORM with custom models across three 
     - ProfileView - allows users to click other user's profiles.
 <br><br>
 
-A hand-drawn **Entity Relationship Diagram (ERD)** was used in early design stages to map out the relationships. Below is the aforementioned ERD enhanced with AI for clarity:
+### Alignment with Domain Purpose
+
+Each model within SceneShare was intentionally designed to mirror real-world movie review dynamics, ensuring that the database structure directly supports the platform’s objectives.
+
+By clearly defining the relationships between users, movies, reviews, and watchlists, the application’s data model delivers both functional clarity and logical consistency.
+
+<br>
+
+### Entity Relationship Diagram
+
+A hand-drawn **Entity Relationship Diagram (ERD)** was used in early design stages to map out the relationships. The diagram highlights how each entity connects to deliver SceneShare’s review and watchlist features in a cohesive structure. Below is the aforementioned ERD enhanced with AI for clarity:
 
 <br>
 
