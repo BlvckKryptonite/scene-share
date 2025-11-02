@@ -210,7 +210,7 @@ Each **epic** represented a major feature of the project (e.g., Watchlist Manage
 
 <br>
 
-### 3. Epic with Linked User Stories
+### 3. User Story Details with Acceptance Criteria
 
 A step further, every user story included clear and defined acceptance criteria with a markable checkbox to ensure that the intended functionality was testable and measurable.
 This facilitated a user-centric approach and provided clear completion indicators for each deliverable.
