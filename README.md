@@ -181,7 +181,51 @@ This approach ensured an iterative, test-driven workflow aligned with the projec
 
 ## **User Stories**
 
-All user stories were tracked and managed using Agile methodology on GitHub Projects (Kanban board format). The complete project board, including all epics, issues, sub-issues, and user stories, [can be accessed here](https://github.com/users/BlvckKryptonite/projects/4/views/1).
+All user stories were tracked and managed using Agile methodology on GitHub Projects (Kanban board format). This approach provided a transparent and iterative development process, allowing for efficient prioritization, progress tracking, and sprint-style delivery.
+<br>
+
+### 1. Project Overview Board
+
+The Kanban board was organized into three main columns — **To Do**, **In Progress**, and **Complete** — representing each stage of the development lifecycle.
+This structure ensured that all user stories moved through a clear workflow from conception to deployment.
+
+<br>
+
+<div align="center">
+  <img src="static/images/project-overview-board.png" alt="GitHub Project Overview Kanban Board" width="800">
+</div>
+
+<br>
+
+### 2. Epic with Linked User Stories
+
+Each **epic** represented a major feature of the project (e.g., Watchlist Management or Authentication & Profiles). Within each epic, smaller sub-issues were created as user stories to break down the functionality into actionable development tasks.
+
+<br>
+
+<div align="center">
+  <img src="static/images/epic-issue-overview.png" alt="Example Epic with Linked User Stories" width="800">
+  <p><em>Example Epic with Linked User Stories</em></p>
+</div>
+
+<br>
+
+### 3. Epic with Linked User Stories
+
+A step further, every user story included clear and defined acceptance criteria with a markable checkbox to ensure that the intended functionality was testable and measurable.
+This facilitated a user-centric approach and provided clear completion indicators for each deliverable.
+
+<br>
+
+<div align="center">
+  <img src="static/images/user-story.png" alt="Example User Story with Acceptance Criteria." width="800">
+  <p><em>Example User Story with Acceptance Criteria.</em></p>
+</div>
+
+<br>
+
+
+The complete project board, including all epics, issues, sub-issues, and user stories, [can be accessed here](https://github.com/users/BlvckKryptonite/projects/4/views/1).
 
 Below is a refined version of initial user stories, scribbled down prior to development to cover different user perspectives:
 
