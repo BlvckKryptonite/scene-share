@@ -40,6 +40,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = [
     'sceneshare-0073094647bb.herokuapp.com',
+    'https://sceneshare-d38ffde85ab2.herokuapp.com/',
     'localhost',
     '127.0.0.1'
 ]
