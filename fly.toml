@@ -2,7 +2,7 @@ app = "sceneshare"
 primary_region = "iad"
 
 [build]
-  dockerfile = "Dockerfile"
+  dockerfile = "./Dockerfile"
 
 [env]
   DJANGO_SETTINGS_MODULE = "sceneshare.settings"
