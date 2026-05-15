@@ -31,4 +31,4 @@ RUN python manage.py collectstatic --noinput
 EXPOSE 8080
 
 # Run gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:8080", "sceneshare.wsgi"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "sceneshare.wsgi"]
