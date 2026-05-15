@@ -254,12 +254,24 @@ def add_review(request, movie_id):
     if request.method == "POST":
         form = ReviewForm(request.POST)
         if form.is_valid():
-            review = form.save(commit=False)
-            review.movie = movie
-            review.user = request.user
-            review.save()
-            messages.success(request, "Your review was posted successfully!")
-            return redirect("movie_detail", tmdb_id=movie.tmdb_id)
+            try:
+                Review.objects.update_or_create(
+                    user=request.user,
+                    movie=movie,
+                    defaults={
+                        'rating': form.cleaned_data['rating'],
+                        'comment': form.cleaned_data['comment']
+                    }
+                )
+                messages.success(request, "Your review was posted successfully!")
+                if movie.tmdb_id:
+                    return redirect("movie_detail", tmdb_id=movie.tmdb_id)
+                return redirect("home")
+            except Exception as e:
+                messages.error(
+                    request,
+                    "There was an error saving your review. Please try again."
+                )
         else:
             messages.error(
                 request,
