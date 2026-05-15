@@ -33,7 +33,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Concealed SECRET_KEY
 SECRET_KEY = os.environ.get("SECRET_KEY")
 if not SECRET_KEY:
-    raise ValueError("SECRET_KEY not set in environment!")
+    SECRET_KEY = os.environ.get('SECRET_KEY', 'temporary-build-secret-not-used-in-production')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False

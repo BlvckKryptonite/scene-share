@@ -1,13 +1,33 @@
-app = "sceneshare"
-primary_region = "iad"
+# fly.toml app configuration file generated for sceneshare on 2026-05-15T14:41:46+02:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'sceneshare'
+primary_region = 'iad'
+console_command = '/code/manage.py shell'
+
+[build]
+
+[deploy]
+  release_command = 'python manage.py migrate --noinput'
 
 [env]
-  DJANGO_SETTINGS_MODULE = "sceneshare.settings"
+  DJANGO_SETTINGS_MODULE = 'sceneshare.settings'
+  PORT = '8000'
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
 
 [[services]]
-  protocol = "tcp"
+  protocol = 'tcp'
   internal_port = 8080
-  processes = ["app"]
+  processes = ['app']
 
   [[services.ports]]
     port = 80
@@ -17,6 +37,11 @@ primary_region = "iad"
     port = 443
 
 [[vm]]
-  memory = "256mb"
-  cpu_kind = "shared"
+  memory = '256mb'
+  cpu_kind = 'shared'
   cpus = 1
+  memory_mb = 256
+
+[[statics]]
+  guest_path = '/code/static'
+  url_prefix = '/static/'
