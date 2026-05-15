@@ -16,8 +16,8 @@ import dj_database_url
 from pathlib import Path
 from urllib.parse import urlparse
 
-# Load .env locally only; skip on Heroku
-if "DYNO" not in os.environ:
+# Load .env locally only; skip on Heroku/Fly.io
+if "DYNO" not in os.environ and "FLY_APP_NAME" not in os.environ:
     try:
         from dotenv import load_dotenv
         load_dotenv()  # Load .env file from project root
@@ -42,7 +42,8 @@ ALLOWED_HOSTS = [
     'sceneshare-0073094647bb.herokuapp.com',
     'sceneshare-d38ffde85ab2.herokuapp.com',
     'localhost',
-    '127.0.0.1'
+    '127.0.0.1',
+    '.fly.dev',  # Allows all *.fly.dev subdomains
 ]
 
 # Application definition
