@@ -34,7 +34,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'temporary-build-secret-not-used-in-production')
  
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
  
 ALLOWED_HOSTS = [
     'sceneshare-0073094647bb.herokuapp.com',
