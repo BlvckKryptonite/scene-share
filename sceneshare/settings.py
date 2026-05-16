@@ -43,6 +43,11 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     '.fly.dev',  # Allows all *.fly.dev subdomains
 ]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://sceneshare.fly.dev',
+    'https://*.fly.dev',
+]
  
 # Application definition
  
